@@ -1,7 +1,3 @@
-
-
-
-
 EquiorientedAnPathAlgebra := function(F, n)
     local Q;
     Q := DynkinQuiver("A",n,ListWithIdenticalEntries(n-1,"r"));
