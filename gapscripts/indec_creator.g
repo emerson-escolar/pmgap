@@ -72,6 +72,14 @@ CreateLinearQuiverIndecs := function(A)
 end;
 
 
+CreateIntervalDimVecs := function(n_rows, n_cols)
+    interval_dimvecs := [];
+    # TODO: generate this
+
+    return interval_dimvecs;
+end;
+
+
 CreateCommutativeGridIntervals := function(A, F, n_rows, n_cols)
     # Trust that A was obtained by
     # A := CreateCommutativeGrid(F, n_rows, n_cols);
@@ -86,8 +94,7 @@ CreateCommutativeGridIntervals := function(A, F, n_rows, n_cols)
         Add(arrows, [src,trgt, arr]);
     od;
 
-    # TODO: generate the following
-    interval_dimvecs := [];
+    interval_dimvecs := CreateIntervalDimVecs(n_rows, n_cols);
 
     intervals_list := [];
     for dimv in obvious_dimvecs do
