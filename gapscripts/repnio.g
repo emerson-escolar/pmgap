@@ -1,3 +1,7 @@
+LoadPackage("json");
+LoadPackage("qpa");
+
+
 EquiorientedAnPathAlgebra := function(F, n)
     local Q;
     Q := DynkinQuiver("A",n,ListWithIdenticalEntries(n-1,"r"));
@@ -5,7 +9,7 @@ EquiorientedAnPathAlgebra := function(F, n)
 end;
 
 
-CreateCommutativeGrid := function(F, n_rows, n_cols)
+CreateCommutativeGridPathAlgebra := function(F, n_rows, n_cols)
     local Ar, Ac, A;;
     Ar := EquiorientedAnPathAlgebra(F, n_rows);
     Ac := EquiorientedAnPathAlgebra(F, n_cols);
@@ -13,15 +17,12 @@ CreateCommutativeGrid := function(F, n_rows, n_cols)
     return A;
 end;
 
-ReadRepnL := function(F, fname)
-    return ReadRepn(F, fname, true);
+CreateCommutativeGridPosetAlgebra := function(F, n_rows, n_cols)
+
 end;
 
-ReadRepnR := function(F, fname)
-    return ReadRepn(F, fname, false);
-end;
 
-ReadRepn := function(F, fname, is_left_matrices)
+ReadCommutativeGridRepn := function(F, fname, is_left_matrices)
     local data,
           Q, A,
           dim_vec, vert,
@@ -29,7 +30,7 @@ ReadRepn := function(F, fname, is_left_matrices)
 
     data := JsonStreamToGap(InputTextFile(fname));
 
-    A := CreateCommutativeGrid(F, data.rows, data.cols);
+    A := CreateCommutativeGridPathAlgebra(F, data.rows, data.cols);
     Q := QuiverOfPathAlgebra(A);
 
     dim_vec := [];
@@ -61,4 +62,14 @@ ReadRepn := function(F, fname, is_left_matrices)
         fi;
     od;
     return [A, RightModuleOverPathAlgebra(A, dim_vec, mats)];
+end;
+
+
+ReadCommutativeGridRepnL := function(F, fname)
+    return ReadCommutativeGridRepn(F, fname, true);
+end;
+
+
+ReadCommutativeGridRepnR := function(F, fname)
+    return ReadCommutativeGridRepn(F, fname, false);
 end;
