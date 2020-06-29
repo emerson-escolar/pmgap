@@ -3,8 +3,9 @@
 # GPL3
 # Then, modified.
 
+LoadPackage("qpa");
 
-CreateObviousIndecMatrices := function(dimv, arrows)
+CreateObviousIndecMatrices := function(F, dimv, arrows)
     local  dim, N, matrices, i;
     for dim in dimv do
         if not (dim = 0 or dim = 1) then
@@ -16,14 +17,12 @@ CreateObviousIndecMatrices := function(dimv, arrows)
     N := Length(arrows);
     for i in [1..N] do
         if (dimv[arrows[i][1]] = 1 and dimv[arrows[i][2]] = 1) then
-            Add(matrices, [String(arrows[i][3]), Z(2)*[[1]]]);
+            Add(matrices, [String(arrows[i][3]), Identity(F) * [[1]]]);
         fi;
         # Add(matrices, [arrows[i][3], NullMat(dimv[arrows[i][1]], dimv[arrows[i][2]], Z(2))+1 ]);
     od;
     return matrices;
 end;
-
-
 
 
 CreateLinearQuiverIndecs := function(A)
@@ -63,7 +62,7 @@ CreateLinearQuiverIndecs := function(A)
         for d in [b+1..N] do
             dimv := ListWithIdenticalEntries(N,0);
             dimv{[b..d]} := ListWithIdenticalEntries(d-b+1,1);
-            mats := CreateObviousIndecMatrices(dimv ,arrows);
+            mats := CreateObviousIndecMatrices(GF(2), dimv ,arrows);
             Add(indecs_list, RightModuleOverPathAlgebra(A, dimv, mats));
         od;
     od;
@@ -71,19 +70,20 @@ CreateLinearQuiverIndecs := function(A)
     return indecs_list;
 end;
 
-CreateIntervalDimVecs := function(n_rows, n_cols)
-    local interval_dimvecs;
+
+CreateCommutativeGridIntervalDimVecs := function(n_rows, n_cols)
+    local interval_dimvecs, start_row, end_col;
     interval_dimvecs := [];
     for start_row in [1..n_rows] do
         for end_col in [1..n_cols] do
-            Append(interval_dimvecs, CreateIntervalDimVecsPointed(n_rows, n_cols,
-                                                                  start_row, end_col));
+            Append(interval_dimvecs, CreateCommutativeGridIntervalDimVecsPointed(n_rows, n_cols,
+                                                                                 start_row, end_col));
         od;
     od;
     return interval_dimvecs;
 end;
 
-PrettyPrintDimVec := function(dim_vec, n_cols)
+PrettyPrintCommuativeGridDimVec := function(dim_vec, n_cols)
     local counter, d;
     counter := 0;
     Print("Interval\n");
@@ -99,7 +99,7 @@ end;
      
 
 LastBirthDeath := function(partial_dim_vec, n_cols)
-    local cur_row;
+    local cur_row, birth, death;
     cur_row := Int(Ceil(1.*Length(partial_dim_vec)/n_cols));
     birth := PositionProperty(partial_dim_vec, x->x=1, (cur_row-1)*n_cols);
     birth := (birth-1) mod n_cols +1;
@@ -114,9 +114,9 @@ end;
 
 
 
-CreateIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
+CreateCommutativeGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
     local graded_intervals, dimvec, intervals,
-          b, d, x, height, max_height, bd;
+          b, d, x, height, max_height, bd, old_int, interval_list;
 
     graded_intervals := [[]];
     dimvec := ListWithIdenticalEntries(n_rows*(start_row-1), 0);
@@ -180,11 +180,11 @@ CreateCommutativeGridIntervals := function(A, F, n_rows, n_cols)
         Add(arrows, [src,trgt, arr]);
     od;
 
-    interval_dimvecs := CreateIntervalDimVecs(n_rows, n_cols);
+    interval_dimvecs := CreateCommutativeGridIntervalDimVecs(n_rows, n_cols);
 
     intervals_list := [];
     for dimv in interval_dimvecs do
-        mats := CreateObviousIndecMatrices(dimv, arrows);
+        mats := CreateObviousIndecMatrices(F, dimv, arrows);
         Add(intervals_list, RightModuleOverPathAlgebra(A, dimv, mats));
     od;
 
