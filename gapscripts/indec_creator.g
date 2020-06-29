@@ -128,18 +128,13 @@ CreateIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
         Append(x, ListWithIdenticalEntries(n_cols - end_col, 0));
         Add(graded_intervals[1], x);
     od;
-    Print(graded_intervals);
-
 
     max_height := n_rows-start_row + 1;
     for height in [2..max_height] do
         Add(graded_intervals, []);
 
         for old_int in graded_intervals[height-1] do
-            Print(old_int);
-
             bd := LastBirthDeath(old_int, n_cols);
-            Print(bd, "\n");
             # Generate next-height graded_intervals
             for b in [1..bd[1]] do
                 for d in [bd[1]..bd[2]] do
