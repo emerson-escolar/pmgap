@@ -126,5 +126,6 @@ InstallMethod(CommGridInterval,
                   mats := __CreateObviousIndecMatrices(A,dimv);
                   V := RightModuleOverPathAlgebra(A,dimv,mats);
                   SetFilterObj(V, IsCommGridRepn);
+                  SetFilterObj(V, IsCommGridInterval);
                   return V;
               end);
