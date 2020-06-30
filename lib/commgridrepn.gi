@@ -11,7 +11,8 @@ __JsonToCommGridRepn := function(stream)
     local data, is_left_matrices,
           F, Q, A,
           dim_vec, vert,
-          mats, arr, s, st, dim_s, dim_t;
+          mats, arr, s, st, dim_s, dim_t,
+          V;
 
     data := JsonStreamToGap(stream);
     if not IsBound(data.field) or data.field = "rationals" then
@@ -57,7 +58,11 @@ __JsonToCommGridRepn := function(stream)
         fi;
     od;
 
-    return [A, RightModuleOverPathAlgebra(A, dim_vec, mats)];
+    V := RightModuleOverPathAlgebra(A, dim_vec, mats);
+
+    SetFilterObj(V, IsCommGridRepn);
+    SetCommGridOfCommGridRepn(V, A);
+    return V;
 end;
 
 InstallGlobalFunction(JsonToCommGridRepn,

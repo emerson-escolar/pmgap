@@ -3,7 +3,7 @@
 
 
 
-#! @Section Input
+#! @Section Persistence modules over commutative grids
 
 #! @Arguments filename
 #! @Returns commutative grid representation
@@ -17,3 +17,9 @@ DeclareGlobalFunction("JsonFileToCommGridRepn");
 #! @Description
 #! Reads a CommGridRepn from a json stream
 DeclareGlobalFunction("JsonToCommGridRepn");
+
+#!
+DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
+
+#!
+DeclareAttribute("CommGridOfCommGridRepn", IsCommGridRepn);
