@@ -20,6 +20,3 @@ DeclareGlobalFunction("JsonToCommGridRepn");
 
 #!
 DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
-
-#!
-DeclareAttribute("CommGridOfCommGridRepn", IsCommGridRepn);

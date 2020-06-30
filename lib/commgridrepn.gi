@@ -61,7 +61,6 @@ __JsonToCommGridRepn := function(stream)
     V := RightModuleOverPathAlgebra(A, dim_vec, mats);
 
     SetFilterObj(V, IsCommGridRepn);
-    SetCommGridOfCommGridRepn(V, A);
     return V;
 end;
 
