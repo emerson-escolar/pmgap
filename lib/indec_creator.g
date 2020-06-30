@@ -85,32 +85,3 @@ PrettyPrintCommuativeGridDimVec := function(dim_vec, n_cols)
     od;
     Print("--------\n");
 end;
-
-
-
-CreateCommutativeGridIntervals := function(A, F, n_rows, n_cols)
-    # Trust that A was obtained by
-    # A := CreateCommutativeGrid(F, n_rows, n_cols);
-    # is there a way to check this?
-    local Q, verts, arrows, arr, src, trgt,
-          interval_dimvecs, intervals_list, dimv, mats;
-
-    Q := QuiverOfPathAlgebra(A);
-    verts := VerticesOfQuiver(Q);
-    arrows := [];
-    for arr in ArrowsOfQuiver(Q) do
-        src := Position(verts, SourceVertex(arr));
-        trgt := Position(verts, TargetVertex(arr));
-        Add(arrows, [src,trgt, arr]);
-    od;
-
-    interval_dimvecs := CreateCommutativeGridIntervalDimVecs(n_rows, n_cols);
-
-    intervals_list := [];
-    for dimv in interval_dimvecs do
-        mats := CreateObviousIndecMatrices(F, dimv, arrows);
-        Add(intervals_list, RightModuleOverPathAlgebra(A, dimv, mats));
-    od;
-
-    return intervals_list;
-end;
