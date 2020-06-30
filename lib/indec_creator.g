@@ -69,19 +69,3 @@ CreateLinearQuiverIndecs := function(A)
     Append(indecs_list, SimpleModules(A));
     return indecs_list;
 end;
-
-
-
-PrettyPrintCommuativeGridDimVec := function(dim_vec, n_cols)
-    local counter, d;
-    counter := 0;
-    Print("Interval\n");
-    for d in dim_vec do
-        Print(d);
-        counter := counter + 1;
-        if counter mod n_cols = 0 then
-            Print("\n");
-        fi;
-    od;
-    Print("--------\n");
-end;

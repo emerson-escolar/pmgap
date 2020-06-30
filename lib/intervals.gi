@@ -129,3 +129,32 @@ InstallMethod(CommGridInterval,
                   SetFilterObj(V, IsCommGridInterval);
                   return V;
               end);
+
+PrettyPrintCommuativeGridDimVec := function(dim_vec, n_cols)
+    local counter, d;
+    counter := 0;
+    Print("Interval with dimension vector:\n");
+    for d in dim_vec do
+        Print(d);
+        counter := counter + 1;
+        if counter mod n_cols = 0 then
+            Print("\n");
+        fi;
+    od;
+    Print("-------------------------------\n");
+end;
+
+InstallMethod(PrintObj,
+              "for a commutative grid interval repn",
+              ReturnTrue,
+              [IsCommGridInterval],
+              NICE_FLAGS + 1,
+              function(I)
+                  local dim_vec,
+                        A, n_cols;
+                  A := RightActingAlgebra(I);
+                  n_cols := NumCommGridColumns(A);
+                  dim_vec := DimensionVector(I);
+                  PrettyPrintCommuativeGridDimVec(dim_vec, n_cols);
+                  return;
+              end);
