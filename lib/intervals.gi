@@ -85,7 +85,6 @@ __CommGridIntervalDimVecs := function(n_rows, n_cols)
 end;
 
 
-
 InstallMethod(IntervalDimVecs,
               "for a commutative grid path algebra",
               ReturnTrue,
@@ -94,4 +93,38 @@ InstallMethod(IntervalDimVecs,
                   local idv;
                   idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
                   return idv;
+              end);
+
+
+__CreateObviousIndecMatrices := function(A, dimv)
+    local F, dim, matrices, verts, arr, src, trgt;
+    for dim in dimv do
+        if not (dim = 0 or dim = 1) then
+            return fail;
+        fi;
+    od;
+    F := LeftActingDomain(A);
+    matrices := [];
+    verts := VerticesOfQuiver(QuiverOfPathAlgebra(A));
+    for arr in ArrowsOfQuiver(QuiverOfPathAlgebra(A)) do
+        src := Position(verts, SourceVertex(arr));
+        if dimv[src] = 0 then continue; fi;
+        trgt := Position(verts, TargetVertex(arr));
+        if dimv[trgt] = 0 then continue; fi;
+        Add(matrices, [String(arr), Identity(F) * [[1]]]);
+    od;
+    return matrices;
+end;
+
+
+InstallMethod(CommGridInterval,
+              "for a commutative grid path algebra and a dimension vector",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsCollection],
+              function(A, dimv)
+                  local V, mats;
+                  mats := __CreateObviousIndecMatrices(A,dimv);
+                  V := RightModuleOverPathAlgebra(A,dimv,mats);
+                  SetFilterObj(V, IsCommGridRepn);
+                  return V;
               end);

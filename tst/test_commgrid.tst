@@ -9,3 +9,8 @@ gap> Length(IntervalDimVecs(A).1);
 12
 gap> Length(IntervalDimVecs(A).2);
 15
+gap> I := CommGridInterval(A, (IntervalDimVecs(A).2)[1]);;
+gap> IsIndecomposableModule(I);
+true
+gap> IsCommGridRepn(I);
+true
