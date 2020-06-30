@@ -19,26 +19,26 @@ end;
 
 
 
-__CreateCommutativeGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
-    local graded_intervals, dimvec, intervals,
-          b, d, x, height, max_height, bd, old_int, interval_list;
+__CommGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
+    local graded_intervals, dimvec,
+          b, d, x, height, max_height, bd, old_int;
 
-    graded_intervals := [[]];
-    dimvec := ListWithIdenticalEntries(n_rows*(start_row-1), 0);
+    graded_intervals := rec( 1 := [] );
+    dimvec := ListWithIdenticalEntries(n_cols*(start_row-1), 0);
 
     # Generate height 1 graded_intervals
     for b in [1..end_col] do
         x := Concatenation(dimvec, ListWithIdenticalEntries(b-1, 0));
         Append(x, ListWithIdenticalEntries(end_col-b+1, 1));
         Append(x, ListWithIdenticalEntries(n_cols - end_col, 0));
-        Add(graded_intervals[1], x);
+        Add(graded_intervals.1, x);
     od;
 
     max_height := n_rows-start_row + 1;
     for height in [2..max_height] do
-        Add(graded_intervals, []);
+        graded_intervals.(height) := [];
 
-        for old_int in graded_intervals[height-1] do
+        for old_int in graded_intervals.(height-1) do
             bd := __LastBirthDeath(old_int, n_cols);
             # Generate next-height graded_intervals
             for b in [1..bd[1]] do
@@ -46,7 +46,7 @@ __CreateCommutativeGridIntervalDimVecsPointed := function(n_rows, n_cols, start_
                     x := Concatenation(old_int, ListWithIdenticalEntries(b-1, 0));
                     Append(x, ListWithIdenticalEntries(d-b+1, 1));
                     Append(x, ListWithIdenticalEntries(n_cols-d, 0));
-                    Add(graded_intervals[height], x);
+                    Add(graded_intervals.(height), x);
                 od;
             od;
             # finish up previous-height graded_intervals
@@ -55,30 +55,39 @@ __CreateCommutativeGridIntervalDimVecsPointed := function(n_rows, n_cols, start_
     od;
 
     # finish up previous-height graded_intervals
-    for old_int in graded_intervals[max_height] do
+    for old_int in graded_intervals.(max_height) do
         Append(old_int, ListWithIdenticalEntries(n_rows*n_cols - Length(old_int), 0));
     od;
-
-    intervals := [];
-    for interval_list in graded_intervals do
-        Append(intervals, interval_list);
-    od;
-
-    return intervals;
+    return graded_intervals;
 end;
 
+__MergeIntoRecord_Lists := function(target, source)
+    local i;
+    Print("source", source, "\n");
 
-__CreateCommutativeGridIntervalDimVecs := function(n_rows, n_cols)
-    local interval_dimvecs, start_row, end_col;
-    interval_dimvecs := [];
+    for i in RecNames(source) do
+        if not IsBound(target.(i)) then
+            target.(i) := source.(i);
+        else
+            Append(target.(i), source.(i));
+        fi;
+    od;
+    Print(target, "\n");
+
+end;
+
+__CommGridIntervalDimVecs := function(n_rows, n_cols)
+    local interval_dimvecs, gr, start_row, end_col;
+    interval_dimvecs := rec();
     for start_row in [1..n_rows] do
         for end_col in [1..n_cols] do
-            Append(interval_dimvecs, __CreateCommutativeGridIntervalDimVecsPointed(n_rows, n_cols,
-                                                                                 start_row, end_col));
+            gr := __CommGridIntervalDimVecsPointed(n_rows, n_cols, start_row, end_col);
+            __MergeIntoRecord_Lists(interval_dimvecs, gr);
         od;
     od;
     return interval_dimvecs;
 end;
+
 
 
 InstallMethod(IntervalDimVecs,
@@ -86,5 +95,7 @@ InstallMethod(IntervalDimVecs,
               ReturnTrue,
               [IsCommGridPathAlgebra],
               function(A)
-                  return __CreateCommutativeGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
+                  local idv;
+                  idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
+                  return idv;
               end);

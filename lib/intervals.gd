@@ -1,4 +1,5 @@
 
 
 #!
-DeclareOperation("IntervalDimVecs", [IsCommGridPathAlgebra]);
+DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
+
