@@ -63,8 +63,6 @@ end;
 
 __MergeIntoRecord_Lists := function(target, source)
     local i;
-    Print("source", source, "\n");
-
     for i in RecNames(source) do
         if not IsBound(target.(i)) then
             target.(i) := source.(i);
@@ -72,8 +70,6 @@ __MergeIntoRecord_Lists := function(target, source)
             Append(target.(i), source.(i));
         fi;
     od;
-    Print(target, "\n");
-
 end;
 
 __CommGridIntervalDimVecs := function(n_rows, n_cols)
