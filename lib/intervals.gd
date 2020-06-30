@@ -1,0 +1,4 @@
+
+
+#!
+DeclareOperation("IntervalDimVecs", [IsCommGridPathAlgebra]);
