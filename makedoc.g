@@ -1,2 +1,4 @@
-Autodoc(rec(scaffold := true, autodoc := true));
+LoadPackage("autodoc");
+
+AutoDoc(rec(scaffold := true, autodoc := true));
 QUIT;
