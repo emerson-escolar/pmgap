@@ -1,15 +1,16 @@
 
-__EquiorientedAnPathAlgebra := function(F, n)
+InstallGlobalFunction(EquiorientedAnPathAlgebra,
+function(F, n)
     local Q;
     Q := DynkinQuiver("A",n,ListWithIdenticalEntries(n-1,"r"));
     return PathAlgebra(F, Q);
-end;
+end);
 
 
 __CommGridPathAlgebraByTensor := function(F, n_rows, n_cols)
     local Ar, Ac, A;;
-    Ar := __EquiorientedAnPathAlgebra(F, n_rows);
-    Ac := __EquiorientedAnPathAlgebra(F, n_cols);
+    Ar := EquiorientedAnPathAlgebra(F, n_rows);
+    Ac := EquiorientedAnPathAlgebra(F, n_cols);
     A := TensorProductOfAlgebras(Ar, Ac);
 
     SetFilterObj(A, IsCommGridPathAlgebra);
