@@ -117,7 +117,7 @@ __CreateObviousIndecMatrices := function(A, dimv)
 end;
 
 
-InstallMethod(CommGridInterval,
+InstallMethod(IntervalRepn,
               "for a commutative grid path algebra and a dimension vector",
               ReturnTrue,
               [IsCommGridPathAlgebra, IsCollection],

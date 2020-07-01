@@ -17,11 +17,11 @@
 DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
 
 #! @Arguments A, dimension_vector_of_interval
-#! @Returns CommGridRepn corresponding to the interval
+#! @Returns interval representation
 #! @Description
 #! This operation builds the representation of A corresponding
 #! to the dimension vector of an interval.
-DeclareOperation("CommGridInterval", [IsCommGridPathAlgebra, IsCollection]);
+DeclareOperation("IntervalRepn", [IsCommGridPathAlgebra, IsCollection]);
 
 #!
 DeclareProperty("IsCommGridInterval", IsCommGridRepn);
