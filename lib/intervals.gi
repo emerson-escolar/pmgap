@@ -1,8 +1,5 @@
 
 
-
-
-
 __LastBirthDeath := function(partial_dim_vec, n_cols)
     local cur_row, birth, death;
     cur_row := Int(Ceil(1.*Length(partial_dim_vec)/n_cols));
@@ -16,7 +13,6 @@ __LastBirthDeath := function(partial_dim_vec, n_cols)
     fi;
     return [birth,death];
 end;
-
 
 
 __CommGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
@@ -61,6 +57,7 @@ __CommGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
     return graded_intervals;
 end;
 
+
 __MergeIntoRecord_Lists := function(target, source)
     local i;
     for i in RecNames(source) do
@@ -71,6 +68,7 @@ __MergeIntoRecord_Lists := function(target, source)
         fi;
     od;
 end;
+
 
 __CommGridIntervalDimVecs := function(n_rows, n_cols)
     local interval_dimvecs, gr, start_row, end_col;
@@ -84,16 +82,14 @@ __CommGridIntervalDimVecs := function(n_rows, n_cols)
     return interval_dimvecs;
 end;
 
+__CommGridCheckDimVec := function(A, dim_vec)
+    return true;
+end;
 
-InstallMethod(IntervalDimVecs,
-              "for a commutative grid path algebra",
-              ReturnTrue,
-              [IsCommGridPathAlgebra],
-              function(A)
-                  local idv;
-                  idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
-                  return idv;
-              end);
+__AnCheckDimVec := function(A, dim_vec)
+    return true;
+end;
+
 
 
 __CreateObviousIndecMatrices := function(A, dimv)
@@ -117,16 +113,40 @@ __CreateObviousIndecMatrices := function(A, dimv)
 end;
 
 
+InstallMethod(IntervalDimVecs,
+              "for a commutative grid path algebra",
+              ReturnTrue,
+              [IsCommGridPathAlgebra],
+              function(A)
+                  local idv;
+                  idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
+                  return idv;
+              end);
+
+
 InstallMethod(IntervalRepn,
-              "for a commutative grid path algebra and a dimension vector",
+              "for commutative grid and a dimension vector",
               ReturnTrue,
               [IsCommGridPathAlgebra, IsCollection],
               function(A, dimv)
                   local V, mats;
+                  if not __CommGridCheckDimVec(A,dimv) then return fail; fi;
                   mats := __CreateObviousIndecMatrices(A,dimv);
                   V := RightModuleOverPathAlgebra(A,dimv,mats);
                   SetFilterObj(V, IsCommGridRepn);
                   SetFilterObj(V, IsCommGridInterval);
+                  return V;
+              end);
+
+InstallOtherMethod(IntervalRepn,
+              "for equioriented A_n and a dimension vector",
+              ReturnTrue,
+              [IsEquiorientedAnPathAlgebra, IsCollection],
+              function(A, dimv)
+                  local V, mats;
+                  if not __AnCheckDimVec(A,dimv) then return fail; fi;
+                  mats := __CreateObviousIndecMatrices(A,dimv);
+                  V := RightModuleOverPathAlgebra(A,dimv,mats);
                   return V;
               end);
 
