@@ -1,9 +1,11 @@
 
 InstallGlobalFunction(EquiorientedAnPathAlgebra,
 function(F, n)
-    local Q;
+    local Q, A;
     Q := DynkinQuiver("A",n,ListWithIdenticalEntries(n-1,"r"));
-    return PathAlgebra(F, Q);
+    A := PathAlgebra(F, Q);
+    SetFilterObj(A, IsEquiorientedAnPathAlgebra);
+    return A;
 end);
 
 

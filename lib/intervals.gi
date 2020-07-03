@@ -87,6 +87,20 @@ __CommGridCheckDimVec := function(A, dim_vec)
 end;
 
 __AnCheckDimVec := function(A, dim_vec)
+    local bd, i;
+    if not IsEquiorientedAnPathAlgebra(A) then
+        return fail;
+    fi;
+    bd := __LastBirthDeath(dim_vec, NumberOfVertices(QuiverOfPathAlgebra(A)));
+
+    if bd[1] = fail then
+        return false;
+    fi;
+    for i in [bd[1]..bd[2]] do
+        if not (dim_vec[i] = 1) then
+            return false;
+        fi;
+    od;
     return true;
 end;
 
