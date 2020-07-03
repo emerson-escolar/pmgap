@@ -1,7 +1,5 @@
 
 
-
-
 InstallGlobalFunction(JsonFileToCommGridRepn,
   function(fname)
       return JsonToCommGridRepn(InputTextFile(fname));
@@ -58,11 +56,72 @@ __JsonToCommGridRepn := function(stream)
         fi;
     od;
 
-    V := RightModuleOverPathAlgebra(A, dim_vec, mats);
-
-    SetFilterObj(V, IsCommGridRepn);
+    V := CommGridRepnArrLbl(A, dim_vec, mats);
     return V;
 end;
 
 InstallGlobalFunction(JsonToCommGridRepn,
                       __JsonToCommGridRepn);
+
+
+InstallMethod(CommGridRepnArrLbl,
+              "for comm_grid, dim_vec, and matrices",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsList, IsList],
+              function(A, dimv, mats)
+                  local V;
+                  V := RightModuleOverPathAlgebra(A,dimv,mats);
+                  SetFilterObj(V, IsCommGridRepn);
+                  return V;
+              end);
+
+
+InstallOtherMethod(CommGridRepnArrLbl,
+              "for comm_grid and matrices",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsCollection],
+              function(A, mats)
+                  local V;
+                  V := RightModuleOverPathAlgebra(A,mats);
+                  SetFilterObj(V, IsCommGridRepn);
+                  return V;
+              end);
+
+
+__SourceTargetToArrow := function(Q, s, t)
+    local out_arrs, arr;
+    out_arrs := OutgoingArrowsOfVertex(Q.(s));
+    arr := First(out_arrs, x -> (TargetVertex(x) = Q.(t)));
+    return arr;
+end;
+
+__TranslateMats := function(A, mats)
+    local Q, ans, arr, entry;
+    ans := [];
+    Q := QuiverOfPathAlgebra(A);
+    for entry in mats do
+        arr := __SourceTargetToArrow(Q, entry[1], entry[2]);
+        if arr = fail then return fail; fi;
+        Add(ans, [String(arr), entry[3]]);
+    od;
+    return ans;
+end;
+
+
+InstallMethod(CommGridRepn,
+              "for comm_grid, dim_vec, and matrices",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsList, IsList],
+              function(A, dimv, mats)
+                  return CommGridRepnArrLbl(A, dimv, __TranslateMats(A,mats));
+              end);
+
+
+InstallOtherMethod(CommGridRepn,
+              "for comm_grid and matrices",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsCollection],
+              function(A, mats)
+
+                  return CommGridRepnArrLbl(A, __TranslateMats(A,mats));
+              end);
