@@ -14,14 +14,8 @@ __CommGridPathAlgebraByTensor := function(F, n_rows, n_cols)
     Ar := EquiorientedAnPathAlgebra(F, n_rows);
     Ac := EquiorientedAnPathAlgebra(F, n_cols);
     A := TensorProductOfAlgebras(Ar, Ac);
-
-    SetFilterObj(A, IsCommGridPathAlgebra);
-    SetNumCommGridRows(A, n_rows);
-    SetNumCommGridColumns(A, n_cols);
-
     return A;
 end;
-
 
 
 __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
@@ -60,14 +54,17 @@ __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
     Add(vertices, VertexCode(n_rows, n_cols));
 
     A := PosetAlgebra(F, Poset(vertices, relations));
-
-    SetFilterObj(A, IsCommGridPathAlgebra);
-    SetNumCommGridRows(A, n_rows);
-    SetNumCommGridColumns(A, n_cols);
     return A;
 end;
 
 
 # CommGridPathAlgebraByTensor is faster
 InstallGlobalFunction(CommGridPathAlgebra,
-                      __CommGridPathAlgebraByTensor);
+                     function(F, n_rows, n_cols)
+                         local A;
+                         A := __CommGridPathAlgebraByTensor(F, n_rows, n_cols);
+                         SetFilterObj(A, IsCommGridPathAlgebra);
+                         SetNumCommGridRows(A, n_rows);
+                         SetNumCommGridColumns(A, n_cols);
+                         return A;
+                     end);
