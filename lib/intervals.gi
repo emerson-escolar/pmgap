@@ -83,7 +83,48 @@ __CommGridIntervalDimVecs := function(n_rows, n_cols)
 end;
 
 __CommGridCheckDimVec := function(A, dim_vec)
-    # TODO: Implement
+    local n_rows, n_cols,
+          cur_stop, bd,
+          prev_birth, prev_death,
+          remaining;
+
+    if not IsCommGridPathAlgebra(A) then
+        return fail;
+    fi;
+    n_rows := NumCommGridRows(A);
+    n_cols := NumCommGridColumns(A);
+    if not (Length(dim_vec) = n_rows * n_cols) then
+        # TODO: message?
+        return false;
+    fi;
+
+    cur_stop := n_rows * n_cols;
+    bd := __LastBirthDeath(dim_vec, n_cols);
+    while (bd[1] = fail) do
+        cur_stop := cur_stop - n_cols;
+        if cur_stop = 0 then return false; fi;
+        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
+    od;
+
+    prev_birth := bd[1]; prev_death := bd[2];
+    while cur_stop > 0 do
+        cur_stop := cur_stop - n_cols;
+        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
+        if bd[1] = fail then break; fi;
+        if not (prev_birth <= bd[1] and bd[1] <= prev_death and
+                prev_death <= bd[2]) then
+            return false;
+        fi;
+        prev_birth := bd[1]; prev_death := bd[2];
+    od;
+    if cur_stop > 0 then
+        cur_stop := cur_stop - n_cols;
+        remaining := dim_vec{[1..cur_stop]};
+        if not (remaining = ListWithIdenticalEntries(Length(remaining),0)) then
+            return false;
+        fi;
+    fi;
+
     return true;
 end;
 
