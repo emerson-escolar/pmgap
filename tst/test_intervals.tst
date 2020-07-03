@@ -20,5 +20,11 @@ true
 gap> IsEquiorientedAnInterval(I);
 true
 
-gap> I := IntervalRepn(B, [0,1,0,1,0]);
+gap> IntervalRepn(B, [0,1,0,1,0]);
+fail
+gap> IntervalRepn(B, [0,0,0,0,0]);
+fail
+gap> IntervalRepn(B, [0,0,0]);
+fail
+gap> IntervalRepn(B, [0,0,0,1,1,1,1]);
 fail

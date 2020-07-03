@@ -4,10 +4,10 @@ __LastBirthDeath := function(partial_dim_vec, n_cols)
     local cur_row, birth, death;
     cur_row := Int(Ceil(1.*Length(partial_dim_vec)/n_cols));
     birth := PositionProperty(partial_dim_vec, x->x=1, (cur_row-1)*n_cols);
-    birth := (birth-1) mod n_cols +1;
     if birth = fail then
         death := fail;
     else
+        birth := (birth-1) mod n_cols +1;
         death := Length(partial_dim_vec) -  PositionProperty(Reversed(partial_dim_vec), x->x=1) + 1;
         death := (death-1) mod n_cols + 1;
     fi;
@@ -83,6 +83,7 @@ __CommGridIntervalDimVecs := function(n_rows, n_cols)
 end;
 
 __CommGridCheckDimVec := function(A, dim_vec)
+    # TODO: Implement
     return true;
 end;
 
@@ -91,8 +92,11 @@ __AnCheckDimVec := function(A, dim_vec)
     if not IsEquiorientedAnPathAlgebra(A) then
         return fail;
     fi;
+    if not (Length(VerticesOfQuiver(QuiverOfPathAlgebra(A))) = Length(dim_vec)) then
+        # TODO: message?
+        return false;
+    fi;
     bd := __LastBirthDeath(dim_vec, NumberOfVertices(QuiverOfPathAlgebra(A)));
-
     if bd[1] = fail then
         return false;
     fi;
