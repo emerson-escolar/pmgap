@@ -34,3 +34,10 @@ DeclareOperation("IntervalRepn", [IsEquiorientedAnPathAlgebra, IsCollection]);
 
 #!
 DeclareProperty("IsCommGridInterval", IsCommGridRepn);
+#!
+InstallTrueMethod(IsIndecomposableModule, IsCommGridInterval);
+
+#!
+DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
+#!
+InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);

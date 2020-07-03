@@ -62,6 +62,14 @@ DeclareOperation("CommGridRepn", [IsCommGridPathAlgebra, IsCollection]);
 DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
 
 
+#! @Arguments V
+#! @Returns true or false
+#! @Description
+#! Tells you if V is equioriented An representation.
+#! Works only for the representations constructed using the
+#! functions provided by this package.
+DeclareProperty("IsEquiorientedAnRepn", IsPathAlgebraMatModule);
+
 #! @Section Reading from files
 
 #! @Arguments filename

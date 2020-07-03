@@ -161,6 +161,8 @@ InstallOtherMethod(IntervalRepn,
                   if not __AnCheckDimVec(A,dimv) then return fail; fi;
                   mats := __CreateObviousIndecMatrices(A,dimv);
                   V := RightModuleOverPathAlgebra(A,dimv,mats);
+                  SetFilterObj(V, IsEquiorientedAnRepn);
+                  SetFilterObj(V, IsEquiorientedAnInterval);
                   return V;
               end);
 
