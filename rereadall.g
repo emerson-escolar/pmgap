@@ -6,3 +6,6 @@ RereadPackage("pmgap", "lib/commgridrepn.gi");
 
 ReadPackage("pmgap", "lib/intervals.gd");
 ReadPackage("pmgap", "lib/intervals.gi");
+
+ReadPackage("pmgap", "lib/multiplicity.gd");
+ReadPackage("pmgap", "lib/multiplicity.gi");

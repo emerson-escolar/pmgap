@@ -1,0 +1,7 @@
+
+
+
+
+#!
+DeclareOperation("MultiplicityAtIndec",
+                 [IsPathAlgebraMatModule, IsIndecomposableModule]);

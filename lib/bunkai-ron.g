@@ -3,41 +3,6 @@
 # GPL3
 
 
-# ********** For computing multiplicities **********
-
-NumBasisHom := function(M,N)
-    return Length(HomOverAlgebra(M,N));
-end;
-
-MultiplicityAtIndec := function(M, I)
-    local ai, arseq, middleterm, dec_res, i, mult, tauI, n;
-    arseq := AlmostSplitSequence(I);
-    if arseq = fail then
-        # I is projective!
-        middleterm := RadicalOfModule(I);
-    else
-        middleterm := Range(arseq[1]);
-    fi;
-    dec_res := DecomposeModuleWithMultiplicities(middleterm);
-    # decomposition of middle term fails when it is a zero module.
-    # This happens when I is simple projective, zero radical.
-
-    ai := NumBasisHom(M,I);
-    if not dec_res = fail then
-        n := Length(dec_res[1]);
-        for i in [1..n] do
-            mult := dec_res[2][i];
-            ai := ai - mult * NumBasisHom(M, dec_res[1][i]);
-        od;
-    fi;
-
-    if not arseq = fail then
-        tauI := Source(arseq[1]);
-        ai := ai + NumBasisHom(M, tauI);
-    fi;
-    return ai;
-end;
-
 
 ComputeMultiplicities := function(M, list_of_indecs)
     local  N, i, multmap;
@@ -112,12 +77,3 @@ CleanDuplicatesByIsomorphism := function(list_of_indecs)
 end;
 
 # ****************************************
-
-# ********** Some Tools for creating algebras **********
-CreateCommutativeLadder := function(orientation)
-    local  A2, AN, A;;
-    A2 := PathAlgebra(GF(2), DynkinQuiver("A", 2, ["r"]));
-    AN := PathAlgebra(GF(2), DynkinQuiver("A", Length(orientation)+1, orientation));
-    A := TensorProductOfAlgebras(A2,AN);
-    return A;
-end;
