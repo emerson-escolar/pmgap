@@ -96,13 +96,14 @@ __SourceTargetToArrow := function(Q, s, t)
 end;
 
 __TranslateMats := function(A, mats)
-    local Q, ans, arr, entry;
+    local Q, F, ans, arr, entry;
     ans := [];
     Q := QuiverOfPathAlgebra(A);
+    F := LeftActingDomain(A);
     for entry in mats do
         arr := __SourceTargetToArrow(Q, entry[1], entry[2]);
         if arr = fail then return fail; fi;
-        Add(ans, [String(arr), entry[3]]);
+        Add(ans, [String(arr), Identity(F)*entry[3]]);
     od;
     return ans;
 end;
