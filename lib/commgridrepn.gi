@@ -123,6 +123,5 @@ InstallOtherMethod(CommGridRepn,
               ReturnTrue,
               [IsCommGridPathAlgebra, IsCollection],
               function(A, mats)
-
                   return CommGridRepnArrLbl(A, __TranslateMats(A,mats));
               end);
