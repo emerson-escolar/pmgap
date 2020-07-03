@@ -117,9 +117,9 @@ __CreateObviousIndecMatrices := function(A, dimv)
     matrices := [];
     verts := VerticesOfQuiver(QuiverOfPathAlgebra(A));
     for arr in ArrowsOfQuiver(QuiverOfPathAlgebra(A)) do
-        src := Position(verts, SourceVertex(arr));
+        src := VertexIndex(SourceVertex(arr));
         if dimv[src] = 0 then continue; fi;
-        trgt := Position(verts, TargetVertex(arr));
+        trgt := VertexIndex(TargetVertex(arr));
         if dimv[trgt] = 0 then continue; fi;
         Add(matrices, [String(arr), Identity(F) * [[1]]]);
     od;
