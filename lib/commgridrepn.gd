@@ -72,15 +72,38 @@ DeclareProperty("IsEquiorientedAnRepn", IsPathAlgebraMatModule);
 
 #! @Section Reading from files
 
-#! @Arguments filename
-#! @Returns CommGridRepn
-#! @Description
-#! Reads a CommGridRepn from a json file.
-DeclareGlobalFunction("JsonFileToCommGridRepn");
+#! @BeginGroup JsonToCommGridRepn
+#! @GroupTitle Representations of commutative grids from json stream
 
-
-#! @Arguments json stream
-#! @Returns CommGridRepn
 #! @Description
 #! Reads a CommGridRepn from a json stream.
-DeclareGlobalFunction("JsonToCommGridRepn");
+#! The second variation reuses an already built
+#! CommGridPathAlgebra, which should match the
+#! size and underlying field specified in the stream.
+
+#! @Returns CommGridRepn
+
+#! @Arguments json_stream
+DeclareOperation("JsonToCommGridRepn", [IsInputTextStream]);
+
+#! @Arguments json_stream, comm_grid_path_algebra
+DeclareOperation("JsonToCommGridRepn", [IsInputTextStream, IsCommGridPathAlgebra]);
+#! @EndGroup
+
+#! @BeginGroup JsonToCommGridRepn
+#! @GroupTitle Representations of commutative grids from files
+
+#! @Description
+#! Reads a CommGridRepn from a json file.
+#! The second variation reuses an already built
+#! CommGridPathAlgebra, which should match the
+#! size and underlying field specified in the stream.
+
+#! @Returns CommGridRepn
+
+#! @Arguments json_filename
+DeclareOperation("JsonFileToCommGridRepn", [IsString]);
+
+#! @Arguments json_filename, comm_grid_path_algebra
+DeclareOperation("JsonFileToCommGridRepn", [IsString, IsCommGridPathAlgebra]);
+#! @EndGroup

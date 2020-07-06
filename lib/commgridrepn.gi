@@ -1,34 +1,46 @@
 
 
-InstallGlobalFunction(JsonFileToCommGridRepn,
-  function(fname)
-      return JsonToCommGridRepn(InputTextFile(fname));
-  end);
 
-__JsonToCommGridRepn := function(stream)
+__CheckOrProduceCGPA :=
+function(A, F, n_rows, n_cols)
+    if A = false then
+        return CommGridPathAlgebra(F, n_rows, n_cols);
+    elif IsCommGridPathAlgebra(A) = true and
+         NumCommGridRows(A) = n_rows and
+         NumCommGridColumns(A) = n_cols and
+         LeftActingDomain(A) = F then
+        return A;
+    fi;
+    return fail;
+end;
+
+
+
+__JsonToCommGridRepn := function(stream, A)
     local data, is_left_matrices,
-          F, Q, A,
+          F, Q,
           dim_vec, vert,
           mats, arr, s, st, dim_s, dim_t,
           V;
 
     data := JsonStreamToGap(stream);
-    if not IsBound(data.field) or data.field = "rationals" then
+
+    if not IsBound(data.field) or
+           data.field = "rationals" then
         F := Rationals;
     elif not Int(data.field) = fail then
         F := GF(Int(data.field));
     fi;
+    A := __CheckOrProduceCGPA(A,F,data.rows,data.cols);
+    if A = fail then return fail; fi;
 
-
+    Q := QuiverOfPathAlgebra(A);
     if not IsBound(data.is_left_matrices) or
            data.is_left_matrices = true then
         is_left_matrices := true;
     else
         is_left_matrices := false;
     fi;
-
-    A := CommGridPathAlgebra(F, data.rows, data.cols);
-    Q := QuiverOfPathAlgebra(A);
 
     dim_vec := [];
     for vert in VerticesOfQuiver(Q) do
@@ -60,8 +72,36 @@ __JsonToCommGridRepn := function(stream)
     return V;
 end;
 
-InstallGlobalFunction(JsonToCommGridRepn,
-                      __JsonToCommGridRepn);
+InstallMethod(JsonToCommGridRepn,
+              "for stream",
+              ReturnTrue,
+              [IsInputTextStream],
+              function(stream)
+                  return __JsonToCommGridRepn(stream,false);
+              end);
+
+InstallOtherMethod(JsonToCommGridRepn,
+                   "for stream and comm_grid",
+                   ReturnTrue,
+                   [IsInputTextStream, IsCommGridPathAlgebra],
+                   __JsonToCommGridRepn);
+
+InstallMethod(JsonFileToCommGridRepn,
+              "for filename string",
+              ReturnTrue,
+              [IsString],
+              function(fname)
+                  return JsonToCommGridRepn(InputTextFile(fname));
+              end);
+
+InstallOtherMethod(JsonFileToCommGridRepn,
+                   "for filename string and comm_grid",
+                   ReturnTrue,
+                   [IsString, IsCommGridPathAlgebra],
+                   function(fname,A)
+                       return JsonToCommGridRepn(InputTextFile(fname),A);
+                   end);
+
 
 
 InstallMethod(CommGridRepnArrLbl,

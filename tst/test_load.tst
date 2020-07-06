@@ -12,3 +12,11 @@ gap> V := JsonFileToCommGridRepn(Filename(dir,"testrepnL.json"));
 
 gap> A := RightActingAlgebra(V);
 <Rationals[<quiver with 6 vertices and 7 arrows>]/<two-sided ideal in <Rationals[<quiver with 6 vertices and 7 arrows>]>,(2 generators)>>
+
+gap> Vreload := JsonFileToCommGridRepn(Filename(dir,"testrepnL.json"), A);
+<[ 0, 1, 1, 1, 2, 1 ]>
+gap> RightActingAlgebra(V) = RightActingAlgebra(Vreload);
+true
+
+gap> V_OtherField := JsonFileToCommGridRepn(Filename(dir,"testrepnF.json"), A);
+fail
