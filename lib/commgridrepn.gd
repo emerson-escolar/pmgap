@@ -57,8 +57,8 @@ DeclareOperation("CommGridRepn", [IsCommGridPathAlgebra, IsCollection]);
 #! @Returns true or false
 #! @Description
 #! Tells you if V is commutative grid representation.
-#! Works only for the representations constructed using the
-#! functions provided by this package.
+#! Works only for the representations constructed
+#! using the functions provided by this package.
 DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
 
 
@@ -66,20 +66,71 @@ DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
 #! @Returns true or false
 #! @Description
 #! Tells you if V is equioriented An representation.
-#! Works only for the representations constructed using the
-#! functions provided by this package.
+#! Works only for the representations constructed
+#! using the functions provided by this package.
 DeclareProperty("IsEquiorientedAnRepn", IsPathAlgebraMatModule);
+
 
 #! @Section Reading from files
 
 #! @BeginGroup JsonToCommGridRepn
-#! @GroupTitle Representations of commutative grids from json stream
+#! @GroupTitle Representations of commutative grids from json
 
 #! @Description
-#! Reads a CommGridRepn from a json stream.
-#! The second variation reuses an already built
-#! CommGridPathAlgebra, which should match the
-#! size and underlying field specified in the stream.
+#! Reads a CommGridRepn from json format.
+#! The first and second variations expect
+#! an InputTextStream,
+#! while the third and fourth variations expect
+#! a filename.
+#! Furthermore, the second and fourth variations
+#! reuses an already built CommGridPathAlgebra,
+#! which should match the size and underlying field
+#! specified in the json format.
+#!
+#! One JSON object
+#! (an unordered set of name/value pairs,
+#! given by {name1:value1, name2:value2,...})
+#! is expected.
+#!
+#! First, an optional name "field", if present,
+#! specifies the underlying field.
+#! It can be associated to the value "rationals",
+#! or a prime-power integer n. In the former case,
+#! the underlying field shall be Rationals;
+#! in the latter, GF(n).
+#!
+#! Next, the following names are expected
+#! to be present in this object:
+#! "rows", "cols",
+#! "dimensions", and "matrices".
+
+#! The values associated to "rows" and "cols"
+#! specify the size of the underlying
+#! commutative grid path algebra.
+
+#! The value associated to "dimensions"
+#! is a JSON object associating vertices (names)
+#! to dimensions (values).
+#! Vertices are to be given in the format "i_j",
+#! for the vertex at the ith row and jth column.
+#!
+#! The value associated to "matrices"
+#! is a JSON object associating
+#! arrows (names) to matrices (values).
+#! arrows are to be given in the format "s_t",
+#! where s corresponding to the source vertex
+#! and t is the target vertex. Vertices are given in
+#! the format as in "dimensions". For example,
+#! "2_1_2_2" specifies the arrow from 2_1 to 2_2.
+#! The values are matrices, given by JSON arrays of
+#! JSON arrays of values.
+#!
+#! If the optional name "is_left_matrices" is present
+#! and takes on the value false, then the matrices
+#! shall be interpreted as right-acting matrices.
+#! Otherwise, if it is true, or if the name
+#! "is_left_matrices" is not present, then
+#! the matrices shall be interpreted as left-acting.
 
 #! @Returns CommGridRepn
 
@@ -88,18 +139,6 @@ DeclareOperation("JsonToCommGridRepn", [IsInputTextStream]);
 
 #! @Arguments json_stream, comm_grid_path_algebra
 DeclareOperation("JsonToCommGridRepn", [IsInputTextStream, IsCommGridPathAlgebra]);
-#! @EndGroup
-
-#! @BeginGroup JsonToCommGridRepn
-#! @GroupTitle Representations of commutative grids from files
-
-#! @Description
-#! Reads a CommGridRepn from a json file.
-#! The second variation reuses an already built
-#! CommGridPathAlgebra, which should match the
-#! size and underlying field specified in the stream.
-
-#! @Returns CommGridRepn
 
 #! @Arguments json_filename
 DeclareOperation("JsonFileToCommGridRepn", [IsString]);
