@@ -1,4 +1,18 @@
 
+InstallMethod(IsCommGridRepn,
+              "for path algebra mat module",
+              ReturnTrue,
+              [IsPathAlgebraMatModule],
+              function(V)
+                  local A;
+                  A := RightActingAlgebra(V);
+                  if "IsCommGridPathAlgebra" in KnownPropertiesOfObject(A) and
+                     IsCommGridPathAlgebra(A) = true then
+                      return true;
+                  else
+                      return false;
+                  fi;
+              end);
 
 
 __CheckOrProduceCGPA :=
