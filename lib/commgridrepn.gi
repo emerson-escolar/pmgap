@@ -15,6 +15,22 @@ InstallMethod(IsCommGridRepn,
               end);
 
 
+InstallMethod(IsEquiorientedAnRepn,
+              "for path algebra mat module",
+              ReturnTrue,
+              [IsPathAlgebraMatModule],
+              function(V)
+                  local A;
+                  A := RightActingAlgebra(V);
+                  if "IsEquiorientedAnPathAlgebra" in KnownPropertiesOfObject(A) and
+                     IsEquiorientedAnPathAlgebra(A) = true then
+                      return true;
+                  else
+                      return false;
+                  fi;
+              end);
+
+
 __CheckOrProduceCGPA :=
 function(A, F, n_rows, n_cols)
     if A = false then
