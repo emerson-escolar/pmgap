@@ -2,19 +2,27 @@
 
 #! @Section Intervals
 
-#! @Arguments A
-#! @Returns Record of dimension vectors of intervals
+#! @BeginGroup IntervalDimVecs
+#! @GroupTitle Dimension vectors of intervals
+
 #! @Description
 #! Computes the dimension vectors, organized by "height",
 #! of the interval representations of the given
-#! commutative grid path algebra A. Here, the "height" of
+#! equioriented An or commutative grid path algebra.
+#! Here, the "height" of
 #! an interval is defined to be the number of rows of the
 #! commutative grid its support occupies.
 #!
 #! The return value is a GAP Record, with heights 1, 2, ...
 #! as the record names, and Lists of
 #! dimension vectors (also Lists) as record components.
+#! @Returns Record of dimension vectors of intervals
+
+#! @Arguments comm_grid_path_algebra
 DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
+#! @Arguments equi_an_path_algebra
+DeclareAttribute("IntervalDimVecs", IsEquiorientedAnPathAlgebra);
+#! @EndGroup
 
 # --------------------------------------------------
 #! @BeginGroup IntervalRepn

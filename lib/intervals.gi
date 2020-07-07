@@ -182,6 +182,23 @@ InstallMethod(IntervalDimVecs,
                   return idv;
               end);
 
+InstallOtherMethod(IntervalDimVecs,
+                   "for a equioriented An path algebra",
+                   ReturnTrue,
+                   [IsEquiorientedAnPathAlgebra],
+                   function(A)
+                       local N, b, d, dimv, idv;
+                       N := NumberOfVertices(QuiverOfPathAlgebra(A));
+                       idv := rec(1:=[]);
+                       for b in [1..N] do
+                           for d in [b..N] do
+                               dimv := ListWithIdenticalEntries(N,0);
+                               dimv{[b..d]} := ListWithIdenticalEntries(d-b+1,1);
+                               Add(idv.1, dimv);
+                           od;
+                       od;
+                       return idv;
+                   end);
 
 InstallMethod(IntervalRepn,
               "for commutative grid and a dimension vector",

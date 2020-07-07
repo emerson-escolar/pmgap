@@ -1,3 +1,11 @@
+gap> A5 := EquiorientedAnPathAlgebra(Rationals, 5);;
+gap> Length(IntervalDimVecs(A5).1);
+15
+gap> for dv in IntervalDimVecs(A5).1 do
+>        IntervalRepn(A,dv);
+>    od;
+
+
 gap> A := CommGridPathAlgebra(GF(2), 2, 3);;
 
 gap> Length(IntervalDimVecs(A).1);
