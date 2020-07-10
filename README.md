@@ -1,10 +1,10 @@
 # pmgap
 Some computations for Persistence Modules using GAP
 
+This package is still in very alpha development. 
+Features are incomplete, and the API is subject to extreme changes as deemed necessary.
 
-
-
-# Install (develop)
+# Install
 
 1. Install [GAP](https://www.gap-system.org/) and its packages, which already includes [QPA](https://www.gap-system.org/Packages/qpa.html).
 
@@ -40,3 +40,5 @@ Some computations for Persistence Modules using GAP
    inside of GAP. If installed correctly, this should work from any folder.
 
 
+# Usage
+Refer to the documentation in the folder doc/ (after compiling the documentation).
