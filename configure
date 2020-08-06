@@ -18,5 +18,5 @@ fi
 echo "OK!";
 
 . $GAPPATH/sysinfo.gap
-sed -e "s|@GAPARCH@|$GAParch|g" Makefile.in > Makefile
+sed -e "s|@GAPARCH@|$GAParch|g" -e "s|@GAPCXX@|$GAP_CXX|g" Makefile.in > Makefile
 echo "Makefile successfully created."
