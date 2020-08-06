@@ -23,4 +23,6 @@ AC_CHECK_HEADERS([gyoza/gyoza.h], [], [AC_MSG_ERROR([gyoza not found])])
 
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
+AC_CONFIG_FILES([tst/Makefile])
+
 AC_OUTPUT
