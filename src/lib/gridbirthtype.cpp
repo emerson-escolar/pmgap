@@ -31,7 +31,7 @@ bool operator!=(const GridBirthType& lhs, const GridBirthType& rhs) {
 }
 
 std::ostream& operator<<(std::ostream& os, const pmgap::GridBirthType& bc){
-  os << "(" << bc.row() << bc.col();
+  os << "(" << bc.row() << "," << bc.col();
   os << ")";
   return os;
 }
