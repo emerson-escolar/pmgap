@@ -30,8 +30,11 @@ bool GridComplex<Chain_T>::check_integrity() const {
 
     Chain_T bdd_of_bdd;
     for (auto index : cell.bdd.get_nonzeros()){
-      if (not (cell.birth <= cells.at(index).birth)){
+      if (not (cell.birth >= cells.at(index).birth)){
         std::cerr << "Births of face-coface pair not consistent" << std::endl;
+        std::cerr << "face: " << cell.birth << " vs "
+                  << "bdd: " << cells.at(index).birth
+                  << std::endl;
         return false;
       }
       // Z2 coefficients
@@ -52,7 +55,7 @@ void GridComplex<Chain_T>::print_cells(std::ostream& os)const {
   for (const Cell_T & cell : cells) {
     os << "CELL " << cell.index
        << ", dim: " << cell.dimension
-       // << ", birth: " << cell.birth
+       << ", birth: " << cell.birth
        << ", bdd: " << cell.bdd << "\n";
   }
 }
