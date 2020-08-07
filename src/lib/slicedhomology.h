@@ -28,7 +28,7 @@ class GridSlice {
   GridBirthType slice_to_birth(int slice) const{
     assert(0<=slice < n);
     int col = (slice % num_cols) + 1;
-    int row = int(slice / num_cols);
+    int row = int(slice / num_cols) + 1;
     return GridBirthType(row,col);
   };
 };
@@ -46,6 +46,8 @@ struct SlicedHomology {
 
   typedef GridCell<Chain_T> Cell_T;
   typedef typename Cell_T::Index Index;
+
+  int get_num_slices()const{return num_slices;};
 
   //**initial data**
   std::vector<std::vector<Chain_T>> sliced_boundary_matrix;

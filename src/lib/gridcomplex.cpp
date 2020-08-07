@@ -14,6 +14,8 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
+#include "slicedhomology.h"
+
 namespace pmgap{
 template<typename Chain_T>
 bool GridComplex<Chain_T>::check_integrity() const {
@@ -61,41 +63,39 @@ void GridComplex<Chain_T>::print_cells(std::ostream& os)const {
 }
 
 
-// template<typename Chain_T>
-// QuiverRepn QuiverComplex<Chain_T>::naive_compute_persistence(int target_dimension){
-//   if (not check_integrity()) {
-//     throw std::runtime_error("Attempted to compute persistence on quivercomplex with invalid data");
-//   }
+template<typename Chain_T>
+void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension){
+  if (not check_integrity()) {
+    throw std::runtime_error("Attempted to compute persistence on gridcomplex with invalid data");
+  }
 
-//   // ASSUMES Z2 Coefficients
-//   int n = quiv.get_num_vertices();
-//   SlicedHomology<Chain_T> pm(n);
+  SlicedHomology<Chain_T> pm(GridSlice(num_rows, num_cols));
 
-//   // quite bad; data is copied a lot.
-//   pm.load_cells(cells, births);
+  // quite bad; data is copied a lot.
+  pm.load_cells(cells);
 
-//   for (int slice = 0; slice < n; ++slice) {
-//     pm.compute_homology_at_slice(slice, target_dimension);
-//   }
+  for (int slice = 0; slice < pm.get_num_slices(); ++slice) {
+    pm.compute_homology_at_slice(slice, target_dimension);
+  }
 
-//   std::vector<int> dimv;
-//   dimv.reserve(quiv.get_num_vertices());
-//   for ( auto slice : pm.sliced_homology_basis ) {
-//     dimv.push_back(slice.size());
-//   }
+  std::vector<int> dimv;
+  dimv.reserve(pm.get_num_slices());
+  for ( auto slice : pm.sliced_homology_basis ) {
+    dimv.push_back(slice.size());
+  }
 
-//   QuiverRepn pers_mod(quiv);
-//   pers_mod.set_dimension_vector(dimv);
-//   for (int source = 0; source < n; ++source) {
-//     std::set<int> successors = quiv.get_successors(source);
-//     for (auto target : successors) {
-//       pers_mod.matrix_at(source,target) = pm.compute_induced_map(source,target);
-//       // std::cerr << source << "-->" << target
-//       // << ":\n" << pers_mod.matrix_at(source,target) << std::endl;
-//     }
-//   }
-//   return pers_mod;
-// }
+  // QuiverRepn pers_mod(quiv);
+  // pers_mod.set_dimension_vector(dimv);
+  // for (int source = 0; source < n; ++source) {
+  //   std::set<int> successors = quiv.get_successors(source);
+  //   for (auto target : successors) {
+  //     pers_mod.matrix_at(source,target) = pm.compute_induced_map(source,target);
+  //     // std::cerr << source << "-->" << target
+  //     // << ":\n" << pers_mod.matrix_at(source,target) << std::endl;
+  //   }
+  // }
+  // return pers_mod;
+}
 
 
 
