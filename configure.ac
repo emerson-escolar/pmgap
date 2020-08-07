@@ -25,4 +25,6 @@ AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([tst/Makefile])
 
+AC_CONFIG_FILES([src/lib/Makefile])
+
 AC_OUTPUT
