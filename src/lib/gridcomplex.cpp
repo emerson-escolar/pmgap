@@ -138,19 +138,7 @@ void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, std::
   }
   os << "}" << std::endl;
   os << "}";
-
-  // for (int source = 0; source < n; ++source) {
-  //   std::set<int> successors = quiv.get_successors(source);
-  //   for (auto target : successors) {
-  //     pers_mod.matrix_at(source,target) = pm.compute_induced_map(source,target);
-  //     // std::cerr << source << "-->" << target
-  //     // << ":\n" << pers_mod.matrix_at(source,target) << std::endl;
-  //   }
-  // }
-  // return pers_mod;
 }
-
-
 
 
 template<typename Chain_T>
