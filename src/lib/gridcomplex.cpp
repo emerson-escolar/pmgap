@@ -64,7 +64,7 @@ void GridComplex<Chain_T>::print_cells(std::ostream& os)const {
 
 
 template<typename Chain_T>
-void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension){
+void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, std::ostream& os){
   if (not check_integrity()) {
     throw std::runtime_error("Attempted to compute persistence on gridcomplex with invalid data");
   }
@@ -74,18 +74,71 @@ void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension){
   // quite bad; data is copied a lot.
   pm.load_cells(cells);
 
+  os << "{\"rows\":" << num_rows << "," << std::endl;
+  os << "\"cols\":" << num_cols << "," << std::endl;
+  os << "\"field\":2" << "," << std::endl;
+  os << "\"dimensions\":{" << std::endl;
+
   for (int slice = 0; slice < pm.get_num_slices(); ++slice) {
     pm.compute_homology_at_slice(slice, target_dimension);
-  }
 
-  std::vector<int> dimv;
-  dimv.reserve(pm.get_num_slices());
-  for ( auto slice : pm.sliced_homology_basis ) {
-    dimv.push_back(slice.size());
+    GridBirthType bt = pm.gs.slice_to_birth(slice);
+    os << "\"" << bt.row() << "_" << bt.col() << "\":"
+       << pm.sliced_homology_basis.at(slice).size();
+    if (slice != pm.get_num_slices() - 1) {
+      os << ",";
+    }
+    os << std::endl;
   }
+  os << "}," << std::endl;
 
-  // QuiverRepn pers_mod(quiv);
-  // pers_mod.set_dimension_vector(dimv);
+  os << "\"matrices\":{" << std::endl;
+  struct {
+    Eigen::IOFormat fmt = Eigen::IOFormat(Eigen::StreamPrecision, 0, ", ", ",", "[", "]", "[", "]");
+    void operator()(SlicedHomology<Chain_T>& pm,
+                    const GridBirthType& source,
+                    const GridBirthType& target,
+                    std::ostream& os) {
+      int source_slice = pm.gs.birth_to_slice(source);
+      int target_slice = pm.gs.birth_to_slice(target);
+      gyoza::Z2Matrix mat = pm.compute_induced_map(source_slice,target_slice);
+      if (0 == mat.rows() or 0 == mat.cols()){
+        os << "\""
+           << source.row() << "_" << source.col() << "_"
+           << target.row() << "_" << target.col()
+           << "\":"
+           << "0";
+        return;
+      } else {
+        os << "\""
+           << source.row() << "_" << source.col() << "_"
+           << target.row() << "_" << target.col()
+           << "\":"
+           << mat.format(fmt);
+      }
+    }
+  } _st_map_compute;
+
+  for (int row = 1; row <= num_rows; ++row){
+    for (int col = 1; col <= num_cols; ++col){
+      GridBirthType source(row, col);
+      if (row + 1 <= num_rows) {
+        GridBirthType target(row+1, col);
+        _st_map_compute(pm, source, target, os);
+        os << "," << std::endl;
+      }
+      if (col + 1 <= num_cols) {
+        GridBirthType target(row, col+1);
+        _st_map_compute(pm, source, target, os);
+        if (not (row == num_rows and col + 1 == num_cols)){
+          os << "," << std::endl;
+        }
+      }
+    }
+  }
+  os << "}" << std::endl;
+  os << "}";
+
   // for (int source = 0; source < n; ++source) {
   //   std::set<int> successors = quiv.get_successors(source);
   //   for (auto target : successors) {

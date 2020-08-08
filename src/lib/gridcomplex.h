@@ -38,7 +38,7 @@ class GridComplex {
   // void read_json(std::istream& input);
   // void read_txt(std::istream& input);
 
-  void naive_compute_persistence(int target_dimension);
+  void naive_compute_persistence(int target_dimension, std::ostream& os);
 
   void clear();
 

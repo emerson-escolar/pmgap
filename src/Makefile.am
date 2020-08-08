@@ -2,7 +2,7 @@ SUBDIRS = lib
 
 bin_PROGRAMS = helloworld
 
-LD_ADD = ./lib/libpmgap.la
+# LDADD = ./lib/libpmgap.la
 
 helloworld_SOURCES = helloworld.cpp
-helloworld_LDFLAGS = ./lib/libpmgap.la -lgyoza
+helloworld_LDADD = ./lib/libpmgap.la -lgyoza

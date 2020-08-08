@@ -37,16 +37,14 @@ class GridSlice {
 
 template<typename Chain_T>
 struct SlicedHomology {
- private:
-  GridSlice gs;
-  int num_slices;
-
  public:
   using LocalIndex = int;
 
   typedef GridCell<Chain_T> Cell_T;
   typedef typename Cell_T::Index Index;
 
+  GridSlice gs;
+  int num_slices;
   int get_num_slices()const{return num_slices;};
 
   //**initial data**

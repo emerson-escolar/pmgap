@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgridbirthtype.la libgridcomplex.la libslicedhomology.la libpmgap.la
 
-AM_CPPFLAGS=-I$(top_srcdir)
+AM_CPPFLAGS=-I$(top_srcdir)/src/lib
 
 libgridbirthtype_la_SOURCES = gridbirthtype.cpp
 libgridcomplex_la_SOURCES = gridcomplex.cpp

@@ -85,7 +85,8 @@ __JsonToCommGridRepn := function(stream, A)
     for arr in ArrowsOfQuiver(Q) do
         s := Concatenation(String(SourceVertex(arr)), "_");
         st := Concatenation(s, String(TargetVertex(arr)));
-        if not IsBound(data.matrices.(st)) then
+        if (not IsBound(data.matrices.(st))) or
+           data.matrices.(st) = 0 then
             continue;
         fi;
 
