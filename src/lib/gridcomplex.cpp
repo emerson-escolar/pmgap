@@ -5,9 +5,11 @@
 
 #include <map>
 #include <cassert>
+#include <string>
+#include <stdexcept>
 
-// #include "nlohmann_json/json.hpp"
-// using json = nlohmann::json;
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
 
 #include <functional>
 #include <boost/algorithm/string/classification.hpp>
@@ -61,6 +63,74 @@ void GridComplex<Chain_T>::print_cells(std::ostream& os)const {
        << ", bdd: " << cell.bdd << "\n";
   }
 }
+
+
+
+int read_number(const json& ij,
+                const std::string& search_string,
+                const std::string& what){
+  json::const_iterator it = ij.find(search_string);
+  if (it != ij.cend() and
+      it->is_number()){
+    return it->get<int>();
+  } else {
+    throw std::runtime_error(std::string("Input json does not give ") + search_string + what);
+    return -1;
+  }
+}
+
+void check_json_cell(const json& jcell){
+  if (not jcell.is_object() or
+      jcell.find("d") == jcell.cend() or
+      not jcell["d"].is_number() or
+      jcell.find("b") == jcell.cend() or
+      not jcell["b"].is_array() or
+      jcell.find("t") == jcell.cend() or
+      not jcell["t"].is_array() or
+      not (jcell["t"].size() == 2)
+      ) {
+    throw std::runtime_error(std::string("Invalid cell data in input json file: ") + jcell.dump() + ". EXPECTED: a json object with keys \"d\" (dimension, number), \"b\" (boundary, array of numbers), and \"t\" (birth time, size-2 array of numbers).");
+  }
+  return;
+}
+
+template<typename Chain_T>
+void GridComplex<Chain_T>::read_json(std::istream& is){
+  json input_json;
+  is >> input_json;
+  this->clear_cells();
+
+  num_rows = read_number(input_json, "rows", " of underlying grid.");
+  num_cols = read_number(input_json, "cols", " of underlying grid.");
+
+  json::const_iterator cells_it = input_json.find("cells");
+  if (cells_it != input_json.end() and
+      cells_it->is_array()){
+    int cells_processed = 0;
+    for (auto const & jcell : *cells_it){
+      check_json_cell(jcell);
+
+      int celldim = read_number(jcell, "d", " (dimension) of cell");
+      Chain_T cellbdd;
+      for (auto bddx : jcell["b"]) {
+        cellbdd.set_entry(bddx, 1);
+      }
+      GridBirthType cellbirth(jcell["t"][0].get<int>(),
+                              jcell["t"][1].get<int>());
+
+      CellIndex indx = this->create_cell(celldim,
+                                         cellbdd,
+                                         cellbirth);
+      assert((int)indx == cells_processed);
+      ++cells_processed;
+    }
+  } else {
+    throw std::runtime_error(std::string("Unable to read cells from input json file."));
+    return;
+  }
+}
+
+
 
 
 template<typename Chain_T>
@@ -142,7 +212,7 @@ void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, std::
 
 
 template<typename Chain_T>
-void GridComplex<Chain_T>::clear(){
+void GridComplex<Chain_T>::clear_cells(){
   cells.clear();
 }
 

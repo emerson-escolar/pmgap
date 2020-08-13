@@ -20,8 +20,10 @@ AC_HEADER_SYS_WAIT
 
 AC_CHECK_HEADERS([Eigen/Core], [], [AC_MSG_ERROR([eigen not found])])
 AC_CHECK_HEADERS([gyoza/gyoza.h], [], [AC_MSG_ERROR([gyoza not found])])
+AC_CHECK_HEADERS([nlohmann/json.hpp], [], [AC_MSG_ERROR([nlohmann/json.hpp not found])])
 
 AC_CHECK_HEADERS([catch.hpp], [], [AC_MSG_ERROR([catch not found])])
+
 
 
 AC_CONFIG_FILES([Makefile])
