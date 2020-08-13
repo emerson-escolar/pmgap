@@ -1,0 +1,55 @@
+# http://www.gnu.org/software/automake
+
+Makefile.in
+*Makefile
+
+# http://www.gnu.org/software/autoconf
+
+/autom4te.cache
+/aclocal.m4
+/compile
+/configure
+/depcomp
+/install-sh
+/missing
+/stamp-h1
+
+/libtool
+/test-driver
+/ltmain.sh
+
+# TAGS
+
+/GPATH
+/GRTAGS
+/GTAGS
+
+
+# ??
+
+/ar-lib
+/confdefs.h
+/config.h
+/config.log
+/config.status
+/config.guess
+/config.sub
+/config.h.in
+
+**/.deps/
+*.dirstamp
+*.trace
+*.dSYM
+*.a
+*.o
+
+*.la
+*.lo
+
+*.libs
+
+*.tar.gz
+
+*.trs
+
+
