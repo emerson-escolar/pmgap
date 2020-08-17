@@ -59,6 +59,9 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
     - nlohmann-json3-dev
     - libtclap-dev
     - catch
+    - autoconf
+    - automake
+    - libtool
     
     respectively. Finally, the following project is also needed:
     
