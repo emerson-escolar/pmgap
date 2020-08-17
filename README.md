@@ -49,6 +49,9 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
     - [nlohmann/json](https://github.com/nlohmann/json)
     - [TCLAP](http://tclap.sourceforge.net/)
     - [Catch2](https://github.com/catchorg/Catch2)
+    - autoconf
+    - automake
+    - libtool
     
     The above requirements may be available using your operating system's package manager. For example, using apt on Ubuntu, the requirements may be satisifed by installing
     
@@ -66,7 +69,32 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
 
 1. Navigate to this project's folder (as set in step 3 above).
 
+2. Run the following commands, making sure that the previous command succeeds before proceeding to the next one.
+   ```
+   autoreconf --install
+   ```
+   ```
+   ./configure
+   ```
+   ```
+   make
+   ```
+   ```
+   make check
+   ```
+   ```
+   make install
+   ```
 
+
+## TROUBLESHOOTING
+
+1. `./configure` complains that "Eigen header not found".
+    [SOLUTION] Try adding Eigen to CPPFLAGS as follows: 
+    ```
+    ./configure CPPFLAGS=-I/usr/include/eigen3
+    ```
+    or wherever you have installed Eigen.
 
 
 # Usage
