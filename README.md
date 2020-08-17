@@ -6,6 +6,8 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
 
 # Install
 
+## Part 1: GAP package pmgap
+
 1. Install [GAP](https://www.gap-system.org/) and its packages, which already includes [QPA](https://www.gap-system.org/Packages/qpa.html).
 
 2. Locate and choose a pkg directory where GAP searches for packages. See 
@@ -38,6 +40,33 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
    gap> LoadPackage("pmgap");
    ```
    inside of GAP. If installed correctly, this should work from any folder.
+
+## Part 2: C++ utility scripts
+
+0. Ensure that the following libraries are installed.
+
+    - [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+    - [nlohmann/json](https://github.com/nlohmann/json)
+    - [TCLAP](http://tclap.sourceforge.net/)
+    - [Catch2](https://github.com/catchorg/Catch2)
+    
+    The above requirements may be available using your operating system's package manager. For example, using apt on Ubuntu, the requirements may be satisifed by installing
+    
+    - libeigen3-dev
+    - nlohmann-json3-dev
+    - libtclap-dev
+    - catch
+    
+    respectively. Finally, the following project is also needed:
+    
+    - [gyoza](https://bitbucket.org/remere/gyoza/src/master/)
+    
+    In a future version of this software, this dependency may be removed to allow for simpler installation.
+
+
+1. Navigate to this project's folder (as set in step 3 above).
+
+
 
 
 # Usage
