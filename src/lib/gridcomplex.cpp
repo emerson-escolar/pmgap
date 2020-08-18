@@ -26,8 +26,10 @@ bool GridComplex<Chain_T>::check_integrity() const {
 
   int num = 0;
   for (const Cell_T & cell : cells) {
-    if (not ((1 <= cell.birth.row() <= num_rows) and
-             (1 <= cell.birth.col() <= num_cols))){
+    if (not ((1 <= cell.birth.row() and
+              cell.birth.row() <= num_rows) and
+             (1 <= cell.birth.col() and
+              cell.birth.col() <= num_cols))){
       std::cerr << "Invalid birth" << std::endl;
       return false;
     }
