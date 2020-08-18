@@ -3,17 +3,14 @@
 namespace pmgap{
 
 bool operator<(const GridBirthType& lhs, const GridBirthType& rhs) {
-  return (lhs.data.first < rhs.data.first) and
-      (lhs.data.second < rhs.data.second);
+  return (lhs <= rhs) and (lhs != rhs);
 }
 bool operator<=(const GridBirthType& lhs, const GridBirthType& rhs) {
   return (lhs.data.first <= rhs.data.first) and
       (lhs.data.second <= rhs.data.second);
 }
-
 bool operator>(const GridBirthType& lhs, const GridBirthType& rhs) {
-  return (lhs.data.first > rhs.data.first) and
-      (lhs.data.second > rhs.data.second);
+  return (lhs >= rhs) and (lhs != rhs);
 }
 bool operator>=(const GridBirthType& lhs, const GridBirthType& rhs) {
   return (lhs.data.first >= rhs.data.first) and
@@ -23,9 +20,8 @@ bool operator>=(const GridBirthType& lhs, const GridBirthType& rhs) {
 bool operator==(const GridBirthType& lhs, const GridBirthType& rhs) {
   return (lhs.data == rhs.data);
 }
-
 bool operator!=(const GridBirthType& lhs, const GridBirthType& rhs) {
-  return (lhs.data != rhs.data);
+  return (not (lhs == rhs));
 }
 
 }
