@@ -16,7 +16,8 @@ check_PROGRAMS = test_all
 
 test_all_SOURCES = test_all.cpp \
 test_slicedhomology.cpp \
-test_gridcomplex.cpp
+test_gridcomplex.cpp \
+test_gridbirthtype.cpp
 
 test_all_CPPFLAGS =
 test_all_LDADD = libpmgap.la -lgyoza

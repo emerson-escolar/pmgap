@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include <assert.h>
+#include <stdexcept>
 // #include <initializer_list>
 
 namespace pmgap {
@@ -12,7 +13,9 @@ class GridBirthType {
   typedef unsigned int CoordIndex;
   GridBirthType(CoordIndex row=1,
                 CoordIndex col=1) : data(row,col) {
-    assert(row > 0 and col > 0);
+    if (not (row > 0 and col > 0)){
+      throw std::runtime_error(std::string("Invalid grid birth type: ") + std::to_string(row) + "," + std::to_string(col));
+    }
   };
 
   CoordIndex row() const {
