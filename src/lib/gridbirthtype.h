@@ -10,9 +10,8 @@ namespace pmgap {
 class GridBirthType {
  public:
   typedef unsigned int CoordIndex;
-  GridBirthType() = default;
-  GridBirthType(CoordIndex row,
-                CoordIndex col) : data(row,col) {
+  GridBirthType(CoordIndex row=1,
+                CoordIndex col=1) : data(row,col) {
     assert(row > 0 and col > 0);
   };
 

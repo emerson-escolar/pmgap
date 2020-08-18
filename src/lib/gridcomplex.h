@@ -19,7 +19,7 @@ class GridComplex {
   typedef typename Cell_T::Birth_T Birth_T;
   typedef typename std::vector<Cell_T>::size_type CellIndex;
 
-  GridComplex(int r=0, int c=0):
+  GridComplex(int r=1, int c=1):
       num_rows(r), num_cols(c){};
   void read_json(std::istream& input);
   // void read_txt(std::istream& input);

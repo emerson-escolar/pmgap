@@ -15,9 +15,10 @@ libpmgap_la_LDFLAGS =
 check_PROGRAMS = test_all
 
 test_all_SOURCES = test_all.cpp \
-test_slicedhomology.cpp
+test_slicedhomology.cpp \
+test_gridcomplex.cpp
 
 test_all_CPPFLAGS =
-test_all_LDADD = libpmgap.la
+test_all_LDADD = libpmgap.la -lgyoza
 
 TESTS = $(check_PROGRAMS)
