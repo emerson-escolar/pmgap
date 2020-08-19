@@ -33,10 +33,18 @@ class GridSlice {
   };
 
   int birth_to_slice(const GridBirthType& bt) const{
+    if (not (bt.row() <= num_rows)){
+      throw std::runtime_error(std::string("Invalid birth row: ") + std::to_string(bt.row()) + " in a grid with " + std::to_string(num_rows) + " rows.");
+    }
+    if (not (bt.col() <= num_cols)){
+      throw std::runtime_error(std::string("Invalid birth col: ") + std::to_string(bt.col()) + " in a grid with " + std::to_string(num_cols) + " cols.");
+    }
     return (bt.row()-1) * num_cols + bt.col() - 1;
   };
   GridBirthType slice_to_birth(int slice) const{
-    assert(0<=slice < n);
+    if (not (0 <= slice and slice < n)){
+      throw std::runtime_error(std::string("Slice: ") + std::to_string(slice) + " does not exist in a grid of size" + std::to_string(n));
+    }
     int col = (slice % num_cols) + 1;
     int row = int(slice / num_cols) + 1;
     return GridBirthType(row,col);
