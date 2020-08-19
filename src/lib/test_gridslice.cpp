@@ -29,25 +29,42 @@ TEST_CASE("invalid births and slices",
   CHECK_THROWS(gs.birth_to_slice(BT(4,4)));
 }
 
+void gs_tester(const GS & gs,
+               int slice,
+               BT::CoordIndex row,
+               BT::CoordIndex col){
+  BT bt = gs.slice_to_birth(slice);
+  CHECK(bt.row() == row);
+  CHECK(bt.col() == col);
+
+  CHECK(slice == gs.birth_to_slice(bt));
+}
+
+
 TEST_CASE("grid slice",
           "[gridslice]"){
   GS gs(4,3);
   CHECK(gs.num_rows == 4);
   CHECK(gs.num_cols == 3);
 
-  BT bt = gs.slice_to_birth(0);
-  CHECK(bt.row() == 1);
-  CHECK(bt.col() == 1);
+  gs_tester(gs, 0, 1,1);
+  gs_tester(gs, 1, 1,2);
+  gs_tester(gs, 3, 2,1);
 
-  bt = gs.slice_to_birth(1);
-  CHECK(bt.row() == 1);
-  CHECK(bt.col() == 2);
+  gs_tester(gs, 10, 4,2);
+  gs_tester(gs, 11, 4,3);
+}
 
-  bt = gs.slice_to_birth(10);
-  CHECK(bt.row() == 4);
-  CHECK(bt.col() == 2);
+TEST_CASE("grid slice 2",
+          "[gridslice]"){
+  GS gs(5,7);
+  CHECK(gs.num_rows == 5);
+  CHECK(gs.num_cols == 7);
 
-  bt = gs.slice_to_birth(11);
-  CHECK(bt.row() == 4);
-  CHECK(bt.col() == 3);
+  gs_tester(gs, 0, 1,1);
+  gs_tester(gs, 1, 1,2);
+  gs_tester(gs, 7, 2,1);
+
+  gs_tester(gs, 33, 5,6);
+  gs_tester(gs, 34, 5,7);
 }
