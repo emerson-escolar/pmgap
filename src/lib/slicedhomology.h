@@ -11,6 +11,8 @@
 #include <tuple>
 #include <map>
 
+#include <limits>
+
 namespace pmgap{
 
 class GridSlice {
@@ -20,7 +22,15 @@ class GridSlice {
   int n;
 
   GridSlice()=delete;
-  GridSlice(int r, int c): num_rows(r), num_cols(c){n = r*c;};
+  GridSlice(int r, int c): num_rows(r), num_cols(c){
+    if (not (r > 0 and c > 0)){
+      throw std::runtime_error(std::string("Invalid GridSlice: ") + std::to_string(r) + "," + std::to_string(c));
+    }
+    n = r*c;
+    if (r > std::numeric_limits<int>::max() / c){
+      throw std::runtime_error(std::string("GridSlice too large (overflowed!): ") + std::to_string(r) + "," + std::to_string(c));
+    }
+  };
 
   int birth_to_slice(const GridBirthType& bt) const{
     return (bt.row()-1) * num_cols + bt.col() - 1;
