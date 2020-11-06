@@ -58,6 +58,21 @@ __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
 end;
 
 
+__ComputeArrowsDict := function(A)
+    local dict,
+          arr;
+
+    dict := NewDictionary(false, true);
+    for arr in ArrowsOfQuiver(QuiverOfPathAlgebra(A)) do
+        AddDictionary(dict,
+                      [String(SourceVertex(arr)),
+                       String(TargetVertex(arr))],
+                      arr);
+    od;
+    return dict;
+end;
+
+
 # CommGridPathAlgebraByTensor is faster
 InstallGlobalFunction(CommGridPathAlgebra,
                      function(F, n_rows, n_cols)
@@ -66,5 +81,6 @@ InstallGlobalFunction(CommGridPathAlgebra,
                          SetFilterObj(A, IsCommGridPathAlgebra);
                          SetNumCommGridRows(A, n_rows);
                          SetNumCommGridColumns(A, n_cols);
+                         SetCommGridArrowsDict(A,__ComputeArrowsDict(A));
                          return A;
                      end);
