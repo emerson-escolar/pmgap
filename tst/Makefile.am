@@ -1,4 +1,4 @@
-# check_SCRIPTS = testall_runner
+# check_SCRIPTS = testall_runner.sh
 
 # TESTS = $(check_SCRIPTS)
-TESTS = testall_runner
+TESTS = testall_runner.sh
