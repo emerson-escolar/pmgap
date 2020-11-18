@@ -3,7 +3,7 @@
 
 #include <typeinfo>
 
-typedef gyoza::Algebra::SetChain SC;
+typedef Core::Algebra::SetChain SC;
 
 TEST_CASE( "test" , "[test]" ) {
   CHECK(1 == 1);

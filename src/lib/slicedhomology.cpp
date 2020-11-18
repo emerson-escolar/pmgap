@@ -1,4 +1,5 @@
 #include "slicedhomology.h"
+#include "setchain.h"
 
 namespace pmgap {
 
@@ -103,7 +104,7 @@ void SlicedHomology<Chain_T>::compute_homology_at_slice(int slice,
 }
 
 template<typename Chain_T>
-gyoza::Z2Matrix SlicedHomology<Chain_T>::compute_induced_map(int source, int target) {
+Core::Z2Matrix SlicedHomology<Chain_T>::compute_induced_map(int source, int target) {
   if ( not (sliced_homology_computed.at(source) &&
             sliced_homology_computed.at(target))) {
     throw("Cannot compute induced homology map before computing homology.");
@@ -112,7 +113,7 @@ gyoza::Z2Matrix SlicedHomology<Chain_T>::compute_induced_map(int source, int tar
   int colsize = sliced_homology_basis.at(source).size();
   int rowsize = sliced_homology_basis.at(target).size();
 
-  gyoza::Z2Matrix linearmap(rowsize, colsize);
+  Core::Z2Matrix linearmap(rowsize, colsize);
   // std::cerr << "Matrix: " << rowsize << "x" << colsize << "\n";
 
   int curcolnum = 0;
@@ -167,7 +168,7 @@ gyoza::Z2Matrix SlicedHomology<Chain_T>::compute_induced_map(int source, int tar
   return linearmap;
 }
 
-template struct SlicedHomology<gyoza::Algebra::SetChain>;
+template struct SlicedHomology<Core::Algebra::SetChain>;
 }
 
 

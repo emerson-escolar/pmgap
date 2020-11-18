@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgridbirthtype.la libgridcomplex.la libslicedhomology.la libpmgap.la
+noinst_LTLIBRARIES = libgridbirthtype.la libgridcomplex.la libslicedhomology.la libpmgap.la libz2matrix.la libsetchain.la
 
 AM_CPPFLAGS=-I$(top_srcdir)/src/lib
 
@@ -6,8 +6,13 @@ libgridbirthtype_la_SOURCES = gridbirthtype.cpp
 libgridcomplex_la_SOURCES = gridcomplex.cpp
 libslicedhomology_la_SOURCES = slicedhomology.cpp
 
+
+libz2matrix_la_SOURCES = z2.cpp z2matrix.cpp
+libsetchain_la_SOURCES = setchain.cpp
+
+
 libpmgap_la_SOURCES =
-libpmgap_la_LIBADD = libgridbirthtype.la libgridcomplex.la libslicedhomology.la
+libpmgap_la_LIBADD = libgridbirthtype.la libgridcomplex.la libslicedhomology.la libz2matrix.la libsetchain.la
 libpmgap_la_LDFLAGS =
 
 # for Tests
@@ -21,6 +26,6 @@ test_gridbirthtype.cpp \
 test_gridslice.cpp
 
 test_all_CPPFLAGS =
-test_all_LDADD = libpmgap.la -lgyoza
+test_all_LDADD = libpmgap.la
 
 TESTS = $(check_PROGRAMS)

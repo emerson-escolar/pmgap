@@ -1,8 +1,5 @@
 #include "gridcomplex.h"
 
-#include "gyoza/setchain.h"
-#include "gyoza/common_definitions.h"
-
 #include <map>
 #include <cassert>
 #include <string>
@@ -17,6 +14,7 @@ using json = nlohmann::json;
 #include <boost/algorithm/string/trim.hpp>
 
 #include "slicedhomology.h"
+#include "setchain.h"
 
 namespace pmgap{
 template<typename Chain_T>
@@ -173,7 +171,7 @@ void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, std::
                     std::ostream& os) {
       int source_slice = pm.gs.birth_to_slice(source);
       int target_slice = pm.gs.birth_to_slice(target);
-      gyoza::Z2Matrix mat = pm.compute_induced_map(source_slice,target_slice);
+      Core::Z2Matrix mat = pm.compute_induced_map(source_slice,target_slice);
       if (0 == mat.rows() or 0 == mat.cols()){
         os << "\""
            << source.row() << "_" << source.col() << "_"
@@ -238,9 +236,9 @@ GridComplex<Chain_T>::create_cell(int dim, const Chain_T& bdd,
 }
 
 
-template struct GridCell<gyoza::Algebra::SetChain>;  //
+template struct GridCell<Core::Algebra::SetChain>;  //
 
-template class GridComplex<gyoza::Algebra::SetChain>;
+template class GridComplex<Core::Algebra::SetChain>;
 // template std::istream& operator>>(std::istream& input, QuiverComplex<gyoza::Algebra::SetChain> & qc);
 
 

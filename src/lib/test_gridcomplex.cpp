@@ -1,13 +1,13 @@
 #include "catch.hpp"
 
-#include "gyoza/setchain.h"
+#include "setchain.h"
 #include "gridcomplex.h"
 
 #include <sstream>
 
 TEST_CASE("Grid Complex json Reader",
           "[gridcomplex]") {
-  pmgap::GridComplex<gyoza::Algebra::SetChain> gc;
+  pmgap::GridComplex<Core::Algebra::SetChain> gc;
 
   std::stringstream ss;
   ss << "{\"rows\":2, \"cols\":3, \"cells\": [{\"d\":0,\"b\":[], \"t\":[1,1]}, {\"d\":0,\"b\":[], \"t\":[1,2]}, {\"d\":1,\"b\":[0,1], \"t\":[2,2]}]}";
@@ -20,7 +20,7 @@ TEST_CASE("Grid Complex json Reader",
 
 TEST_CASE("Grid Complex - bad boundary",
           "[gridcomplex]") {
-  pmgap::GridComplex<gyoza::Algebra::SetChain> gc;
+  pmgap::GridComplex<Core::Algebra::SetChain> gc;
 
   std::stringstream ss;
   ss << "{\"rows\":2, \"cols\":3, \"cells\": [{\"d\":0,\"b\":[], \"t\":[1,1]}, {\"d\":0,\"b\":[], \"t\":[1,2]}, {\"d\":1,\"b\":[0,1], \"t\":[1,1]}]}";
@@ -33,10 +33,10 @@ TEST_CASE("Grid Complex - bad boundary",
 TEST_CASE("Grid Complex - create cell",
           "[gridcomplex]") {
 
-  gyoza::Algebra::SetChain emptybdd;
+  Core::Algebra::SetChain emptybdd;
   pmgap::GridBirthType bt(1,1);
 
-  pmgap::GridComplex<gyoza::Algebra::SetChain> gc(2,2);
+  pmgap::GridComplex<Core::Algebra::SetChain> gc(2,2);
 
   // Three vertices
   CHECK(0 == gc.create_cell(0, emptybdd, bt));

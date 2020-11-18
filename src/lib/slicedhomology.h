@@ -1,13 +1,14 @@
 #ifndef SLICEDHOMOLOGY_H
 #define SLICEDHOMOLOGY_H
 
-#include "gyoza/setchain.h"
-#include "gyoza/common_definitions.h"
+#include "z2matrix.h"
+#include "setchain.h"
 
 #include "gridbirthtype.h"
 #include "gridcell.h"
 #include <assert.h>
 
+#include <set>
 #include <tuple>
 #include <map>
 
@@ -91,7 +92,7 @@ struct SlicedHomology {
 
   void load_cells(const std::vector<Cell_T> & cells);
   void compute_homology_at_slice(int slice, int target_dimension);
-  gyoza::Z2Matrix compute_induced_map(int source, int target);
+  Core::Z2Matrix compute_induced_map(int source, int target);
 
 
  private:

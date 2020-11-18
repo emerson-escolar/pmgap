@@ -63,11 +63,13 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
     - automake
     - libtool
     
-    respectively. Finally, the following project is also needed:
+    respectively. 
+    
+    This project used to depend on
     
     - [gyoza](https://bitbucket.org/remere/gyoza/src/master/)
     
-    In a future version of this software, this dependency may be removed to allow for simpler installation.
+    but this dependency has been removed. This project now directly contains code from gyoza.
 
 
 1. Navigate to this project's folder (as set in step 3 above).

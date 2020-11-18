@@ -4,8 +4,7 @@
 
 #include "lib/gridcomplex.h"
 
-#include "gyoza/setchain.h"
-#include "gyoza/common_definitions.h"
+#include "lib/setchain.h"
 
 #include <tclap/CmdLine.h>
 
@@ -22,7 +21,7 @@ int main(int argc, char** argv) {
     cmd.parse(argc, argv);
 
     int dim = dimArg.getValue();
-    pmgap::GridComplex<gyoza::Algebra::SetChain> x;
+    pmgap::GridComplex<Core::Algebra::SetChain> x;
 
     std::ifstream ifs;
     ifs.open(inputFile.getValue());
