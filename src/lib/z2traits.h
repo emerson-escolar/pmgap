@@ -28,3 +28,11 @@ template<> struct NumTraits<Core::Z2> {
 }
 
 #endif
+
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: z2traits.h
+Used under GPL3.
+ ***/

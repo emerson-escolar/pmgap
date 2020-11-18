@@ -91,3 +91,11 @@ namespace Core{
 }
 
 #endif
+
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: z2.h
+Used under GPL3.
+ ***/

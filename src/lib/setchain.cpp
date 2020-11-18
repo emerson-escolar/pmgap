@@ -73,3 +73,10 @@ SetChain operator-(SetChain lhs, const SetChain& rhs){
 
 }
 }
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: setchain.cpp
+Used under GPL3.
+ ***/

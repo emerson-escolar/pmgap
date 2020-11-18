@@ -134,3 +134,10 @@ SetChain operator-(SetChain, const SetChain&);
 }
 }
 #endif
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: setchain.h
+Used under GPL3.
+ ***/

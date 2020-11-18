@@ -25,3 +25,10 @@ Z2Matrix z2matrix_from_vector(const std::vector<Core::Z2>& in, Index rows, Index
 
 
 #endif
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: z2matrix.h
+Used under GPL3.
+ ***/

@@ -65,11 +65,7 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
     
     respectively. 
     
-    This project used to depend on
-    
-    - [gyoza](https://bitbucket.org/remere/gyoza/src/master/)
-    
-    but this dependency has been removed. This project now directly contains code from gyoza.
+    This project used to depend on [gyoza](https://bitbucket.org/remere/gyoza/src/master/), but this dependency has been removed. This project now directly contains code from gyoza.
 
 
 1. Navigate to this project's folder (as set in step 3 above).

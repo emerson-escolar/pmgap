@@ -70,3 +70,10 @@ std::ostream& operator<<(std::ostream& os, const Z2& that){
 
 
 }
+
+/***
+Adopted from gyoza
+(https://bitbucket.org/remere/gyoza)
+Original file: z2.cpp
+Used under GPL3.
+ ***/
