@@ -101,6 +101,12 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
     ```
     or wherever you have installed Eigen.
 
+2. Shared library not found when running c++ utilities.
+   [SOLUTION] Try running
+   ```
+   sudo ldconfig
+   ```
+   See also https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s
 
 # Usage
 Refer to the documentation in the folder doc/ (after compiling the documentation).
