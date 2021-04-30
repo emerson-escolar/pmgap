@@ -11,9 +11,9 @@ cmplx2repn_LDADD = ./lib/libpmgap.la
 gapscriptsdir = @gapscriptsdir@
 gapscripts_DATA = loader.g
 
-EXTRA_DIST = loader.g pmgap_interval_decomposable.in
+EXTRA_DIST = loader.g pmgap_interval_decomposable.in pmgap_from_homcloud_random_cech.py
 
-bin_SCRIPTS = pmgap_interval_decomposable.sh
+bin_SCRIPTS = pmgap_interval_decomposable.sh pmgap_from_homcloud_random_cech.py
 CLEANFILES = pmgap_interval_decomposable.sh
 
 pmgap_interval_decomposable.sh:	pmgap_interval_decomposable.in
