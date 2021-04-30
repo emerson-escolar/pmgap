@@ -256,3 +256,28 @@ InstallMethod(PrintObj,
                   PrettyPrintCommuativeGridDimVec(dim_vec, n_cols);
                   return;
               end);
+
+
+__IsIntervalDecomposable := function(V)
+    local A, cum_dv, i, dv, I, mult;
+
+    A := RightActingAlgebra(V);
+    cum_dv := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
+
+    # Generate the interval representations
+    for i in RecNames(IntervalDimVecs(A)) do
+        for dv in IntervalDimVecs(A).(i) do
+            I := IntervalRepn(A,dv);
+            mult := MultiplicityAtIndec(V, I);
+            cum_dv := cum_dv + (mult * dv);
+        od;
+    od;
+    return DimensionVector(V) = cum_dv;
+end;
+
+
+InstallMethod(IsIntervalDecomposable,
+              "for comm grid repn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __IsIntervalDecomposable);

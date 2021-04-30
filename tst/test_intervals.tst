@@ -54,3 +54,19 @@ gap> IntervalRepn(B, [0,0,0]);
 fail
 gap> IntervalRepn(B, [0,0,0,1,1,1,1]);
 fail
+
+
+
+gap> dir := DirectoriesPackageLibrary("pmgap", "tst");;
+gap> V := JsonFileToCommGridRepn(Filename(dir,"testrepn1.json"));;
+gap> IsIntervalDecomposable(V);
+false
+
+gap> A := CommGridPathAlgebra(GF(2), 2, 3);;
+gap> L := [];;
+gap> for dv in IntervalDimVecs(A).2 do
+>        Add(L, IntervalRepn(A,dv));
+>    od;
+gap> M := DirectSumOfQPAModules(L);;
+gap> IsIntervalDecomposable(M);
+true

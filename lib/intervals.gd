@@ -49,3 +49,7 @@ InstallTrueMethod(IsIndecomposableModule, IsCommGridInterval);
 DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
 #!
 InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
+
+
+#!
+DeclareProperty("IsIntervalDecomposable", IsCommGridRepn);
