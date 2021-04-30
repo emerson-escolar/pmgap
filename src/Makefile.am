@@ -14,4 +14,16 @@ cmplx2repn_LDADD = ./lib/libpmgap.la
 gapscriptsdir = @gapscriptsdir@
 gapscripts_DATA = loader.g
 
-EXTRA_DIST = loader.g
+EXTRA_DIST = loader.g pmgap_interval_decomposable.in
+
+bin_SCRIPTS = pmgap_interval_decomposable.sh
+CLEANFILES = pmgap_interval_decomposable.sh
+
+pmgap_interval_decomposable.sh:	pmgap_interval_decomposable.in
+	$(SED) \
+		-e 's|[@]gapscriptsdir@|$(gapscriptsdir)|g' \
+		-e 's|[@]prefix@|$(prefix)|g' \
+		-e 's|[@]exec_prefix@|$(exec_prefix)|g' \
+		-e 's|[@]bindir@|$(bindir)|g' \
+		-e 's|[@]datarootdir@|$(datarootdir)|g' \
+		< "$<" > "$@"
