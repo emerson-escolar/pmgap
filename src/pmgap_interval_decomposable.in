@@ -51,4 +51,4 @@ if [ ! -f  @gapscriptsdir@/loader.g ]; then
 		exit 1
 fi
 
-echo "V:=JsonFileToCommGridRepn("'"'"$1"'"'");;Display(IsIntervalDecomposable(V));"  | gap -o 8G -q  @gapscriptsdir@/loader.g
+echo "V:=JsonFileToCommGridRepn("'"'"$1"'"'");;Display(DimensionVector(V));Display(IsIntervalDecomposable(V));"  | gap -o 8G -q  @gapscriptsdir@/loader.g

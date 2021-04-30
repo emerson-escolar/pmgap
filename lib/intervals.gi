@@ -270,6 +270,7 @@ __IsIntervalDecomposable := function(V)
             I := IntervalRepn(A,dv);
             mult := MultiplicityAtIndec(V, I);
             cum_dv := cum_dv + (mult * dv);
+            if DimensionVector(V) = cum_dv then return true; fi;
         od;
     od;
     return DimensionVector(V) = cum_dv;
