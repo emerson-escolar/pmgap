@@ -20,7 +20,7 @@
 
 #! @Arguments comm_grid_path_algebra
 DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
-#! @Arguments equi_an_path_algebra
+#! @Arguments equioriented_an_path_algebra
 DeclareAttribute("IntervalDimVecs", IsEquiorientedAnPathAlgebra);
 #! @EndGroup
 
