@@ -51,5 +51,13 @@ DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
 InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
 
 
-#!
+
+#! @Arguments V
+#! @Returns true or false
+#! @Description
+#! Tells you if V is interval decomposable or not.
+#! Warning: non-obvious cases involve much computation
 DeclareProperty("IsIntervalDecomposable", IsCommGridRepn);
+
+InstallTrueMethod(IsIntervalDecomposable, IsEquiorientedAnRepn);
+InstallTrueMethod(IsIntervalDecomposable, IsCommGridInterval);

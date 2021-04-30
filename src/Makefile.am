@@ -9,3 +9,9 @@ helloworld_LDADD = ./lib/libpmgap.la
 
 cmplx2repn_SOURCES = cmplx2repn.cpp
 cmplx2repn_LDADD = ./lib/libpmgap.la
+
+
+gapscriptsdir = @gapscriptsdir@
+gapscripts_DATA = loader.g
+
+EXTRA_DIST = loader.g

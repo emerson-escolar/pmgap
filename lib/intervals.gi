@@ -228,7 +228,7 @@ InstallOtherMethod(IntervalRepn,
                   return V;
               end);
 
-PrettyPrintCommuativeGridDimVec := function(dim_vec, n_cols)
+PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
     local counter, d;
     counter := 0;
     Print("Interval with dimension vector:\n");
@@ -253,7 +253,7 @@ InstallMethod(PrintObj,
                   A := RightActingAlgebra(I);
                   n_cols := NumCommGridColumns(A);
                   dim_vec := DimensionVector(I);
-                  PrettyPrintCommuativeGridDimVec(dim_vec, n_cols);
+                  PrettyPrintCommutativeGridDimVec(dim_vec, n_cols);
                   return;
               end);
 

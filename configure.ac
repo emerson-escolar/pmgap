@@ -1,5 +1,5 @@
-AC_INIT([pmgap], [package])
-AM_INIT_AUTOMAKE([foreign -Wall -Werror])
+AC_INIT([pmgap], [package], [e.g.escolar@people.kobe-u.ac.jp])
+AM_INIT_AUTOMAKE([foreign -Wall -Werror subdir-objects])
 
 AC_PROG_LN_S
 AM_PROG_AR
@@ -11,6 +11,9 @@ AC_PROG_CXX
 AC_CONFIG_MACRO_DIR([m4])
 m4_include([m4/find_gap.m4])
 FIND_GAP
+
+gapscriptsdir="$datadir/$PACKAGE/gap_scripts"
+AC_SUBST(gapscriptsdir)
 
 # Checks for header files.
 AC_HEADER_DIRENT
