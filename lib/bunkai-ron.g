@@ -4,15 +4,7 @@
 
 
 
-ComputeMultiplicities := function(M, list_of_indecs)
-    local  N, i, multmap;
-    N := Length(list_of_indecs);
-    multmap := [];
-    for i in [1..N] do
-        multmap[i] := [list_of_indecs[i], MultiplicityAtIndec(M, list_of_indecs[i])];
-    od;
-    return multmap;
-end;
+
 
 DisplayMultiplicities := function(multmap)
     local  x;
