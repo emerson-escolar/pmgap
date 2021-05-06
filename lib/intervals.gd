@@ -52,6 +52,10 @@ InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
 
 
 
+DeclareAttribute("IntervalPart", IsCommGridRepn);
+
+DeclareOperation("IntervalPartDimVec", [IsCommGridRepn]);
+
 #! @Arguments V
 #! @Returns true or false
 #! @Description

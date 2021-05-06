@@ -257,11 +257,11 @@ InstallMethod(PrintObj,
                   return;
               end);
 
-
-__IsIntervalDecomposable := function(V)
-    local A, cum_dv, i, dv, I, mult;
+__IntervalPart := function(V)
+    local A, ans, cum_dv, i, dv, I, mult;
 
     A := RightActingAlgebra(V);
+    ans := [];
     cum_dv := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
 
     # Generate the interval representations
@@ -269,11 +269,47 @@ __IsIntervalDecomposable := function(V)
         for dv in IntervalDimVecs(A).(i) do
             I := IntervalRepn(A,dv);
             mult := MultiplicityAtIndec(V, I);
+            if mult = 0 then continue; fi;
             cum_dv := cum_dv + (mult * dv);
-            if DimensionVector(V) = cum_dv then return true; fi;
+            Add(ans, [I, mult]);
+            if DimensionVector(V) = cum_dv then return ans; fi;
         od;
     od;
-    return DimensionVector(V) = cum_dv;
+    return ans;
+end;
+
+InstallMethod(IntervalPart,
+              "for a comm grid repn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __IntervalPart);
+
+
+__IntervalPartDimVec := function(V)
+    local A, pair, cum_dv, I, mult;
+
+    A := RightActingAlgebra(V);
+    cum_dv := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
+
+    for pair in IntervalPart(V) do
+        I := pair[1];
+        mult := pair[2];
+        cum_dv := cum_dv + (mult * DimensionVector(I));
+    od;
+    return cum_dv;
+end;
+
+InstallMethod(IntervalPartDimVec,
+              "for a comm grid repn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __IntervalPartDimVec);
+
+
+
+
+__IsIntervalDecomposable := function(V)
+    return DimensionVector(V) = IntervalPartDimVec(V);
 end;
 
 
