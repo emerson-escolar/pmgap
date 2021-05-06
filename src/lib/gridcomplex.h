@@ -34,7 +34,7 @@ class GridComplex {
   void print_cells(std::ostream& os)const;
   bool check_integrity() const;
 
-  void naive_compute_persistence(int target_dimension, std::ostream& os);
+  void naive_compute_persistence(int target_dimension, int field_order, std::ostream& os);
 
   CellIndex create_cell(int dim,
                         const Chain_T& bdd,
