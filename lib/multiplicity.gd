@@ -16,3 +16,7 @@ DeclareOperation("MultiplicityAtIndec",
 #! @Arguments path_algebra_mat_module, list_of_indec_modules
 DeclareOperation("ComputeMultiplicities",
                  [IsPathAlgebraMatModule, IsListOrCollection]);
+
+
+
+DeclareOperation("DimHomOverAlgebra", [IsPathAlgebraMatModule, IsPathAlgebraMatModule]);
