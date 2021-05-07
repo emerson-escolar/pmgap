@@ -18,5 +18,8 @@ DeclareOperation("ComputeMultiplicities",
                  [IsPathAlgebraMatModule, IsListOrCollection]);
 
 
-
+#! @Description
+#! Computes the dimension of the homomorphism space Hom_A(M,N) for two PathAlgebraMatModules over the same algebra A.
+#! @Arguments M,N
+#! @Returns dimension
 DeclareOperation("DimHomOverAlgebra", [IsPathAlgebraMatModule, IsPathAlgebraMatModule]);
