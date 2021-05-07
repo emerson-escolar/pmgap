@@ -146,3 +146,11 @@ DeclareOperation("JsonFileToCommGridRepn", [IsString]);
 #! @Arguments json_filename, comm_grid_path_algebra
 DeclareOperation("JsonFileToCommGridRepn", [IsString, IsCommGridPathAlgebra]);
 #! @EndGroup
+
+
+#! @Description
+#! Reads CommGridRepns over the same CommGridPathAlgebra from a list of json files.
+#! See documentation for JsonFileToCommGridRepn for information about the file format.
+#! @Arguments list_of_json_filenames
+#! @Returns list of CommGridRepns
+DeclareOperation("JsonFilesToCommGridRepn", [IsList]);

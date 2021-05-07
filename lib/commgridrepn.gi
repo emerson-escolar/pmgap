@@ -134,6 +134,21 @@ InstallOtherMethod(JsonFileToCommGridRepn,
                    end);
 
 
+InstallMethod(JsonFilesToCommGridRepn,
+              "for list of filenames",
+              ReturnTrue,
+              [IsList],
+              function(list_f)
+                  local fname, ans, A, i;
+                  if Length(list_f) = 0 then return []; fi;
+                  ans := [JsonToCommGridRepn(InputTextFile(list_f[1]))];
+                  A := RightActingAlgebra(ans[1]);
+                  for i in [2..Length(list_f)] do
+                      Add(ans, JsonToCommGridRepn(InputTextFile(list_f[i]), A));
+                  od;
+                  return ans;
+              end);
+
 
 InstallMethod(CommGridRepnArrLbl,
               "for comm_grid, dim_vec, and matrices",

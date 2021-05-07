@@ -20,3 +20,8 @@ true
 
 gap> V_OtherField := JsonFileToCommGridRepn(Filename(dir,"testrepnF.json"), A);
 fail
+
+
+
+gap> L := JsonFilesToCommGridRepn([Filename(dir,"001_pmgap_repn.json"), Filename(dir,"002_pmgap_repn.json")]);
+[ <[ 1, 4, 20, 16, 58, 65 ]>, <[ 1, 4, 20, 16, 58, 65 ]> ]

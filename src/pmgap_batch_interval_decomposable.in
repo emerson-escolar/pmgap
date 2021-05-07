@@ -3,21 +3,20 @@
 PROGNAME="${0##*/}"
 usage() {
 		echo "$PROGNAME"
-		echo "  Computes whether or not a commutative grid representation"
-    echo "  is interval-decomposable."		
+		echo "  Analyzes the interval-decomposability of a collection of commutative grid representations."    
 		echo ""
 		echo "WARNINGS:"
 		echo " 1. This script uses very general algorithms, and is not the most efficient"
 		echo "    way of determining interval-decomposability. DO NOT USE WITH LARGE INPUT."		
     echo ""
 		echo "USAGE:"
-		echo " $PROGNAME [-ah] [-c <orientation>] <input>"		
+		echo " $PROGNAME [-ah] [-c <orientation>] <inputs>"		
 		echo "  -h                 Show this help."
-		echo "  <input>            Input containing data about persistence module to decompose."
+		echo "  <inputs>           Multiple inputs containing data about persistence module to decompose."
 		echo ""
-		echo "INPUT:"
-		echo "  The expected input is a json file containing the representation."
-		echo "  While this can be manually created, this program is created with the"
+		echo "INPUTS:"
+		echo "  The expected input are json files containing the representations."
+		echo "  While they can be manually created, this program is created with the"
 		echo "  idea of taking the output from pmgap program 'pmgap_cmplx2repn'."
 		echo ""
 		echo "This program is distributed in the hope that it will be useful,"
@@ -44,17 +43,26 @@ if [ -z "$1" ]; then
 		exit 1
 fi
 
-if [ ! -f  @gapscriptsdir@/loader.g ]; then
-		echo "ERROR: pmgap library loader script not found! Expected:"
-		echo "@gapscriptsdir@/loader.g"
-		echo "Check your pmgap installation."
-		exit 1
-fi
+# saveIFS=$IFS
+# IFS=","
+# args="${*:1}"
+# IFS=$saveIFS
+# echo "$args"
+
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS},\"${PARAM}\""
+done
+PARAMS=`echo $PARAMS | sed s/^,//`
 
 __CODE="
-V:=JsonFileToCommGridRepn("'"'"$1"'"'");;
+L:=JsonFilesToCommGridRepn([$PARAMS]);;
+for V in L do
 Display(DimensionVector(V));
 Display(IntervalPartDimVec(V));
-Display(IsIntervalDecomposable(V));"
+Display(IsIntervalDecomposable(V));
+od;
+"
 
+echo "$__CODE"
 echo "$__CODE"  | gap -o 8G -q  @gapscriptsdir@/loader.g
