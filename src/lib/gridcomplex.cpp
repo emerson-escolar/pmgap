@@ -134,7 +134,7 @@ void GridComplex<Chain_T>::read_json(std::istream& is){
 
 
 template<typename Chain_T>
-void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, int field_order, std::ostream& os){
+void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, std::ostream& os){
   if (not check_integrity()) {
     throw std::runtime_error("Attempted to compute persistence on gridcomplex with invalid data");
   }
@@ -146,9 +146,10 @@ void GridComplex<Chain_T>::naive_compute_persistence(int target_dimension, int f
 
   os << "{\"rows\":" << num_rows << "," << std::endl;
   os << "\"cols\":" << num_cols << "," << std::endl;
-  if (field_order > 0){
-    os << "\"field\":" << field_order << "," << std::endl;
-  }
+  // if (field_order > 0) {
+  int field_order = 2;
+  os << "\"field\":" << field_order << "," << std::endl;
+  // }
   os << "\"dimensions\":{" << std::endl;
 
   for (int slice = 0; slice < pm.get_num_slices(); ++slice) {

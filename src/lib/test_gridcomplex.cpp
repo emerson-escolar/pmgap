@@ -59,7 +59,7 @@ TEST_CASE("Grid Complex - create cell",
   CHECK(gc.size() == 6);
   CHECK(gc.check_integrity());
 
-  CHECK_NOTHROW(gc.naive_compute_persistence(2, -1, std::cout));
+  CHECK_NOTHROW(gc.naive_compute_persistence(2, std::cout));
 
   SECTION("invalid birth") {
     CHECK(6 == gc.create_cell(0, emptybdd, pmgap::GridBirthType(3,3)));
