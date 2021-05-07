@@ -40,20 +40,37 @@ DeclareOperation("IntervalRepn", [IsEquiorientedAnPathAlgebra, IsCollection]);
 #! @EndGroup
 # --------------------------------------------------
 
-#!
+#! @Arguments V
+#! @Returns true or false
+#! @Description
+#! Tells you if V is an interval or not.
 DeclareProperty("IsCommGridInterval", IsCommGridRepn);
 #!
 InstallTrueMethod(IsIndecomposableModule, IsCommGridInterval);
 
-#!
+#! @Arguments V
+#! @Returns true or false
+#! @Description
+#! Tells you if V is an interval or not.
 DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
 #!
 InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
 
 
-
+#! @Arguments V
+#! @Returns list
+#! @Description
+#! Computes the largest interval-decomposable summand of V.
+#! The output is a list containing lists [interval_repn, multiplicity]
+#! giving the decomposition of the largest interval-decomposable summand of V.
+#! Warning: non-obvious cases involve much computation
 DeclareAttribute("IntervalPart", IsCommGridRepn);
 
+#! @Arguments V
+#! @Returns dimension vector
+#! @Description
+#! Computes the dimension vector of the largest interval-decomposable summand of V
+#! Warning: non-obvious cases involve much computation
 DeclareOperation("IntervalPartDimVec", [IsCommGridRepn]);
 
 #! @Arguments V
