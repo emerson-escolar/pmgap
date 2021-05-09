@@ -24,9 +24,10 @@ DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
 DeclareAttribute("IntervalDimVecs", IsEquiorientedAnPathAlgebra);
 #! @EndGroup
 
+
 # --------------------------------------------------
 #! @BeginGroup IntervalRepn
-#! @GroupTitle Interval representations
+#! @GroupTitle Interval representation
 #! @Arguments commutative_grid_path_algebra, dimension_vector
 #! @Returns interval representation
 
@@ -39,6 +40,31 @@ DeclareOperation("IntervalRepn", [IsCommGridPathAlgebra, IsCollection]);
 DeclareOperation("IntervalRepn", [IsEquiorientedAnPathAlgebra, IsCollection]);
 #! @EndGroup
 # --------------------------------------------------
+
+
+#! @BeginGroup IntervalRepns
+#! @GroupTitle Interval representations
+
+#! @Description
+#! Computes the interval representations, organized by "height",
+#! of the interval representations of the given
+#! equioriented An or commutative grid path algebra.
+#! Here, the "height" of
+#! an interval is defined to be the number of rows of the
+#! commutative grid its support occupies.
+#!
+#! The return value is a GAP Record, with heights 1, 2, ...
+#! as the record names, and Lists of
+#! interval representations as record components.
+#! @Returns Record of interval representations
+
+#! @Arguments comm_grid_path_algebra
+DeclareAttribute("IntervalRepns", IsCommGridPathAlgebra);
+#! @Arguments equioriented_an_path_algebra
+DeclareAttribute("IntervalRepns", IsEquiorientedAnPathAlgebra);
+#! @EndGroup
+
+
 
 #! @Arguments V
 #! @Returns true or false

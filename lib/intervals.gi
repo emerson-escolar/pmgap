@@ -182,6 +182,7 @@ InstallMethod(IntervalDimVecs,
                   return idv;
               end);
 
+
 InstallOtherMethod(IntervalDimVecs,
                    "for a equioriented An path algebra",
                    ReturnTrue,
@@ -227,6 +228,35 @@ InstallOtherMethod(IntervalRepn,
                   SetFilterObj(V, IsEquiorientedAnInterval);
                   return V;
               end);
+
+
+__IntervalRepresentations := function(A)
+    local ans, height, dv;
+    ans := rec();
+    for height in RecNames(IntervalDimVecs(A)) do
+        ans.(height) := [];
+        for dv in IntervalDimVecs(A).(height) do
+            Add(ans.(height), IntervalRepn(A,dv));
+        od;
+    od;
+    return ans;
+end;
+
+
+InstallMethod(IntervalRepns,
+              "for a commutative grid path algebra",
+              ReturnTrue,
+              [IsCommGridPathAlgebra],
+              __IntervalRepresentations);
+
+InstallOtherMethod(IntervalRepns,
+                   "for a equioriented An path algebra",
+                   ReturnTrue,
+                   [IsEquiorientedAnPathAlgebra],
+                   __IntervalRepresentations);
+
+
+
 
 PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
     local counter, d;
@@ -280,11 +310,33 @@ __IntervalPart := function(V)
     return ans;
 end;
 
+__IntervalPartCachedRepns := function(V)
+    local A, ans, zero, rem_dv, i, dv, I, mult;
+
+    A := RightActingAlgebra(V);
+    ans := [];
+    zero := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
+    rem_dv := DimensionVector(V);
+
+    # Generate the interval representations
+    for i in RecNames(IntervalRepns(A)) do
+        for I in IntervalRepns(A).(i) do
+            if not (DimensionVector(I) <= rem_dv) then continue; fi;
+            mult := MultiplicityAtIndec(V, I);
+            if mult = 0 then continue; fi;
+            Add(ans, [I, mult]);
+            rem_dv := rem_dv - (mult * DimensionVector(I));
+            if rem_dv = zero then return ans; fi;
+        od;
+    od;
+    return ans;
+end;
+
 InstallMethod(IntervalPart,
               "for a comm grid repn",
               ReturnTrue,
               [IsCommGridRepn],
-              __IntervalPart);
+              __IntervalPartCachedRepns);
 
 
 __IntervalPartDimVec := function(V)

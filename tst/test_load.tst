@@ -24,4 +24,4 @@ fail
 
 
 gap> L := JsonFilesToCommGridRepn([Filename(dir,"001_pmgap_repn.json"), Filename(dir,"002_pmgap_repn.json")]);
-[ <[ 1, 4, 20, 16, 58, 65 ]>, <[ 1, 4, 20, 16, 58, 65 ]> ]
+[ <[ 1, 4, 20, 16, 58, 65 ]>, <[ 0, 1, 9, 26, 61, 71 ]> ]
