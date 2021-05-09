@@ -56,8 +56,11 @@ done
 PARAMS=`echo $PARAMS | sed s/^,//`
 
 __CODE="
-L:=JsonFilesToCommGridRepn([$PARAMS]);;
-for V in L do
+files := [$PARAMS];;
+L:=JsonFilesToCommGridRepn(files);;
+for i in [1..Length(L)] do
+V := L[i];
+Display(files[i]);
 Display(DimensionVector(V));
 Display(IntervalPartDimVec(V));
 Display(IsIntervalDecomposable(V));
