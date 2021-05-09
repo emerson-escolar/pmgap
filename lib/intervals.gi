@@ -258,21 +258,23 @@ InstallMethod(PrintObj,
               end);
 
 __IntervalPart := function(V)
-    local A, ans, cum_dv, i, dv, I, mult;
+    local A, ans, zero, rem_dv, i, dv, I, mult;
 
     A := RightActingAlgebra(V);
     ans := [];
-    cum_dv := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
+    zero := ListWithIdenticalEntries(Size(VerticesOfPathAlgebra(A)), 0);
+    rem_dv := DimensionVector(V);
 
     # Generate the interval representations
     for i in RecNames(IntervalDimVecs(A)) do
         for dv in IntervalDimVecs(A).(i) do
+            if not (dv <= rem_dv) then continue; fi;
             I := IntervalRepn(A,dv);
             mult := MultiplicityAtIndec(V, I);
             if mult = 0 then continue; fi;
-            cum_dv := cum_dv + (mult * dv);
             Add(ans, [I, mult]);
-            if DimensionVector(V) = cum_dv then return ans; fi;
+            rem_dv := rem_dv - (mult * dv);
+            if rem_dv = zero then return ans; fi;
         od;
     od;
     return ans;
