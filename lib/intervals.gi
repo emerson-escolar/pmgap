@@ -261,6 +261,7 @@ InstallOtherMethod(IntervalRepns,
 PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
     local counter, d;
     counter := 0;
+    Print("-------------------------------\n");
     Print("Interval with dimension vector:\n");
     for d in dim_vec do
         Print(d);
@@ -269,7 +270,7 @@ PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
             Print("\n");
         fi;
     od;
-    Print("-------------------------------\n");
+    Print("-------------------------------");
 end;
 
 InstallMethod(PrintObj,

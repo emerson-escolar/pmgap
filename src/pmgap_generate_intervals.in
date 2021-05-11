@@ -24,13 +24,15 @@ usage() {
     echo "GNU General Public License for more details."
 }
 
-SEQ_CODE="computeseq := false;;"
+A_CODE="computeseq := false;;"
+N_CODE="writeoutput := true;;"
 while getopts "ahn" o; do
     case "${o}" in
         a)
-            SEQ_CODE='computeseq := true;;'
+            A_CODE='computeseq := true;;'
 						;;
         n)
+            N_CODE='writeoutput := false;;'
             ;;
 				h | *) # Display help.
 						usage
@@ -59,7 +61,8 @@ if [ ! -f  @gapscriptsdir@/loader.g ]; then
 fi
 
 __CODE=\
-"$SEQ_CODE
+"$A_CODE
+$N_CODE
 A := CommGridPathAlgebra(GF(2), $1, $2);;"
 
 echo "$__CODE" | cat - @gapscriptsdir@/generate_intervals.g |  gap -o 8G -q  @gapscriptsdir@/loader.g
