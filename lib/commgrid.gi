@@ -81,6 +81,6 @@ InstallGlobalFunction(CommGridPathAlgebra,
                          SetFilterObj(A, IsCommGridPathAlgebra);
                          SetNumCommGridRows(A, n_rows);
                          SetNumCommGridColumns(A, n_cols);
-                         SetCommGridArrowsDict(A,__ComputeArrowsDict(A));
+                         SetCommGridSourceTargetToArrowDict(A,__ComputeArrowsDict(A));
                          return A;
                      end);

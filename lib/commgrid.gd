@@ -38,4 +38,5 @@ DeclareAttribute("NumCommGridColumns", IsCommGridPathAlgebra);
 
 # TODO: A way to extract vertices using i,j index,
 # and a way to extract arrows using source and target indices.
-DeclareAttribute("CommGridArrowsDict", IsCommGridPathAlgebra);
+
+DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
