@@ -11,7 +11,7 @@ usage() {
 		echo "    way of determining interval-decomposability. DO NOT USE WITH LARGE INPUT."		
     echo ""
 		echo "USAGE:"
-		echo " $PROGNAME [-ah] [-c <orientation>] <input>"		
+		echo " $PROGNAME [-h] <input>"
 		echo "  -h                 Show this help."
 		echo "  <input>            Input containing data about persistence module to decompose."
 		echo ""

@@ -3,18 +3,20 @@
 PROGNAME="${0##*/}"
 usage() {
 		echo "$PROGNAME"
-		echo "  Computes the interval representations of a commutative grid"
+		echo "  Computes the interval representations of a commutative grid."
 		echo ""
 		echo "WARNINGS:"
 		echo " 1. This script uses very general algorithms for generating the commutative grid."
-    echo "     DO NOT USE WITH LARGE GRIDS."		
+    echo "     DO NOT USE WITH LARGE GRIDS."
     echo ""
 		echo "USAGE:"
-		echo " $PROGNAME [-ah] [-c <orientation>] <N> <M>"		
+		echo " $PROGNAME [-ahn] <N> <M>"
 		echo "  -h                 Show this help."
+    echo "  -a                 Also compute almost split sequences."
+    echo "  -n                 Do not write any files."
 		echo "  <N>                number of rows of commutative grid."
     echo "  <M>                number of cols of commutative grid."
-		echo ""		
+		echo ""
 		echo ""
 		echo "This program is distributed in the hope that it will be useful,"
     echo "but WITHOUT ANY WARRANTY; without even the implied warranty of"
@@ -22,10 +24,14 @@ usage() {
     echo "GNU General Public License for more details."
 }
 
-# [ $# -eq 0 ] && usage
-
-while getopts "h" o; do
-		case "${o}" in		     
+SEQ_CODE="computeseq := false;;"
+while getopts "ahn" o; do
+    case "${o}" in
+        a)
+            SEQ_CODE='computeseq := true;;'
+						;;
+        n)
+            ;;
 				h | *) # Display help.
 						usage
 						exit 0
@@ -52,8 +58,9 @@ if [ ! -f  @gapscriptsdir@/loader.g ]; then
 		exit 1
 fi
 
-__CODE="
-A:=CommGridPathAlgebra(GF(2), $1, $2);;
-Display(IntervalRepns(A));"
+__CODE=\
+"$SEQ_CODE
+A := CommGridPathAlgebra(GF(2), $1, $2);;"
 
-echo "$__CODE"  | gap -o 8G -q  @gapscriptsdir@/loader.g
+echo "$__CODE" | cat - @gapscriptsdir@/generate_intervals.g |  gap -o 8G -q  @gapscriptsdir@/loader.g
+
