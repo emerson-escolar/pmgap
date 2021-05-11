@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+PROGNAME="${0##*/}"
+usage() {
+		echo "$PROGNAME"
+		echo "  Computes the interval representations of a commutative grid"
+		echo ""
+		echo "WARNINGS:"
+		echo " 1. This script uses very general algorithms for generating the commutative grid."
+    echo "     DO NOT USE WITH LARGE GRIDS."		
+    echo ""
+		echo "USAGE:"
+		echo " $PROGNAME [-ah] [-c <orientation>] <N> <M>"		
+		echo "  -h                 Show this help."
+		echo "  <N>                number of rows of commutative grid."
+    echo "  <M>                number of cols of commutative grid."
+		echo ""		
+		echo ""
+		echo "This program is distributed in the hope that it will be useful,"
+    echo "but WITHOUT ANY WARRANTY; without even the implied warranty of"
+    echo "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the"
+    echo "GNU General Public License for more details."
+}
+
+# [ $# -eq 0 ] && usage
+
+while getopts "h" o; do
+		case "${o}" in		     
+				h | *) # Display help.
+						usage
+						exit 0
+						;;
+		esac
+done
+
+shift $((OPTIND-1))
+
+if [ -z "$1" ]; then
+		echo "Error: Insufficient input. Run again with option -h to show help."
+		exit 1
+fi
+
+if [ -z "$2" ]; then
+		echo "Error: Insufficient input. Run again with option -h to show help."
+		exit 1
+fi
+
+if [ ! -f  @gapscriptsdir@/loader.g ]; then
+		echo "ERROR: pmgap library loader script not found! Expected:"
+		echo "@gapscriptsdir@/loader.g"
+		echo "Check your pmgap installation."
+		exit 1
+fi
+
+__CODE="
+A:=CommGridPathAlgebra(GF(2), $1, $2);;
+Display(IntervalRepns(A));"
+
+echo "$__CODE"  | gap -o 8G -q  @gapscriptsdir@/loader.g
