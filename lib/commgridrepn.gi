@@ -45,6 +45,89 @@ function(A, F, n_rows, n_cols)
 end;
 
 
+__IntFFEMat := function(M)
+    local ans, i, j;
+    ans := NullMat(DimensionsMat(M)[1],DimensionsMat(M)[2]);
+    for i in [1..DimensionsMat(M)[1]] do
+        for j in [1..DimensionsMat(M)[2]] do
+            ans[i][j] := IntFFE(M[i][j]);
+        od;
+    od;
+    return ans;
+end;
+
+
+__CommGridRepnToJson := function(V, stream)
+    local ans, F, A, verts, dim_rec, i, arrs, mats, mat_rec, s, st;
+
+    ans := rec();
+    ans.is_left_matrices := false;
+    F := LeftActingDomain(V);
+    if F = Rationals then
+        ans.field := "rationals";
+    elif IsField(F) and IsFinite(F) then
+        ans.field := Size(F);
+    else
+        # Unrecognized field!
+        return fail;
+    fi;
+
+    A := RightActingAlgebra(V);
+    ans.rows := NumCommGridRows(A);
+    ans.cols := NumCommGridColumns(A);
+
+    # generate dimvec
+    verts := VerticesOfQuiver(QuiverOfPathAlgebra(A));
+    dim_rec := rec();
+    for i in [1..Length(verts)] do
+        dim_rec.(String(verts[i])) := DimensionVector(V)[i];
+    od;
+    ans.dimensions := dim_rec;
+
+
+    arrs := ArrowsOfQuiver(QuiverOfPathAlgebra(A));
+    mats := MatricesOfPathAlgebraModule(V);
+    mat_rec := rec();
+    for i in [1..Length(arrs)] do
+        if dim_rec.(String(SourceVertex(arrs[i]))) = 0 or dim_rec.(String(TargetVertex(arrs[i]))) = 0 then
+            continue;
+        fi;
+
+        s := Concatenation(String(SourceVertex(arrs[i])),"_");
+        st := Concatenation(s, String(TargetVertex(arrs[i])));
+
+        if F = Rationals then
+            mat_rec.(st) := mats[i];
+        else
+            mat_rec.(st) := __IntFFEMat(mats[i]);
+        fi;
+    od;
+    ans.matrices := mat_rec;
+
+    GapToJsonStream(stream, ans);
+
+    return true;
+end;
+
+
+InstallMethod(CommGridRepnToJson,
+              "for CommGridRepn and OutputTextStream",
+              ReturnTrue,
+              [IsCommGridRepn, IsOutputTextStream],
+              __CommGridRepnToJson);
+
+InstallMethod(CommGridRepnToJsonFile,
+              "for CommGridRepn and filename",
+              ReturnTrue,
+              [IsCommGridRepn, IsString],
+              function(V, fname)
+                  local stream, stat;
+                  stream := OutputTextFile(fname, false);
+                  stat := CommGridRepnToJson(V, stream);
+                  CloseStream(stream);
+                  return stat;
+              end);
+
 
 __JsonToCommGridRepn := function(stream, A)
     local data, is_left_matrices,
@@ -122,7 +205,11 @@ InstallMethod(JsonFileToCommGridRepn,
               ReturnTrue,
               [IsString],
               function(fname)
-                  return JsonToCommGridRepn(InputTextFile(fname));
+                  local stream, V;
+                  stream := InputTextFile(fname);
+                  V := JsonToCommGridRepn(stream);
+                  CloseStream(stream);
+                  return V;
               end);
 
 InstallOtherMethod(JsonFileToCommGridRepn,
@@ -130,7 +217,11 @@ InstallOtherMethod(JsonFileToCommGridRepn,
                    ReturnTrue,
                    [IsString, IsCommGridPathAlgebra],
                    function(fname,A)
-                       return JsonToCommGridRepn(InputTextFile(fname),A);
+                       local stream, V;
+                       stream := InputTextFile(fname);
+                       V := JsonToCommGridRepn(stream,A);
+                       CloseStream(stream);
+                       return V;
                    end);
 
 
@@ -139,15 +230,23 @@ InstallMethod(JsonFilesToCommGridRepn,
               ReturnTrue,
               [IsList],
               function(list_f)
-                  local fname, ans, A, i;
-                  if Length(list_f) = 0 then return []; fi;
-                  ans := [JsonToCommGridRepn(InputTextFile(list_f[1]))];
+                  local fname, ans, A, i, stream;
+                  if Length(list_f) = 0 then
+                      return [];
+                  fi;
+                  stream := InputTextFile(list_f[1]);
+                  ans := [JsonToCommGridRepn(stream)];
+                  CloseStream(stream);
                   A := RightActingAlgebra(ans[1]);
                   for i in [2..Length(list_f)] do
-                      Add(ans, JsonToCommGridRepn(InputTextFile(list_f[i]), A));
+                      stream := InputTextFile(list_f[i]);
+                      Add(ans, JsonToCommGridRepn(stream, A));
+                      CloseStream(stream);
                   od;
                   return ans;
               end);
+
+
 
 
 InstallMethod(CommGridRepnArrLbl,

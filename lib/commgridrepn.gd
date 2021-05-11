@@ -154,3 +154,11 @@ DeclareOperation("JsonFileToCommGridRepn", [IsString, IsCommGridPathAlgebra]);
 #! @Arguments list_of_json_filenames
 #! @Returns list of CommGridRepns
 DeclareOperation("JsonFilesToCommGridRepn", [IsList]);
+
+
+
+#! @Arguments comm_grid_repn, json_stream
+DeclareOperation("CommGridRepnToJson", [IsCommGridRepn, IsOutputTextStream]);
+
+#! @Arguments comm_grid_repn, json_filename
+DeclareOperation("CommGridRepnToJsonFile", [IsCommGridRepn, IsString]);
