@@ -7,25 +7,18 @@ bin_PROGRAMS = pmgap_cmplx2repn
 pmgap_cmplx2repn_SOURCES = pmgap_cmplx2repn.cpp
 pmgap_cmplx2repn_LDADD = ./lib/libpmgap.la
 
-
 gapscriptsdir = @gapscriptsdir@
 gapscripts_DATA = loader.g
 
-EXTRA_DIST = loader.g pmgap_interval_decomposable.in pmgap_batch_interval_decomposable.in pmgap_from_homcloud_random_cech.py
+PYSCRPT = pmgap_from_homcloud_random_cech.py
+GPSCRPTIN = pmgap_interval_decomposable.in pmgap_batch_interval_decomposable.in pmgap_generate_intervals.in
+GPSCRPTOUT = $(GPSCRPTIN:.in=.sh)
 
-bin_SCRIPTS = pmgap_interval_decomposable.sh pmgap_batch_interval_decomposable.sh pmgap_from_homcloud_random_cech.py
-CLEANFILES = pmgap_interval_decomposable.sh pmgap_batch_interval_decomposable.sh
+EXTRA_DIST = loader.g $(PYSCRPT) $(GPSCRPTIN)
+bin_SCRIPTS = $(PYSCRPT) $(GPSCRPTOUT)
+CLEANFILES = $(GPSCRPTOUT)
 
-pmgap_interval_decomposable.sh:	pmgap_interval_decomposable.in
-	$(SED) \
-		-e 's|[@]gapscriptsdir@|$(gapscriptsdir)|g' \
-		-e 's|[@]prefix@|$(prefix)|g' \
-		-e 's|[@]exec_prefix@|$(exec_prefix)|g' \
-		-e 's|[@]bindir@|$(bindir)|g' \
-		-e 's|[@]datarootdir@|$(datarootdir)|g' \
-		< "$<" > "$@"
-
-pmgap_batch_interval_decomposable.sh:	pmgap_batch_interval_decomposable.in
+$(GPSCRPTOUT): %.sh: %.in
 	$(SED) \
 		-e 's|[@]gapscriptsdir@|$(gapscriptsdir)|g' \
 		-e 's|[@]prefix@|$(prefix)|g' \
