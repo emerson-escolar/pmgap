@@ -9,3 +9,6 @@ ReadPackage("pmgap", "lib/intervals.gi");
 
 ReadPackage("pmgap", "lib/multiplicity.gd");
 ReadPackage("pmgap", "lib/multiplicity.gi");
+
+ReadPackage("pmgap", "lib/approximation.gd");
+ReadPackage("pmgap", "lib/approximation.gi");
