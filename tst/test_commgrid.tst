@@ -14,6 +14,27 @@ gap> NumCommGridColumns(A);
 gap> VerticesOfQuiver(QuiverOfPathAlgebra(A));
 [ 1_1, 1_2, 1_3, 2_1, 2_2, 2_3 ]
 
+gap> d := CommGridRowColumnToVertexDict(A);;
+gap> for i in [1..2] do
+> for j in [1..3] do
+> v := LookupDictionary(d, [i,j]);;
+> Display(SourceVertex(v) = v);
+> Display(TargetVertex(v) = v);
+> od;
+> od;
+true
+true
+true
+true
+true
+true
+true
+true
+true
+true
+true
+true
+
 
 gap> B := EquiorientedAnPathAlgebra(Rationals, 5);
 <Rationals[<quiver with 5 vertices and 4 arrows>]>

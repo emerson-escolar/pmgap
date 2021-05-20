@@ -18,6 +18,28 @@ __CommGridPathAlgebraByTensor := function(F, n_rows, n_cols)
 end;
 
 
+__CommGridByTensorRowColumnToVertexDict := function(A)
+    local n_rows, n_cols, i, j, v, name, dict;
+
+    n_rows := NumCommGridRows(A);
+    n_cols := NumCommGridColumns(A);
+    dict := NewDictionary(false, true);
+    for i in [1..n_rows] do
+        for j in [1..n_cols] do
+            name := JoinStringsWithSeparator([String(i),String(j)],"_");
+            for v in VerticesOfQuiver(QuiverOfPathAlgebra(A)) do
+                if name = String(v) then
+                    AddDictionary(dict, [i,j], v);
+                    continue;
+                fi;
+            od;
+        od;
+    od;
+    return dict;
+end;
+
+
+
 __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
     local vertex, vertices, relations, VertexCode,
           i,j,
@@ -81,6 +103,8 @@ InstallGlobalFunction(CommGridPathAlgebra,
                          SetFilterObj(A, IsCommGridPathAlgebra);
                          SetNumCommGridRows(A, n_rows);
                          SetNumCommGridColumns(A, n_cols);
+
+                         SetCommGridRowColumnToVertexDict(A, __CommGridByTensorRowColumnToVertexDict(A));
                          SetCommGridSourceTargetToArrowDict(A,__ComputeArrowsDict(A));
                          return A;
                      end);

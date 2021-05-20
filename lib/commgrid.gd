@@ -40,3 +40,5 @@ DeclareAttribute("NumCommGridColumns", IsCommGridPathAlgebra);
 # and a way to extract arrows using source and target indices.
 
 DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
+
+DeclareAttribute("CommGridRowColumnToVertexDict", IsCommGridPathAlgebra);
