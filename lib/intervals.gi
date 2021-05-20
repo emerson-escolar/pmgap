@@ -1,6 +1,80 @@
 
+### -------------------- IntervalDimVec(s) --------------------
+# Assumes that the vertices of the commgridpathalgebra is ordered in a very specific way!
+# In terms of (row,col) indices, ordered as:
+# (1,1) (1,2) ... (1,n_cols) (2,1) (2,2) ... (2,n_cols) (n_rows,1) (n_rows,2) ... (n_rows,n_cols)
+
+
+
+__IntervalDimVecToRowWiseBD := function(dimvec, n_rows, n_cols)
+    local invalid_entry,
+          zero, ans,
+          i, slice, b, d;
+    if not (CheckCommGridIntervalDimVec(dimvec)) then
+        return fail;
+    fi;
+    
+    invalid_entry := PositionProperty(dimvec, x->(x<>1 and x <> 0));
+    if not (invalid_entry = fail) then
+        return fail;
+    fi;
+
+    zero := ListWithIdenticalEntries(n_cols, 0);
+    ans := [];
+    for i in [1..n_rows] do
+        slice := dimvec{[(i-1)*n_cols+1..(i)*n_cols]};
+        if slice = zero then
+            Add(ans, false);
+            continue;
+        fi;
+        b := PositionProperty(slice, x->x=1);
+        d := n_cols - PositionProperty(Reversed(slice), x->x=1) + 1;
+        Add(ans, [b,d]);
+    od;
+    return ans;
+end;
+
+
+
+InstallMethod(IntervalDimVecToRowWiseBD,
+              "for a commutative grid path algebra",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              __IntervalDimVecToRowWiseBD);
+
+
+InstallMethod(RowWiseBDToIntervalDimVec,
+              "for a commutative grid path algebra",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              function(rwbd, r, c)
+                  local dimv, i, l, bd;
+                  if Length(rwbd) <> r then
+                      return fail;
+                  fi;
+
+                  dimv := [];
+                  for i in [1..r] do
+                      l := Length(dimv);
+                      Append(dimv, ListWithIdenticalEntries(c, 0));
+                      if not (rwbd[i] = false) then
+                          bd := rwbd[i];
+                          dimv{[l+bd[1]..l+bd[2]]} := ListWithIdenticalEntries(bd[2] - bd[1] + 1, 1);
+                      fi;
+                  od;
+                  if not (CheckCommGridIntervalDimVec(dimv, r, c)) then
+                      return fail;
+                  fi;
+                  return dimv;
+              end);
+
+
 
 __LastBirthDeath := function(partial_dim_vec, n_cols)
+    # figure out the last birth-death indices of a partially completed interval dimension vector
+    # last means the last partially-completed row
+    # returns fail if the last partially-completed row is all 0
+
     local cur_row, birth, death;
     cur_row := Int(Ceil(1.*Length(partial_dim_vec)/n_cols));
     birth := PositionProperty(partial_dim_vec, x->x=1, (cur_row-1)*n_cols);
@@ -16,43 +90,49 @@ end;
 
 
 __CommGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
+    # Generate intervals with
+    # rows starting from start_row
+    # cols up to end_col
+    # "height" denotes the number of stacked nonzero rows.
+
     local graded_intervals, dimvec,
           b, d, x, height, max_height, bd, old_int;
 
     graded_intervals := rec( 1 := [] );
     dimvec := ListWithIdenticalEntries(n_cols*(start_row-1), 0);
-
     # Generate height 1 graded_intervals
+    # intervals have endpoint at end_col
     for b in [1..end_col] do
-        x := Concatenation(dimvec, ListWithIdenticalEntries(b-1, 0));
-        Append(x, ListWithIdenticalEntries(end_col-b+1, 1));
+        x := Concatenation(dimvec, ListWithIdenticalEntries(b - 1, 0));
+        Append(x, ListWithIdenticalEntries(end_col - b + 1, 1));
         Append(x, ListWithIdenticalEntries(n_cols - end_col, 0));
         Add(graded_intervals.1, x);
     od;
 
-    max_height := n_rows-start_row + 1;
+    max_height := n_rows - start_row + 1;
     for height in [2..max_height] do
         graded_intervals.(height) := [];
 
         for old_int in graded_intervals.(height-1) do
             bd := __LastBirthDeath(old_int, n_cols);
             # Generate next-height graded_intervals
+            # next interval to stack is [b,d] with b <= bd[1] <= d <= bd[2]
             for b in [1..bd[1]] do
                 for d in [bd[1]..bd[2]] do
-                    x := Concatenation(old_int, ListWithIdenticalEntries(b-1, 0));
-                    Append(x, ListWithIdenticalEntries(d-b+1, 1));
-                    Append(x, ListWithIdenticalEntries(n_cols-d, 0));
+                    x := Concatenation(old_int, ListWithIdenticalEntries(b - 1, 0));
+                    Append(x, ListWithIdenticalEntries(d - b + 1, 1));
+                    Append(x, ListWithIdenticalEntries(n_cols - d, 0));
                     Add(graded_intervals.(height), x);
                 od;
             od;
             # finish up previous-height graded_intervals
-            Append(old_int, ListWithIdenticalEntries(n_rows*n_cols - Length(old_int), 0));
+            Append(old_int, ListWithIdenticalEntries(n_rows * n_cols - Length(old_int), 0));
         od;
     od;
 
     # finish up previous-height graded_intervals
     for old_int in graded_intervals.(max_height) do
-        Append(old_int, ListWithIdenticalEntries(n_rows*n_cols - Length(old_int), 0));
+        Append(old_int, ListWithIdenticalEntries(n_rows * n_cols - Length(old_int), 0));
     od;
     return graded_intervals;
 end;
@@ -82,17 +162,44 @@ __CommGridIntervalDimVecs := function(n_rows, n_cols)
     return interval_dimvecs;
 end;
 
-__CommGridCheckDimVec := function(A, dim_vec)
-    local n_rows, n_cols,
-          cur_stop, bd,
+
+InstallMethod(IntervalDimVecs,
+              "for a commutative grid path algebra",
+              ReturnTrue,
+              [IsCommGridPathAlgebra],
+              function(A)
+                  local idv;
+                  idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
+                  return idv;
+              end);
+
+InstallOtherMethod(IntervalDimVecs,
+                   "for a equioriented An path algebra",
+                   ReturnTrue,
+                   [IsEquiorientedAnPathAlgebra],
+                   function(A)
+                       local N, b, d, dimv, idv;
+                       N := NumberOfVertices(QuiverOfPathAlgebra(A));
+                       idv := rec(1:=[]);
+                       for b in [1..N] do
+                           for d in [b..N] do
+                               dimv := ListWithIdenticalEntries(N,0);
+                               dimv{[b..d]} := ListWithIdenticalEntries(d - b + 1,1);
+                               Add(idv.1, dimv);
+                           od;
+                       od;
+                       return idv;
+                   end);
+
+
+
+### -------------------- IntervalRepn(s) --------------------
+
+__CheckCommGridIntervalDimVec := function(dim_vec, n_rows, n_cols)
+    local cur_stop, bd,
           prev_birth, prev_death,
           remaining;
 
-    if not IsCommGridPathAlgebra(A) then
-        return fail;
-    fi;
-    n_rows := NumCommGridRows(A);
-    n_cols := NumCommGridColumns(A);
     if not (Length(dim_vec) = n_rows * n_cols) then
         # TODO: message?
         return false;
@@ -124,20 +231,24 @@ __CommGridCheckDimVec := function(A, dim_vec)
             return false;
         fi;
     fi;
-
     return true;
 end;
 
-__AnCheckDimVec := function(A, dim_vec)
+InstallMethod(CheckCommGridIntervalDimVec,
+              "for a dimvec, row_num, col_num",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              __CheckCommGridIntervalDimVec);
+
+
+
+__CheckAnIntervalDimVec := function(dim_vec, N)
     local bd, i;
-    if not IsEquiorientedAnPathAlgebra(A) then
-        return fail;
-    fi;
-    if not (Length(VerticesOfQuiver(QuiverOfPathAlgebra(A))) = Length(dim_vec)) then
+    if not (N = Length(dim_vec)) then
         # TODO: message?
         return false;
     fi;
-    bd := __LastBirthDeath(dim_vec, NumberOfVertices(QuiverOfPathAlgebra(A)));
+    bd := __LastBirthDeath(dim_vec, N);
     if bd[1] = fail then
         return false;
     fi;
@@ -149,6 +260,11 @@ __AnCheckDimVec := function(A, dim_vec)
     return true;
 end;
 
+InstallMethod(CheckAnIntervalDimVec,
+              "for a dimvec, verts_num",
+              ReturnTrue,
+              [IsList, IsInt],
+              __CheckAnIntervalDimVec);
 
 
 __CreateObviousIndecMatrices := function(A, dimv)
@@ -172,34 +288,7 @@ __CreateObviousIndecMatrices := function(A, dimv)
 end;
 
 
-InstallMethod(IntervalDimVecs,
-              "for a commutative grid path algebra",
-              ReturnTrue,
-              [IsCommGridPathAlgebra],
-              function(A)
-                  local idv;
-                  idv :=__CommGridIntervalDimVecs(NumCommGridRows(A), NumCommGridColumns(A));
-                  return idv;
-              end);
 
-
-InstallOtherMethod(IntervalDimVecs,
-                   "for a equioriented An path algebra",
-                   ReturnTrue,
-                   [IsEquiorientedAnPathAlgebra],
-                   function(A)
-                       local N, b, d, dimv, idv;
-                       N := NumberOfVertices(QuiverOfPathAlgebra(A));
-                       idv := rec(1:=[]);
-                       for b in [1..N] do
-                           for d in [b..N] do
-                               dimv := ListWithIdenticalEntries(N,0);
-                               dimv{[b..d]} := ListWithIdenticalEntries(d-b+1,1);
-                               Add(idv.1, dimv);
-                           od;
-                       od;
-                       return idv;
-                   end);
 
 InstallMethod(IntervalRepn,
               "for commutative grid and a dimension vector",
@@ -207,7 +296,9 @@ InstallMethod(IntervalRepn,
               [IsCommGridPathAlgebra, IsCollection],
               function(A, dimv)
                   local V, mats;
-                  if not __CommGridCheckDimVec(A,dimv) then return fail; fi;
+                  if not CheckCommGridIntervalDimVec(dimv, NumCommGridRows(A), NumCommGridColumns(A)) then
+                      return fail;
+                  fi;
                   mats := __CreateObviousIndecMatrices(A,dimv);
                   V := RightModuleOverPathAlgebra(A,dimv,mats);
                   SetFilterObj(V, IsCommGridRepn);
@@ -221,7 +312,7 @@ InstallOtherMethod(IntervalRepn,
               [IsEquiorientedAnPathAlgebra, IsCollection],
               function(A, dimv)
                   local V, mats;
-                  if not __AnCheckDimVec(A,dimv) then return fail; fi;
+                  if not CheckAnIntervalDimVec(dimv, NumberOfVertices(QuiverOfPathAlgebra(A))) then return fail; fi;
                   mats := __CreateObviousIndecMatrices(A,dimv);
                   V := RightModuleOverPathAlgebra(A,dimv,mats);
                   SetFilterObj(V, IsEquiorientedAnRepn);
@@ -257,6 +348,7 @@ InstallOtherMethod(IntervalRepns,
 
 
 
+### -------------------- Print --------------------
 
 PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
     local counter, d;
@@ -287,6 +379,9 @@ InstallMethod(PrintObj,
                   PrettyPrintCommutativeGridDimVec(dim_vec, n_cols);
                   return;
               end);
+
+
+### -------------------- IntervalPart & Friends --------------------
 
 __IntervalPart := function(V)
     local A, ans, zero, rem_dv, i, dv, I, mult;

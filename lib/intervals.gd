@@ -2,6 +2,16 @@
 
 #! @Section Intervals
 
+# --------------------------------------------------
+DeclareOperation("CheckCommGridIntervalDimVec", [IsList, IsInt, IsInt]);
+DeclareOperation("CheckAnIntervalDimVec", [IsList, IsInt]);
+
+DeclareOperation("IntervalDimVecToRowWiseBD", [IsList, IsInt, IsInt]);
+DeclareOperation("RowWiseBDToIntervalDimVec", [IsList, IsInt, IsInt]);
+# --------------------------------------------------
+
+
+# --------------------------------------------------
 #! @BeginGroup IntervalDimVecs
 #! @GroupTitle Dimension vectors of intervals
 
@@ -23,6 +33,7 @@ DeclareAttribute("IntervalDimVecs", IsCommGridPathAlgebra);
 #! @Arguments equioriented_an_path_algebra
 DeclareAttribute("IntervalDimVecs", IsEquiorientedAnPathAlgebra);
 #! @EndGroup
+# --------------------------------------------------
 
 
 # --------------------------------------------------
@@ -42,6 +53,7 @@ DeclareOperation("IntervalRepn", [IsEquiorientedAnPathAlgebra, IsCollection]);
 # --------------------------------------------------
 
 
+# --------------------------------------------------
 #! @BeginGroup IntervalRepns
 #! @GroupTitle Interval representations
 
@@ -63,7 +75,7 @@ DeclareAttribute("IntervalRepns", IsCommGridPathAlgebra);
 #! @Arguments equioriented_an_path_algebra
 DeclareAttribute("IntervalRepns", IsEquiorientedAnPathAlgebra);
 #! @EndGroup
-
+# --------------------------------------------------
 
 
 #! @Arguments V
@@ -82,6 +94,9 @@ DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
 #!
 InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
 
+
+# --------------------------------------------------
+# IntervalPart & Related Functions
 
 #! @Arguments V
 #! @Returns list
@@ -108,3 +123,4 @@ DeclareProperty("IsIntervalDecomposable", IsCommGridRepn);
 
 InstallTrueMethod(IsIntervalDecomposable, IsEquiorientedAnRepn);
 InstallTrueMethod(IsIntervalDecomposable, IsCommGridInterval);
+# --------------------------------------------------

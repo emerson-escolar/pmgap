@@ -11,6 +11,7 @@ gap> NumCommGridRows(A);
 gap> NumCommGridColumns(A);
 3
 
+# Order of vertices is important! see intervals.gi
 gap> VerticesOfQuiver(QuiverOfPathAlgebra(A));
 [ 1_1, 1_2, 1_3, 2_1, 2_2, 2_3 ]
 
