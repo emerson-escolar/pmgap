@@ -36,11 +36,35 @@ DeclareAttribute("NumCommGridRows", IsCommGridPathAlgebra);
 DeclareAttribute("NumCommGridColumns", IsCommGridPathAlgebra);
 
 
-# TODO: A way to extract vertices using i,j index,
-# and a way to extract arrows using source and target indices.
+# -------------------- Vertices and Arrows --------------------
 
+#! @Arguments A
+#! @Description
+#! Gets a LookupDictionary with key [row_index, col_index]
+#! associated to the corresponding vertex of the CommGridPathAlgebra A.
+#! row_index (col_index, resp.) is an integer
+#! between 1 and NumCommGridRows(A) (NumCommGridColumns(A), resp.)
+#! @Returns LookupDictionary
+DeclareAttribute("CommGridRowColumnToVertexDict", IsCommGridPathAlgebra);
+
+#! @Arguments A
+#! @Description
+#! Gets a LookupDictionary with key [source_string, target_string]
+#! associated to the corresponding arrow of (the quiver of) the CommGridPathAlgebra A.
+#! source_string (target_string, resp.) is a string
+#! corresponding to the source vertex (target vertex, resp.) of the arrow.
+#! @Returns LookupDictionary
 DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
 
-DeclareAttribute("CommGridRowColumnToVertexDict", IsCommGridPathAlgebra);
+#! @Arguments A, [row_index, col_index], direction
+#! @Description
+#! Gets the arrow of (the quiver of) the CommGridPathAlgebra A with source vertex
+#! given by [row_index, col_index] and facing direction.
+#! direction is a character 'r' or 'c',
+#! with 'r' meaning that the target vertex has row index 1 larger than the source vertex,
+#! and 'c' meaning that the target vertex has row index 1 larger than the source vertex.
+#! @Returns arrow
+DeclareOperation("CommGridRowColumnDirectionToArrow", [IsCommGridPathAlgebra, IsList, IsChar]);
+
 
 DeclareOperation("CommGridPath", [IsCommGridPathAlgebra, IsList, IsList]);

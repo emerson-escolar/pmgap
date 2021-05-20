@@ -114,33 +114,56 @@ InstallGlobalFunction(CommGridPathAlgebra,
                      end);
 
 
+InstallMethod(CommGridRowColumnDirectionToArrow,
+              "for comm grid, [row_index, col_index], direction",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsList, IsChar],
+              function(A, s, dir)
+                  local dv, da, a_s, a_t, t1, t2, arr;
+                  dv := CommGridRowColumnToVertexDict(A);
+                  da := CommGridSourceTargetToArrowDict(A);
+
+                  a_s := LookupDictionary(dv, [s[1], s[2]]);
+                  if dir = 'r' then
+                      t1 := s[1] + 1;
+                      t2 := s[2];
+                  elif dir = 'c' then
+                      t1 := s[1];
+                      t2 := s[2] + 1;
+                  else
+                      return fail;
+                  fi;
+                  a_t := LookupDictionary(dv, [t1, t2]);
+                  if a_t = fail then
+                      return fail;
+                  fi;
+                  arr := LookupDictionary(da, [String(a_s), String(a_t)]);
+                  return arr;
+              end);
+
+
 InstallMethod(CommGridPath,
               "for comm grid",
               ReturnTrue,
               [IsCommGridPathAlgebra, IsList, IsList],
               function(A, s, t)
-                  local dv, da, p, i, a_s, a_t, arr;
+                  local dv, p, i, arr;
                   if (t[1] < s[1]) or (t[2] < s[2]) then
                       return fail;
                   fi;
 
                   dv := CommGridRowColumnToVertexDict(A);
-                  da := CommGridSourceTargetToArrowDict(A);
                   p := LookupDictionary(dv, [s[1],s[2]]);
-                  if (p = fail) then
+                  if (p = fail) or (LookupDictionary(dv, [t[1],t[2]]) = fail) then
                       return fail;
                   fi;
 
                   for i in [s[1]+1..t[1]] do
-                      a_s := LookupDictionary(dv, [i-1, s[2]]);
-                      a_t := LookupDictionary(dv, [i, s[2]]);
-                      arr := LookupDictionary(da, [String(a_s), String(a_t)]);
+                      arr := CommGridRowColumnDirectionToArrow(A, [i-1, s[2]], 'r');
                       p := p * arr;
                   od;
                   for i in [s[2]+1..t[2]] do
-                      a_s := LookupDictionary(dv, [t[1], i-1]);
-                      a_t := LookupDictionary(dv, [t[1], i]);
-                      arr := LookupDictionary(da, [String(a_s), String(a_t)]);
+                      arr := CommGridRowColumnDirectionToArrow(A, [t[1], i-1], 'c');
                       p := p * arr;
                   od;
                   return p;
