@@ -40,6 +40,7 @@ end;
 
 
 
+# UNUSED
 __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
     local vertex, vertices, relations, VertexCode,
           i,j,
@@ -78,6 +79,9 @@ __CommGridPathAlgebraByPoset := function(F, n_rows, n_cols)
     A := PosetAlgebra(F, Poset(vertices, relations));
     return A;
 end;
+# END UNUSED
+
+
 
 
 __ComputeArrowsDict := function(A)
@@ -108,3 +112,36 @@ InstallGlobalFunction(CommGridPathAlgebra,
                          SetCommGridSourceTargetToArrowDict(A,__ComputeArrowsDict(A));
                          return A;
                      end);
+
+
+InstallMethod(CommGridPath,
+              "for comm grid",
+              ReturnTrue,
+              [IsCommGridPathAlgebra, IsList, IsList],
+              function(A, s, t)
+                  local dv, da, p, i, a_s, a_t, arr;
+                  if (t[1] < s[1]) or (t[2] < s[2]) then
+                      return fail;
+                  fi;
+
+                  dv := CommGridRowColumnToVertexDict(A);
+                  da := CommGridSourceTargetToArrowDict(A);
+                  p := LookupDictionary(dv, [s[1],s[2]]);
+                  if (p = fail) then
+                      return fail;
+                  fi;
+
+                  for i in [s[1]+1..t[1]] do
+                      a_s := LookupDictionary(dv, [i-1, s[2]]);
+                      a_t := LookupDictionary(dv, [i, s[2]]);
+                      arr := LookupDictionary(da, [String(a_s), String(a_t)]);
+                      p := p * arr;
+                  od;
+                  for i in [s[2]+1..t[2]] do
+                      a_s := LookupDictionary(dv, [t[1], i-1]);
+                      a_t := LookupDictionary(dv, [t[1], i]);
+                      arr := LookupDictionary(da, [String(a_s), String(a_t)]);
+                      p := p * arr;
+                  od;
+                  return p;
+              end);

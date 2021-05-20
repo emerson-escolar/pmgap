@@ -35,6 +35,12 @@ true
 true
 true
 
+gap> p := CommGridPath(A, [1,1],[2,3]);;
+gap> SourceVertex(p) = LookupDictionary(d,[1,1]);
+true
+gap> TargetVertex(p) = LookupDictionary(d,[2,3]);
+true
+
 
 gap> B := EquiorientedAnPathAlgebra(Rationals, 5);
 <Rationals[<quiver with 5 vertices and 4 arrows>]>

@@ -42,3 +42,5 @@ DeclareAttribute("NumCommGridColumns", IsCommGridPathAlgebra);
 DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
 
 DeclareAttribute("CommGridRowColumnToVertexDict", IsCommGridPathAlgebra);
+
+DeclareOperation("CommGridPath", [IsCommGridPathAlgebra, IsList, IsList]);
