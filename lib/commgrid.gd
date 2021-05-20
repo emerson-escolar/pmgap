@@ -56,10 +56,10 @@ DeclareAttribute("CommGridRowColumnToVertexDict", IsCommGridPathAlgebra);
 #! @Returns LookupDictionary
 DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
 
-#! @Arguments A, [row_index, col_index], direction
+#! @Arguments A, source, direction
 #! @Description
 #! Gets the arrow of (the quiver of) the CommGridPathAlgebra A with source vertex
-#! given by [row_index, col_index] and facing direction.
+#! given by source = [row_index, col_index] and facing direction.
 #! direction is a character 'r' or 'c',
 #! with 'r' meaning that the target vertex has row index 1 larger than the source vertex,
 #! and 'c' meaning that the target vertex has row index 1 larger than the source vertex.
@@ -67,4 +67,12 @@ DeclareAttribute("CommGridSourceTargetToArrowDict", IsCommGridPathAlgebra);
 DeclareOperation("CommGridRowColumnDirectionToArrow", [IsCommGridPathAlgebra, IsList, IsChar]);
 
 
+#! @Arguments A, source, target
+#! @Description
+#! Gets a single path of (the quiver of) the CommGridPathAlgebra A
+#! with source = [source_row_index, source_col_index]
+#! and target = [target_row_index, target_col_index].
+#! Which path is returned by this function may be subject to change, depending on the underlying implementation!
+#! Do not rely on the specific path.
+#! @Returns path
 DeclareOperation("CommGridPath", [IsCommGridPathAlgebra, IsList, IsList]);
