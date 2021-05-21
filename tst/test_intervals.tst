@@ -1,3 +1,92 @@
+# *** Interval dimension vectors and Row-wise birth-death format ***
+
+# some non-intervals for 4x3 grid
+
+gap> bad_dim_vecs := [[0,0,0, 0,0,0, 0,0,0, 0,0,0],
+>                     [0,0,1, 1,1,0, 0,0,0, 0,0,0],
+>                     [0,0,1, 0,0,0, 0,0,0, 0,0,1],
+>                     [1,1,1, 0,1,0, 0,0,0, 0,0,1],
+>                     [0,0,1, 0,0,0, 0,0,0, 0,0,0,0],
+>                     [0,0,1, 0,0,0, 0,0,0, 0,0],
+>                     [0,0,2, 0,0,0, 0,0,0, 0,0,0]];;
+gap> for dimv in bad_dim_vecs do
+>        Display(CheckCommGridIntervalDimVec(dimv,4,3));
+>    od;
+false
+false
+false
+false
+false
+false
+false
+gap> for dimv in bad_dim_vecs do
+>        Display(IntervalDimVecToRowWiseBD(dimv,4,3));
+>    od;
+fail
+fail
+fail
+fail
+fail
+fail
+fail
+
+gap> bad_rwbd := [[false,[1,1],false,[1,1]],
+>                 [false,false,false,false],
+>                 [[3,3],[1,2],false,false],
+>                 [false,[4,4],false,false],
+>                 [false,[0,3],false,false],
+>                 [false,"bd",false,false],
+>                 [false,[1,1],[1,1],false,false],
+>                 [false,[1,1],[1,1]]];;
+gap> for rwbd in bad_rwbd do
+>        Display(CheckRowWiseBD(rwbd,4,3));
+>    od;
+false
+false
+false
+false
+false
+false
+false
+false
+gap> for rwbd in bad_rwbd do
+>        Display(RowWiseBDToIntervalDimVec(rwbd,4,3));
+>    od;
+fail
+fail
+fail
+fail
+fail
+fail
+fail
+fail
+
+
+gap> dim_vecs := [[0,0,1, 0,0,0, 0,0,0, 0,0,0],
+>                 [0,0,1, 0,1,1, 1,1,0, 1,0,0],
+>                 [0,0,0, 0,1,1, 1,1,0, 0,0,0],
+>                 [1,1,1, 1,1,1, 1,1,1, 1,1,1]];;
+gap> rwbd_vecs := [[[3,3], false, false, false],
+>                  [[3,3], [2,3], [1,2], [1,1]],
+>                  [false, [2,3], [1,2], false],
+>                  [[1,3], [1,3], [1,3], [1,3]]];;
+gap> List(dim_vecs, x->(IntervalDimVecToRowWiseBD(x,4,3))) = rwbd_vecs;
+true
+gap> for rwbd in rwbd_vecs do
+>        Display(CheckRowWiseBD(rwbd,4,3));
+>    od;
+true
+true
+true
+true
+gap> List(rwbd_vecs, x->(RowWiseBDToIntervalDimVec(x,4,3))) = dim_vecs;
+true
+
+
+
+
+# *** Interval representations ***
+
 gap> A5 := EquiorientedAnPathAlgebra(Rationals, 5);;
 gap> Length(IntervalDimVecs(A5).1);
 15

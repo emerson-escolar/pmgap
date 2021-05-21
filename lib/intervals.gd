@@ -3,11 +3,12 @@
 #! @Section Intervals
 
 # --------------------------------------------------
-DeclareOperation("CheckCommGridIntervalDimVec", [IsList, IsInt, IsInt]);
-DeclareOperation("CheckAnIntervalDimVec", [IsList, IsInt]);
-
 DeclareOperation("IntervalDimVecToRowWiseBD", [IsList, IsInt, IsInt]);
 DeclareOperation("RowWiseBDToIntervalDimVec", [IsList, IsInt, IsInt]);
+
+DeclareOperation("CheckRowWiseBD", [IsList, IsInt, IsInt]);
+DeclareOperation("CheckCommGridIntervalDimVec", [IsList, IsInt, IsInt]);
+DeclareOperation("CheckAnIntervalDimVec", [IsList, IsInt]);
 # --------------------------------------------------
 
 

@@ -5,17 +5,11 @@
 # (1,1) (1,2) ... (1,n_cols) (2,1) (2,2) ... (2,n_cols) (n_rows,1) (n_rows,2) ... (n_rows,n_cols)
 
 
-
+# -------------------- Formats & Checks --------------------
 __IntervalDimVecToRowWiseBD := function(dimvec, n_rows, n_cols)
-    local invalid_entry,
-          zero, ans,
+    local zero, ans,
           i, slice, b, d;
-    if not (CheckCommGridIntervalDimVec(dimvec)) then
-        return fail;
-    fi;
-    
-    invalid_entry := PositionProperty(dimvec, x->(x<>1 and x <> 0));
-    if not (invalid_entry = fail) then
+    if not (CheckCommGridIntervalDimVec(dimvec, n_rows, n_cols)) then
         return fail;
     fi;
 
@@ -35,40 +29,71 @@ __IntervalDimVecToRowWiseBD := function(dimvec, n_rows, n_cols)
 end;
 
 
-
 InstallMethod(IntervalDimVecToRowWiseBD,
-              "for a commutative grid path algebra",
+              "for a dimvec, row_num, col_num",
               ReturnTrue,
               [IsList, IsInt, IsInt],
               __IntervalDimVecToRowWiseBD);
 
 
 InstallMethod(RowWiseBDToIntervalDimVec,
-              "for a commutative grid path algebra",
+              "for a rowwisebd, row_num, col_num",
               ReturnTrue,
               [IsList, IsInt, IsInt],
               function(rwbd, r, c)
                   local dimv, i, l, bd;
-                  if Length(rwbd) <> r then
+                  if not CheckRowWiseBD(rwbd, r, c) then
                       return fail;
                   fi;
-
                   dimv := [];
+
                   for i in [1..r] do
                       l := Length(dimv);
                       Append(dimv, ListWithIdenticalEntries(c, 0));
-                      if not (rwbd[i] = false) then
+                      if rwbd[i] <> false then
                           bd := rwbd[i];
                           dimv{[l+bd[1]..l+bd[2]]} := ListWithIdenticalEntries(bd[2] - bd[1] + 1, 1);
                       fi;
                   od;
-                  if not (CheckCommGridIntervalDimVec(dimv, r, c)) then
-                      return fail;
-                  fi;
                   return dimv;
               end);
 
 
+InstallMethod(CheckRowWiseBD,
+              "for a rowwisebd, row_num, col_num",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              function(rwbd, r, c)
+                  local nonfalse, i, prev_b, prev_d, cur_b, cur_d;
+                  if Length(rwbd) <> r then
+                      return false;
+                  fi;
+                  # check contiguity of interval stacks
+                  nonfalse := PositionsProperty(rwbd, x->(x<>false));
+
+                  if (Length(nonfalse) = 0) or (nonfalse <> [nonfalse[1]..nonfalse[Length(nonfalse)]]) then
+                      return false;
+                  fi;
+                  # check numbers
+                  for i in nonfalse do
+                      if (Length(rwbd[i]) <> 2) or not IsInt(rwbd[i][1]) or not IsInt(rwbd[i][2]) or not (1 <= rwbd[i][1] and rwbd[i][1] <= r) or not (1 <= rwbd[i][2] and rwbd[i][2] <= c) then
+                          return false;
+                      fi;
+                  od;
+                  # check staircase property
+                  prev_b := rwbd[nonfalse[1]][1];
+                  prev_d := rwbd[nonfalse[1]][2];
+                  for i in nonfalse{[2..Length(nonfalse)]} do
+                      cur_b := rwbd[i][1];
+                      cur_d := rwbd[i][2];
+                      if not ((cur_b <= prev_b) and (prev_b <= cur_d) and (cur_d <= prev_d)) then
+                          return false;
+                      fi;
+                      prev_b := cur_b;
+                      prev_d := cur_d;
+                  od;
+                  return true;
+              end);
 
 __LastBirthDeath := function(partial_dim_vec, n_cols)
     # figure out the last birth-death indices of a partially completed interval dimension vector
@@ -88,6 +113,85 @@ __LastBirthDeath := function(partial_dim_vec, n_cols)
     return [birth,death];
 end;
 
+
+__CheckCommGridIntervalDimVec := function(dim_vec, n_rows, n_cols)
+    local cur_stop, bd, invalid_entry,
+          prev_birth, prev_death,
+          remaining;
+
+    if not (Length(dim_vec) = n_rows * n_cols) then
+        # TODO: message?
+        return false;
+    fi;
+    invalid_entry := PositionProperty(dim_vec, x->(x<>1 and x <> 0));
+    if not (invalid_entry = fail) then
+        return false;
+    fi;
+
+    cur_stop := n_rows * n_cols;
+    bd := __LastBirthDeath(dim_vec, n_cols);
+    while (bd[1] = fail) do
+        cur_stop := cur_stop - n_cols;
+        if cur_stop = 0 then return false; fi;
+        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
+    od;
+
+    prev_birth := bd[1]; prev_death := bd[2];
+    while cur_stop > 0 do
+        cur_stop := cur_stop - n_cols;
+        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
+        if bd[1] = fail then break; fi;
+        if not (prev_birth <= bd[1] and bd[1] <= prev_death and
+                prev_death <= bd[2]) then
+            return false;
+        fi;
+        prev_birth := bd[1]; prev_death := bd[2];
+    od;
+    if cur_stop > 0 then
+        cur_stop := cur_stop - n_cols;
+        remaining := dim_vec{[1..cur_stop]};
+        if not (remaining = ListWithIdenticalEntries(Length(remaining),0)) then
+            return false;
+        fi;
+    fi;
+    return true;
+end;
+
+InstallMethod(CheckCommGridIntervalDimVec,
+              "for a dimvec, row_num, col_num",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              __CheckCommGridIntervalDimVec);
+
+
+
+__CheckAnIntervalDimVec := function(dim_vec, N)
+    local bd, i;
+    if not (N = Length(dim_vec)) then
+        # TODO: message?
+        return false;
+    fi;
+    bd := __LastBirthDeath(dim_vec, N);
+    if bd[1] = fail then
+        return false;
+    fi;
+    for i in [bd[1]..bd[2]] do
+        if not (dim_vec[i] = 1) then
+            return false;
+        fi;
+    od;
+    return true;
+end;
+
+InstallMethod(CheckAnIntervalDimVec,
+              "for a dimvec, verts_num",
+              ReturnTrue,
+              [IsList, IsInt],
+              __CheckAnIntervalDimVec);
+
+
+
+# -------------------- Generation --------------------
 
 __CommGridIntervalDimVecsPointed := function(n_rows, n_cols, start_row, end_col)
     # Generate intervals with
@@ -195,78 +299,6 @@ InstallOtherMethod(IntervalDimVecs,
 
 ### -------------------- IntervalRepn(s) --------------------
 
-__CheckCommGridIntervalDimVec := function(dim_vec, n_rows, n_cols)
-    local cur_stop, bd,
-          prev_birth, prev_death,
-          remaining;
-
-    if not (Length(dim_vec) = n_rows * n_cols) then
-        # TODO: message?
-        return false;
-    fi;
-
-    cur_stop := n_rows * n_cols;
-    bd := __LastBirthDeath(dim_vec, n_cols);
-    while (bd[1] = fail) do
-        cur_stop := cur_stop - n_cols;
-        if cur_stop = 0 then return false; fi;
-        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
-    od;
-
-    prev_birth := bd[1]; prev_death := bd[2];
-    while cur_stop > 0 do
-        cur_stop := cur_stop - n_cols;
-        bd := __LastBirthDeath(dim_vec{[1..cur_stop]}, n_cols);
-        if bd[1] = fail then break; fi;
-        if not (prev_birth <= bd[1] and bd[1] <= prev_death and
-                prev_death <= bd[2]) then
-            return false;
-        fi;
-        prev_birth := bd[1]; prev_death := bd[2];
-    od;
-    if cur_stop > 0 then
-        cur_stop := cur_stop - n_cols;
-        remaining := dim_vec{[1..cur_stop]};
-        if not (remaining = ListWithIdenticalEntries(Length(remaining),0)) then
-            return false;
-        fi;
-    fi;
-    return true;
-end;
-
-InstallMethod(CheckCommGridIntervalDimVec,
-              "for a dimvec, row_num, col_num",
-              ReturnTrue,
-              [IsList, IsInt, IsInt],
-              __CheckCommGridIntervalDimVec);
-
-
-
-__CheckAnIntervalDimVec := function(dim_vec, N)
-    local bd, i;
-    if not (N = Length(dim_vec)) then
-        # TODO: message?
-        return false;
-    fi;
-    bd := __LastBirthDeath(dim_vec, N);
-    if bd[1] = fail then
-        return false;
-    fi;
-    for i in [bd[1]..bd[2]] do
-        if not (dim_vec[i] = 1) then
-            return false;
-        fi;
-    od;
-    return true;
-end;
-
-InstallMethod(CheckAnIntervalDimVec,
-              "for a dimvec, verts_num",
-              ReturnTrue,
-              [IsList, IsInt],
-              __CheckAnIntervalDimVec);
-
-
 __CreateObviousIndecMatrices := function(A, dimv)
     local F, dim, matrices, verts, arr, src, trgt;
     for dim in dimv do
@@ -286,8 +318,6 @@ __CreateObviousIndecMatrices := function(A, dimv)
     od;
     return matrices;
 end;
-
-
 
 
 InstallMethod(IntervalRepn,
