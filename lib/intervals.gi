@@ -498,3 +498,65 @@ InstallMethod(IsIntervalDecomposable,
               ReturnTrue,
               [IsCommGridRepn],
               __IsIntervalDecomposable);
+
+
+
+
+InstallMethod(SourceVertices,
+              "for comm grid interval",
+              ReturnTrue,
+              [IsCommGridInterval],
+              function(V)
+                  local A, n_rows, n_cols,
+                        rwbd,
+                        nonempty_row_indices, i,
+                        prev_b, cur_b,
+                        ans;
+                  A := RightActingAlgebra(V);
+                  n_rows := NumCommGridRows(A);
+                  n_cols := NumCommGridColumns(A);
+                  rwbd := IntervalDimVecToRowWiseBD(DimensionVector(V), n_rows, n_cols);
+                  nonempty_row_indices := PositionsProperty(rwbd, x->(x<>false));
+
+                  prev_b := rwbd[nonempty_row_indices[1]][1];
+                  ans := [[nonempty_row_indices[1], prev_b]];
+                  for i in nonempty_row_indices{[2..Length(nonempty_row_indices)]} do
+                      cur_b := rwbd[i][1];
+                      if cur_b < prev_b then
+                          Add(ans, [i, cur_b]);
+                      fi;
+                      prev_b := cur_b;
+                  od;
+                  return ans;
+             end);
+
+InstallMethod(SinkVertices,
+              "for comm grid interval",
+              ReturnTrue,
+              [IsCommGridInterval],
+              function(V)
+                  local A, n_rows, n_cols,
+                        rwbd,
+                        nonempty_row_indices, i,
+                        prev_d, cur_d,
+                        ans;
+                  A := RightActingAlgebra(V);
+                  n_rows := NumCommGridRows(A);
+                  n_cols := NumCommGridColumns(A);
+                  rwbd := IntervalDimVecToRowWiseBD(DimensionVector(V), n_rows, n_cols);
+
+                  nonempty_row_indices := PositionsProperty(rwbd, x->(x<>false));
+
+                  prev_d := rwbd[nonempty_row_indices[1]][2];
+                  i := nonempty_row_indices[1];
+                  ans := [];
+                  for i in nonempty_row_indices{[2..Length(nonempty_row_indices)]} do
+                      cur_d := rwbd[i][2];
+                      if cur_d < prev_d then
+                          Add(ans, [i-1, prev_d]);
+                      fi;
+                      prev_d := cur_d;
+                  od;
+                  Add(ans, [i, prev_d]);
+                  return ans;
+             end);

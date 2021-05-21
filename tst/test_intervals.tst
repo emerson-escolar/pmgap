@@ -70,7 +70,12 @@ gap> rwbd_vecs := [[[3,3], false, false, false],
 >                  [[3,3], [2,3], [1,2], [1,1]],
 >                  [false, [2,3], [1,2], false],
 >                  [[1,3], [1,3], [1,3], [1,3]]];;
-gap> List(dim_vecs, x->(IntervalDimVecToRowWiseBD(x,4,3))) = rwbd_vecs;
+gap> for dimv in dim_vecs do
+>        Display(CheckCommGridIntervalDimVec(dimv,4,3));
+>    od;
+true
+true
+true
 true
 gap> for rwbd in rwbd_vecs do
 >        Display(CheckRowWiseBD(rwbd,4,3));
@@ -78,6 +83,8 @@ gap> for rwbd in rwbd_vecs do
 true
 true
 true
+true
+gap> List(dim_vecs, x->(IntervalDimVecToRowWiseBD(x,4,3))) = rwbd_vecs;
 true
 gap> List(rwbd_vecs, x->(RowWiseBDToIntervalDimVec(x,4,3))) = dim_vecs;
 true

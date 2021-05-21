@@ -125,3 +125,9 @@ DeclareProperty("IsIntervalDecomposable", IsCommGridRepn);
 InstallTrueMethod(IsIntervalDecomposable, IsEquiorientedAnRepn);
 InstallTrueMethod(IsIntervalDecomposable, IsCommGridInterval);
 # --------------------------------------------------
+
+
+# --------------------------------------------------
+# Sources and Sinks
+DeclareOperation("SourceVertices", [IsCommGridInterval]);
+DeclareOperation("SinkVertices", [IsCommGridInterval]);
