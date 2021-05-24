@@ -195,5 +195,21 @@ InstallTrueMethod(IsIntervalDecomposable, IsCommGridInterval);
 
 # --------------------------------------------------
 # Sources and Sinks
+
+#! @Arguments V
+#! @Returns list of sources
+#! @Description
+#! Computes the source vertices of an interval representation V
+#! of a commutative grid path algebra.
+#! The output is a list, with entries [row_index_i, col_index_i]
+#! corresponding to the indices of the source vertices of V.
 DeclareOperation("SourceVertices", [IsCommGridInterval]);
+
+#! @Arguments V
+#! @Returns list of sinks
+#! @Description
+#! Computes the sink vertices of an interval representation V
+#! of a commutative grid path algebra.
+#! The output is a list, with entries [row_index_i, col_index_i]
+#! corresponding to the indices of the sink vertices of V.
 DeclareOperation("SinkVertices", [IsCommGridInterval]);
