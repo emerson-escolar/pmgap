@@ -3,11 +3,77 @@
 #! @Section Intervals
 
 # --------------------------------------------------
+#! @Arguments dim_vec, n_rows, n_cols
+#! @Description
+#! Converts the dimension vector (dim_vec) of an interval representation over
+#! an n_rows x n_cols comm_grid_path_algebra to the row-wise birth-death
+#! format.
+#!
+#! In the row-wise birth-death format, an interval is a list
+#! with the ith entry given as:
+#! a) a list with two elements [birth_i, death_i] corresponding to the
+#!    endpoints of the ith row, if the ith row is non-empty, or
+#! b) false, if the ith row is empty.
+#!
+#! Note that the interval representation nor the comm_grid_path_algebra
+#! need not be explicitly constructed.
+#! @Returns row-wise birth-death
 DeclareOperation("IntervalDimVecToRowWiseBD", [IsList, IsInt, IsInt]);
+
+# --------------------------------------------------
+#! @Arguments rwbd, n_rows, n_cols
+#! @Description
+#! Converts the row-wise-birth-death list (rwbd) of an interval representation over
+#! an n_rows x n_cols comm_grid_path_algebra to its dimension vector.
+#!
+#! In the row-wise birth-death format, an interval is a list
+#! with the ith entry given as:
+#! a) a list with two elements [birth_i, death_i] corresponding to the
+#!    endpoints of the ith row, if the ith row is non-empty, or
+#! b) false, if the ith row is empty.
+#!
+#! Note that the interval representation nor the comm_grid_path_algebra
+#! need not be explicitly constructed.
+#! @Returns dimension vector
 DeclareOperation("RowWiseBDToIntervalDimVec", [IsList, IsInt, IsInt]);
 
+# --------------------------------------------------
+#! @Arguments rwbd, n_rows, n_cols
+#! @Description
+#! Checks whether or not the input row-wise-birth-death list (rwbd) represents
+#! an interval representation over an n_rows x n_cols comm_grid_path_algebra.
+#!
+#! In the row-wise birth-death format, an interval is a list
+#! with the ith entry given as:
+#! a) a list with two elements [birth_i, death_i] corresponding to the
+#!    endpoints of the ith row, if the ith row is non-empty, or
+#! b) false, if the ith row is empty.
+#!
+#! Note that the interval representation nor the comm_grid_path_algebra
+#! need not be explicitly constructed.
+#! @Returns true or false
 DeclareOperation("CheckRowWiseBD", [IsList, IsInt, IsInt]);
+
+# --------------------------------------------------
+#! @Arguments dim_vec, n_rows, n_cols
+#! @Description
+#! Checks whether or not the input dimension vector (dim_vec) represents
+#! an interval representation over an n_rows x n_cols comm_grid_path_algebra.
+#!
+#! Note that the interval representation nor the comm_grid_path_algebra
+#! need not be explicitly constructed.
+#! @Returns true or false
 DeclareOperation("CheckCommGridIntervalDimVec", [IsList, IsInt, IsInt]);
+
+#! @Arguments dim_vec, n
+#! @Description
+#! Checks whether or not the input dimension vector (dim_vec) represents
+#! an interval representation over a equioriented A_n path algebra with
+#! n vertices.
+#!
+#! Note that the interval representation nor the path_algebra
+#! need not be explicitly constructed.
+#! @Returns true or false
 DeclareOperation("CheckAnIntervalDimVec", [IsList, IsInt]);
 # --------------------------------------------------
 
