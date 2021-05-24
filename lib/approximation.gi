@@ -73,3 +73,127 @@ InstallMethod(MatricesOnPaths,
               ReturnTrue,
               [IsCommGridRepn],
               __MatricesOnPaths);
+
+
+__Source_Target_To_String_Code := function(s, t)
+    return JoinStringsWithSeparator(List([s[1], s[2], t[1], t[2]],x->String(x)),"_");
+end;
+
+__StackVertical := function(A, B)
+    local shapeA, shapeB;
+    shapeA := DimensionsMat(A);
+    shapeB := DimensionsMat(B);
+    if shapeA = fail or shapeB = fail or shapeA[2] <> shapeB[2] then
+        return fail;
+    fi;
+    return Concatenation(A,B);
+end;
+
+__StackHorizontal := function(A, B)
+    local AB, i,
+          shapeA, shapeB;
+    shapeA := DimensionsMat(A);
+    shapeB := DimensionsMat(B);
+    if shapeA = fail or shapeB = fail or shapeA[1] <> shapeB[1] then
+        return fail;
+    fi;
+    AB := [];
+    for i in [1..shapeA[1]] do
+        Add(AB, Concatenation(A[i],B[i]));
+    od;
+    return AB;
+end;
+
+__CompressedMultiplicity2N := function(V)
+    local A, n_rows, n_cols, dv, F,
+          dim_vec,
+          mats, height, entry, mats_dict,
+          ans,
+          intervals, I,
+          sources, sinks,
+          vertex, mult, mat1, mat2, mat3, mat4, r, c;
+
+
+    if not IsCommGridRepn(V) then
+        return fail;
+    fi;
+
+    A := RightActingAlgebra(V);
+    F := LeftActingDomain(V);
+    n_rows := NumCommGridRows(A);
+    n_cols := NumCommGridColumns(A);
+    dv := CommGridRowColumnToVertexDict(A);
+
+    dim_vec := DimensionVector(V);
+
+    if n_rows <> 2 then
+        return fail;
+    fi;
+
+    mats := MatricesOnPaths(V);
+    # convert mats to usable dictionary format
+    mats_dict := NewDictionary("1_1_2_2", true);
+    for height in RecNames(mats) do
+        for entry in mats.(height) do
+            AddDictionary(mats_dict,
+                          __Source_Target_To_String_Code(entry[1],entry[2]),
+                          entry[3]);
+        od;
+    od;
+
+    ans := [];
+
+    intervals := IntervalRepns(A);
+    for height in RecNames(intervals) do
+        for I in intervals.(height) do
+            sources := SourceVertices(I);
+            sinks := SinkVertices(I);
+
+            mult := 0;
+
+            if (Length(sources) = 1) and (Length(sinks) = 1) then
+                if sources[1] = sinks[1] then
+                    vertex := LookupDictionary(dv, sources[1]);
+                    mult := dim_vec[PositionProperty(VerticesOfQuiver(QuiverOfPathAlgebra(A)), x->(x=vertex))];
+                else
+                    mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
+                    mult := RankMat(mat1);
+                fi;
+
+            elif (Length(sources) = 1) and (Length(sinks) = 2) then
+                mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
+                mat2 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[2]));
+                mat3 := __StackHorizontal(mat1, mat2);
+                mult := RankMat(mat1) + RankMat(mat2) - RankMat(mat3);
+
+            elif (Length(sources) = 2) and (Length(sinks) = 1) then
+                mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
+                mat2 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[2],sinks[1]));
+                mat3 := __StackVertical(mat1, mat2);
+                mult := RankMat(mat1) + RankMat(mat2) - RankMat(mat3);
+
+            elif (Length(sources) = 2) and (Length(sinks) = 2) then
+                mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[2]));
+                mat2 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
+                mat3 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[2],sinks[2]));
+
+                r := DimensionsMat(mat3)[1];
+                c := DimensionsMat(mat2)[2];
+                mat4 := __StackVertical(__StackHorizontal(mat2, mat1),
+                                        __StackHorizontal(NullMat(r,c, F), mat3));
+                mult := RankMat(mat1) - RankMat(__StackHorizontal(mat1,mat2)) - RankMat(__StackVertical(mat3, mat1)) + RankMat(mat4);
+            fi;
+
+            Add(ans, [I, mult]);
+        od;
+    od;
+    
+    return ans;
+end;
+
+
+InstallMethod(CompressedMultiplicity,
+              "for CommGridRepn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __CompressedMultiplicity2N);
