@@ -1,6 +1,6 @@
-#! @Chapter Persistence modules (representations)
+#! @Chapter intervals
 
-#! @Section Intervals
+#! @Section Interval formats
 
 # --------------------------------------------------
 #! @Arguments dim_vec, n_rows, n_cols
@@ -77,6 +77,7 @@ DeclareOperation("CheckCommGridIntervalDimVec", [IsList, IsInt, IsInt]);
 DeclareOperation("CheckAnIntervalDimVec", [IsList, IsInt]);
 # --------------------------------------------------
 
+#! @Section Generating intervals
 
 # --------------------------------------------------
 #! @BeginGroup IntervalDimVecs
@@ -162,6 +163,7 @@ DeclareProperty("IsEquiorientedAnInterval", IsEquiorientedAnRepn);
 InstallTrueMethod(IsIndecomposableModule, IsEquiorientedAnInterval);
 
 
+#! @Section Interval part of a persistence module
 # --------------------------------------------------
 # IntervalPart & Related Functions
 
@@ -193,8 +195,10 @@ InstallTrueMethod(IsIntervalDecomposable, IsCommGridInterval);
 # --------------------------------------------------
 
 
+#! @Section Interval sources and sinks
+
 # --------------------------------------------------
-# Sources and Sinks
+# Interval sources and sinks
 
 #! @Arguments V
 #! @Returns list of sources

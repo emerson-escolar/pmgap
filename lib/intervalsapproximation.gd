@@ -1,4 +1,6 @@
-#! @Section Interval Approximation
+#! @Chapter intervals
+
+#! @Section Interval approximation
 
 #!
 DeclareOperation("MatricesOnPaths", [IsCommGridRepn]);

@@ -1,4 +1,4 @@
-#! @Chapter Persistence modules (representations)
+#! @Chapter representations
 
 #! @Section Useful operations
 
