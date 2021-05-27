@@ -11,7 +11,7 @@ gapscriptsdir = @gapscriptsdir@
 gapscripts_DATA = loader.g generate_intervals.g
 
 PYSCRPT = pmgap_from_homcloud_random_cech.py
-GPSCRPTIN = pmgap_interval_decomposable.in pmgap_batch_interval_decomposable.in pmgap_generate_intervals.in
+GPSCRPTIN = pmgap_interval_decomposable.in pmgap_batch_interval_decomposable.in pmgap_generate_intervals.in pmgap_interval_approximation.in
 GPSCRPTOUT = $(GPSCRPTIN:.in=.sh)
 
 EXTRA_DIST = $(gapscripts_DATA) $(PYSCRPT) $(GPSCRPTIN)
