@@ -69,7 +69,7 @@ DeclareProperty("IsCommGridRepn", IsPathAlgebraMatModule);
 DeclareProperty("IsEquiorientedAnRepn", IsPathAlgebraMatModule);
 
 
-#! @Section Reading from files
+#! @Section Reading and Writing files
 
 #! @BeginGroup JsonToCommGridRepn
 #! @GroupTitle Representations of commutative grids from json
@@ -174,10 +174,19 @@ DeclareOperation("JsonFilesToCommGridRepn", [IsList]);
 
 #! @BeginGroup CommGridRepnToJson
 #! @GroupTitle Representations of commutative grids to json format
+#! @Description
+#! Outputs a <Ref Func="CommGridRepn"/> <A>V</A> to json format, as detailed in the documentation for
+#! <Ref Oper="JsonToCommGridRepn"/>.
+#! The first variation expects
+#! an <C>OutputTextStream</C> <A>json_stream</A>,
+#! while the second variation expects
+#! a filename <A>json_filename</A>.
 
-#! @Arguments comm_grid_repn, json_stream
+#! @Returns true or fail
+
+#! @Arguments V, json_stream
 DeclareOperation("CommGridRepnToJson", [IsCommGridRepn, IsOutputTextStream]);
 
-#! @Arguments comm_grid_repn, json_filename
+#! @Arguments V, json_filename
 DeclareOperation("CommGridRepnToJsonFile", [IsCommGridRepn, IsString]);
 #! @EndGroup
