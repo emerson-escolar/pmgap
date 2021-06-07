@@ -560,3 +560,77 @@ InstallMethod(SinkVertices,
                   Add(ans, [i, prev_d]);
                   return ans;
              end);
+
+
+
+InstallMethod(CoverOfRowWiseBDInterval,
+              "for a rowwisebd, row_num, col_num",
+              ReturnTrue,
+              [IsList, IsInt, IsInt],
+              function(rwbd, r, c)
+                  local ans, nonempty_row_indices,
+                        i, cur_list,
+                        prev_b, prev_d,
+                        cur_b, cur_d;
+
+                  if not CheckRowWiseBD(rwbd, r, c) then
+                      return fail;
+                  fi;
+
+                  ans := [];
+                  nonempty_row_indices := PositionsProperty(rwbd, x->(x<>false));
+
+                  # FIRST NONEMPTY ROW
+                  i := nonempty_row_indices[1];
+                  if i > 1 then
+                      cur_list := StructuralCopy(rwbd);
+                      cur_list[i-1] := [rwbd[i][2],rwbd[i][2]];
+                      Add(ans, cur_list);
+                  fi;
+
+                  cur_b := rwbd[i][1];
+                  cur_d := rwbd[i][2];
+                  if cur_d < c then
+                      cur_list := StructuralCopy(rwbd);
+                      cur_list[i] := [cur_b, cur_d + 1];
+                      Add(ans, cur_list);
+                  fi;
+                  prev_b := cur_b;
+                  prev_d := cur_d;
+
+                  for i in nonempty_row_indices{[2..Length(nonempty_row_indices)]} do
+                      cur_b := rwbd[i][1];
+                      cur_d := rwbd[i][2];
+                      if cur_d < prev_d then
+                          cur_list := StructuralCopy(rwbd);
+                          cur_list[i] := [cur_b, cur_d + 1];
+                          Add(ans, cur_list);
+                      fi;
+
+                      if cur_b < prev_b then
+                          cur_list := StructuralCopy(rwbd);
+                          cur_list[i-1] := [prev_b-1, prev_d];
+                          Add(ans, cur_list);
+                      fi;
+
+                      prev_b := cur_b;
+                      prev_d := cur_d;
+                  od;
+
+                  # LAST NONEMPTY ROW
+                  # i := nonempty_row_indices[Length(nonempty_row_indices)];
+
+                  if cur_b > 1 then
+                      cur_list := StructuralCopy(rwbd);
+                      cur_list[i] := [cur_b-1, cur_d];
+                      Add(ans, cur_list);
+                  fi;
+
+                  if i < r then
+                      cur_list := StructuralCopy(rwbd);
+                      cur_list[i+1] := [cur_b,cur_b];
+                      Add(ans, cur_list);
+                  fi;
+
+                  return ans;
+              end);

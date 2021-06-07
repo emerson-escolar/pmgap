@@ -238,3 +238,16 @@ DeclareOperation("SourceVertices", [IsCommGridInterval]);
 #! The output is a list, with entries [row_index_i, col_index_i]
 #! corresponding to the indices of the sink vertices of V.
 DeclareOperation("SinkVertices", [IsCommGridInterval]);
+
+
+
+#! @Section Interval local lattice computations
+
+# --------------------------------------------------
+#! @Arguments rwbd, n_rows, n_cols
+#! @Description
+#!
+#! Note that the interval representation nor the path algebra
+#! need not be explicitly constructed.
+#! @Returns
+DeclareOperation("CoverOfRowWiseBDInterval", [IsList, IsInt, IsInt]);
