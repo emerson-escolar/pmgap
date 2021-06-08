@@ -13,6 +13,7 @@ usage() {
 		echo "USAGE:"
 		echo " $PROGNAME [-h] <input>"
 		echo "  -h                 Show this help."
+    echo "  -d                 Show decomposition of interval part."
 		echo "  <input>            Input containing data about persistence module to decompose."
 		echo ""
 		echo "INPUT:"
@@ -27,9 +28,12 @@ usage() {
 }
 
 # [ $# -eq 0 ] && usage
-
-while getopts "h" o; do
-		case "${o}" in		     
+DECOMPO=false
+while getopts "hd" o; do
+		case "${o}" in
+        d)
+            DECOMPO=true
+            ;;
 				h | *) # Display help.
 						usage
 						exit 0
@@ -54,7 +58,14 @@ fi
 __CODE="
 V:=JsonFileToCommGridRepn("'"'"$1"'"'");;
 Display(DimensionVector(V));
-Display(IntervalPartDimVec(V));
-Display(IsIntervalDecomposable(V));"
+Display("'"'"Interval Part:"'"'");
+Display(IntervalPartDimVec(V));"
+
+if [ "$DECOMPO" = true ]; then
+    __CODE="$__CODE""Display("'"'"Interval Part Decomposition:"'"'");IntervalPart(V);"
+fi
+
+__CODE="$__CODE""Display(IsIntervalDecomposable(V));"
+
 
 echo "$__CODE"  | gap -o 8G -q  @gapscriptsdir@/loader.g

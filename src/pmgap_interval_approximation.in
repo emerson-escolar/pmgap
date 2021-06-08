@@ -54,7 +54,7 @@ V:=JsonFileToCommGridRepn("'"'"$1"'"'");;
 Display(DimensionVector(V));
 Display("'"'"Compressed Multiplicity:"'"'");
 CompressedMultiplicity(V);
-Display("'"'"IntervalApproximation:"'"'");
+Display("'"'"Interval Approximation:"'"'");
 IntervalApproximation(V);"
 
 echo "$__CODE"  | gap -o 8G -q  @gapscriptsdir@/loader.g
