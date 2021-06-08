@@ -76,7 +76,7 @@ InstallMethod(CheckRowWiseBD,
                   fi;
                   # check numbers
                   for i in nonfalse do
-                      if (Length(rwbd[i]) <> 2) or not IsInt(rwbd[i][1]) or not IsInt(rwbd[i][2]) or not (1 <= rwbd[i][1] and rwbd[i][1] <= r) or not (1 <= rwbd[i][2] and rwbd[i][2] <= c) then
+                      if (Length(rwbd[i]) <> 2) or not IsInt(rwbd[i][1]) or not IsInt(rwbd[i][2]) or not (1 <= rwbd[i][1] and rwbd[i][1] <= c) or not (1 <= rwbd[i][2] and rwbd[i][2] <= c) then
                           return false;
                       fi;
                   od;
@@ -680,7 +680,7 @@ InstallMethod(JoinCoverSubsetsOfRowWiseBD,
                         first_row, last_row,
                         check_first_d, check_last_b,
                         cover_mods,
-                        comb, cur_list,
+                        comb, card, cur_list,
                         i_bd;
 
                   ans := [];
@@ -700,11 +700,17 @@ InstallMethod(JoinCoverSubsetsOfRowWiseBD,
                   fi;
 
                   cover_mods := __CoverModsOfRowWiseBD(rwbd, r, c);
+
                   if cover_mods = fail then
                       return fail;
                   fi;
 
+                  if Length(cover_mods) = 0 then
+                      return [[StructuralCopy(rwbd),0]];
+                  fi;
+
                   for comb in IteratorOfCombinations(cover_mods) do
+                      card := Length(comb);
                       cur_list := StructuralCopy(rwbd);
                       for i_bd in comb do
                           if cur_list[i_bd[1]] = false then
@@ -720,7 +726,7 @@ InstallMethod(JoinCoverSubsetsOfRowWiseBD,
                       if check_first_d = true then
                           cur_list := __CheckAndFixPreviousRowDeath(cur_list, first_row);
                       fi;
-                      Add(ans, cur_list);
+                      Add(ans, [cur_list, card]);
                   od;
 
                   return ans;

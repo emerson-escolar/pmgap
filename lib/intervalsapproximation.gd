@@ -8,3 +8,6 @@ DeclareOperation("MatricesOnPaths", [IsCommGridRepn]);
 
 #!
 DeclareOperation("CompressedMultiplicity", [IsCommGridRepn]);
+
+#!
+DeclareOperation("IntervalApproximation", [IsCommGridRepn]);

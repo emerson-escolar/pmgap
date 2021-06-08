@@ -184,7 +184,9 @@ __CompressedMultiplicity2N := function(V)
                 mult := RankMat(mat1) - RankMat(__StackHorizontal(mat1,mat2)) - RankMat(__StackVertical(mat3, mat1)) + RankMat(mat4);
             fi;
 
-            Add(ans, [I, mult]);
+            if mult <> 0 then
+                Add(ans, [I, mult]);
+            fi;
         od;
     od;
     
@@ -197,3 +199,62 @@ InstallMethod(CompressedMultiplicity,
               ReturnTrue,
               [IsCommGridRepn],
               __CompressedMultiplicity2N);
+
+
+
+
+__IntervalApproximation2N := function(V)
+    local ans, cM,
+          cM_dict, entry,
+          A, n_rows, n_cols,
+          intervals, height, I,
+          rwbd, coeff, join_card, join_dim_vec, sign, cM_entry;
+
+    cM := CompressedMultiplicity(V);
+    # convert CM to usable dictionary format
+    cM_dict := NewDictionary("", true);
+    for entry in cM do
+        AddDictionary(cM_dict,
+                      JoinStringsWithSeparator(DimensionVector(entry[1])),
+                      entry[2]);
+    od;
+
+    ans := [];
+
+    A := RightActingAlgebra(V);
+    n_rows := NumCommGridRows(A);
+    n_cols := NumCommGridColumns(A);
+
+    if n_rows <> 2 then
+        return fail;
+    fi;
+
+    intervals := IntervalRepns(A);
+    for height in RecNames(intervals) do
+        for I in intervals.(height) do
+            rwbd := IntervalDimVecToRowWiseBD(DimensionVector(I), n_rows, n_cols);
+            coeff := 0;
+
+            for join_card in JoinCoverSubsetsOfRowWiseBD(rwbd, n_rows, n_cols) do
+                join_dim_vec := RowWiseBDToIntervalDimVec(join_card[1], n_rows, n_cols);
+                sign := (-1) ^ join_card[2];
+                cM_entry := LookupDictionary(cM_dict, JoinStringsWithSeparator(join_dim_vec));
+                if cM_entry <> fail then
+                    coeff := coeff + sign * cM_entry;
+                fi;
+            od;
+            if coeff <> 0 then
+                Add(ans, [I, coeff]);
+            fi;
+        od;
+    od;
+    return ans;
+end;
+
+
+
+InstallMethod(IntervalApproximation,
+              "for CommGridRepn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __IntervalApproximation2N);
