@@ -245,9 +245,20 @@ DeclareOperation("SinkVertices", [IsCommGridInterval]);
 
 # --------------------------------------------------
 #! @Arguments rwbd, n_rows, n_cols
-#! @Description
+#! @Description Generate cover of an interval, in row-wise birth-death format.
 #!
 #! Note that the interval representation nor the path algebra
 #! need not be explicitly constructed.
-#! @Returns
-DeclareOperation("CoverOfRowWiseBDInterval", [IsList, IsInt, IsInt]);
+#! @Returns list of cover intervals
+DeclareOperation("CoverOfRowWiseBD", [IsList, IsInt, IsInt]);
+
+#! @Arguments rwbd, n_rows, n_cols
+#! @Description Generate joins of subsets of the cover of an interval,
+#! in row-wise birth-death format.
+#!
+#! Note that the interval representation nor the path algebra
+#! need not be explicitly constructed.
+#! @Returns list of intervals
+DeclareOperation("JoinCoverSubsetsOfRowWiseBD", [IsList, IsInt, IsInt]);
+
+
