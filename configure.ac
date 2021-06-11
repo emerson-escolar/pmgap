@@ -34,6 +34,7 @@ AC_CHECK_HEADERS([catch.hpp], [], [AC_MSG_ERROR([catch not found])])
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([tst/Makefile])
+AC_CONFIG_FILES([demos/Makefile])
 
 AC_CONFIG_FILES([src/lib/Makefile])
 

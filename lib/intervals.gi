@@ -395,20 +395,20 @@ PrettyPrintCommutativeGridDimVec := function(dim_vec, n_cols)
     Print("-------------------------------");
 end;
 
-InstallMethod(PrintObj,
-              "for a commutative grid interval repn",
-              ReturnTrue,
-              [IsCommGridInterval],
-              NICE_FLAGS + 1,
-              function(I)
-                  local dim_vec,
-                        A, n_cols;
-                  A := RightActingAlgebra(I);
-                  n_cols := NumCommGridColumns(A);
-                  dim_vec := DimensionVector(I);
-                  PrettyPrintCommutativeGridDimVec(dim_vec, n_cols);
-                  return;
-              end);
+# InstallMethod(PrintObj,
+#               "for a commutative grid interval repn",
+#               ReturnTrue,
+#               [IsCommGridInterval],
+#               NICE_FLAGS + 1,
+#               function(I)
+#                   local dim_vec,
+#                         A, n_cols;
+#                   A := RightActingAlgebra(I);
+#                   n_cols := NumCommGridColumns(A);
+#                   dim_vec := DimensionVector(I);
+#                   PrettyPrintCommutativeGridDimVec(dim_vec, n_cols);
+#                   return;
+#               end);
 
 
 ### -------------------- IntervalPart & Friends --------------------
