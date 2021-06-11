@@ -670,7 +670,14 @@ __CheckAndFixPreviousRowDeath := function(cur_list, row)
     return cur_list;
 end;
 
-
+# The following computes joins of subsets of the cover of an interval.
+# It takes advantange of the particular shape of intervals (staircases)
+# and that cover elements have exactly only one more vertex.
+# Most cover joins would then just be a simple union,
+# but in cases where both the upper-right vertices are added,
+# and/or both lower-left vertices are added, we need to
+# do a pushout and/or a pullback operation to make it an interval.
+# These are performed by the CheckAndFix subroutines above.
 InstallMethod(JoinCoverSubsetsOfRowWiseBD,
               "for a rowwisebd, row_num, col_num",
               ReturnTrue,
