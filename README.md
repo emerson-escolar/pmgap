@@ -30,6 +30,21 @@ Currently, the following main features are implemented.
    pmgap_interval_approximation.sh
    ``` 
    provided (installation of utility scripts needed).
+   
+4. Creation of persistence module over finite finite commutative grid from a bifiltered simplicial complex, using the program
+   ```
+   pmgap_cmplx2repn
+   ```
+   (compilation and installation of utility scripts needed).
+   
+# Demos 
+1. Demo for the paper **[On Approximation of 2D Persistence Modules by Interval-decomposables](https://arxiv.org/abs/1911.01637)** (compressed multiplicity and interval-decomposable approximation):
+
+    After completing **Install Part 1: GAP package pmgap** below, navigate to the demos folder inside a terminal and run
+    ```
+    gap pmgap_demo_interval_approximation.g
+    ```
+    to run the demo.
 
 
 # Install
