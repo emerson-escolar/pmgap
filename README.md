@@ -13,9 +13,23 @@ Currently, the following main features are implemented.
    * Reading and writing files that represent persistence modules
    * Enumeration of interval persistence modules
    
-2. Computation of the interval-decomposable part of a persistence module, using the algorithm in **H. Asashiba, M. Buchet, E. G. Escolar, K. Nakashima, and M. Yoshiwaki. "On Interval Decomposability of 2D Persistence Modules". [arXiv:1812.05261](https://arxiv.org/abs/1812.05261)**.
+2. Computation of the interval-decomposable part of a persistence module, using the algorithm in **H. Asashiba, M. Buchet, E. G. Escolar, K. Nakashima, and M. Yoshiwaki. "On Interval Decomposability of 2D Persistence Modules". [arXiv:1812.05261](https://arxiv.org/abs/1812.05261)**. 
+   These computations can be performed within GAP, or using the convenience scripts:
+   ```
+   pmgap_interval_decomposable.sh
+   ```
+   and
+   ```
+   pmgap_batch_interval_decomposable.sh
+   ```
+   provided (installation of utility scripts needed).
 
 3. Computation of the compressed multiplicity and interval-decomposable approximation over 2 x n grids, as introduced in **H. Asashiba, E. G. Escolar, K. Nakashima, and M. Yoshiwaki. "On Approximation of 2D Persistence Modules by Interval-decomposables". [arXiv:1911.01637](https://arxiv.org/abs/1911.01637)**
+   These computations can be performed within GAP, or using the convenience script:
+   ```
+   pmgap_interval_approximation.sh
+   ``` 
+   provided (installation of utility scripts needed).
 
 
 # Install
@@ -55,7 +69,7 @@ Currently, the following main features are implemented.
    ```
    inside of GAP. If installed correctly, this should work from any folder.
 
-## Part 2: C++ utility scripts
+## Part 2: utility scripts
 
 0. Ensure that the following libraries are installed.
 
