@@ -1,5 +1,5 @@
 # pmgap
-Some computations for Persistence Modules using GAP
+Computations for Persistence Modules using GAP
 
 This package is still in alpha development. 
 Features are incomplete, and the API is subject to changes as deemed necessary.
