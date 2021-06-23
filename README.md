@@ -1,8 +1,22 @@
 # pmgap
 Some computations for Persistence Modules using GAP
 
-This package is still in very alpha development. 
-Features are incomplete, and the API is subject to extreme changes as deemed necessary.
+This package is still in alpha development. 
+Features are incomplete, and the API is subject to changes as deemed necessary.
+
+# What can it do?
+
+Currently, the following main features are implemented.
+
+1. Objects representing persistence modules over finite commutative grids and functions to work with them. 
+   * Creation of commutative grids and persistence modules
+   * Reading and writing files that represent persistence modules
+   * Enumeration of interval persistence modules
+   
+2. Computation of the interval-decomposable part of a persistence module, using the algorithm in **H. Asashiba, M. Buchet, E. G. Escolar, K. Nakashima, and M. Yoshiwaki. "On Interval Decomposability of 2D Persistence Modules". [arXiv:1812.05261](https://arxiv.org/abs/1812.05261)**.
+
+3. Computation of the compressed multiplicity and interval-decomposable approximation over 2 x n grids, as introduced in **H. Asashiba, E. G. Escolar, K. Nakashima, and M. Yoshiwaki. "On Approximation of 2D Persistence Modules by Interval-decomposables". [arXiv:1911.01637](https://arxiv.org/abs/1911.01637)**
+
 
 # Install
 
@@ -103,6 +117,8 @@ Features are incomplete, and the API is subject to extreme changes as deemed nec
    sudo ldconfig
    ```
    See also https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s
+   
+3. Make install gives "Permission denied" error
 
 # Usage
 Refer to the documentation in the folder doc/ (after compiling the documentation).
