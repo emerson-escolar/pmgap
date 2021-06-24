@@ -147,7 +147,18 @@ Currently, the following main features are implemented.
    ```
    See also https://stackoverflow.com/questions/480764/linux-error-while-loading-shared-libraries-cannot-open-shared-object-file-no-s
    
-3. Make install gives "Permission denied" error
+3. `make install` gives "Permission denied" error.
+   [SOLUTION] Install as 
+   ```
+   sudo make install
+   ```
+   or use `--prefix` option with `./configure` in order to change the installation directory.
+   See
+   ```
+   ./configure --help
+   ```
+   for more details.
+   
 
 # Usage
 Refer to the documentation in the folder doc/ (after compiling the documentation).
