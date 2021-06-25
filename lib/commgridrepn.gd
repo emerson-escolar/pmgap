@@ -190,3 +190,23 @@ DeclareOperation("CommGridRepnToJson", [IsCommGridRepn, IsOutputTextStream]);
 #! @Arguments V, json_filename
 DeclareOperation("CommGridRepnToJsonFile", [IsCommGridRepn, IsString]);
 #! @EndGroup
+
+
+
+
+
+#! @Section Random Constructions
+
+#! @BeginGroup RandomCommGridRepn
+#! @GroupTitle Random representations of commutative grids
+#! @Description
+#! Generates a random <Ref Func="CommGridRepn"/> <A>V</A>.
+#!
+#! @Returns V
+
+#! @Arguments dim_vec, A
+# DeclareOperation("RandomCommGridRepn", [IsList, IsCommGridPathAlgebra]);
+DeclareOperation("RandomCommGridRepn",[IsList]);
+
+
+#! @EndGroup

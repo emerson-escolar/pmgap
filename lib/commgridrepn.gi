@@ -310,3 +310,99 @@ InstallOtherMethod(CommGridRepn,
               function(A, mats)
                   return CommGridRepnArrLbl(A, __TranslateMats(A,mats));
               end);
+
+
+
+__RandomCommGridRepn := function(dimv, A)
+    local n_rows, n_cols, dv, F,
+          mats, mats_dict,
+          i, j,
+          __LookupVertexDimension,
+          vd_0_0,vd_1_0,vd_0_1,vd_1_1,
+          A_vert, A_hori, pb, dim_pb, pb_vert, pb_hori, V;
+
+    n_rows := NumCommGridRows(A);
+    n_cols := NumCommGridColumns(A);
+    dv := CommGridRowColumnToVertexDict(A);
+    F := LeftActingDomain(A);
+    mats := [];
+    mats_dict := NewDictionary(["1_1","2_2", "h"], true);
+
+    __LookupVertexDimension := function(i,j)
+        local vert, dim;
+        vert := String(LookupDictionary(dv, [i, j]));
+        dim := dimv[(i-1)*n_cols + j];
+        return rec(v := vert, d := dim);
+    end;
+
+    # generate last line of matrices
+    for j in [1..n_cols-1] do
+        vd_0_0 := __LookupVertexDimension(n_rows, j);
+        vd_0_1 := __LookupVertexDimension(n_rows, j+1);
+
+        if vd_0_0.d <> 0 and vd_0_1.d <> 0 then
+            Add(mats, [vd_0_0.v, vd_0_1.v, RandomMat(vd_0_0.d, vd_0_1.d, F)]);
+            AddDictionary(mats_dict, [vd_0_0.v, vd_0_1.v], Length(mats));
+        fi;
+    od;
+    for i in [(n_rows-1),(n_rows-2)..1] do
+        # generate vertical arrow on last column
+        vd_0_0 := __LookupVertexDimension(i, n_cols);
+        vd_1_0 := __LookupVertexDimension(i+1, n_cols);
+
+        if vd_0_0.d <> 0 and vd_1_0.d <> 0 then
+            Add(mats, [vd_0_0.v, vd_1_0.v, RandomMat(vd_0_0.d, vd_1_0.d, F)]);
+            AddDictionary(mats_dict, [vd_0_0.v, vd_1_0.v], Length(mats));
+        fi;
+
+        for j in [(n_cols-1),(n_cols-2)..1] do
+            vd_0_0 := __LookupVertexDimension(i, j);
+            vd_1_0 := __LookupVertexDimension(i+1, j);
+            vd_0_1 := __LookupVertexDimension(i, j+1);
+            vd_1_1 := __LookupVertexDimension(i+1, j+1);
+
+            if vd_0_0.d = 0 then
+                continue;
+            fi;
+
+            A_hori := mats[LookupDictionary(mats_dict, [vd_1_0.v, vd_1_1.v])][3];
+            A_vert := mats[LookupDictionary(mats_dict, [vd_0_1.v, vd_1_1.v])][3];
+
+            pb := PullbackMatrices(A_hori, A_vert);
+            if IsEmptyMatrix(pb[1]) then
+                pb_vert := NullMat(vd_0_0.d, dim_pb[2], F) * pb[1];
+                pb_hori := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[2];
+
+            dim_pb := DimensionsMat(pb[1]);
+            pb_vert := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[1];
+            pb_hori := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[2];
+
+            Add(mats, [vd_0_0.v, vd_1_0.v, pb_vert]);
+            AddDictionary(mats_dict, [vd_0_0.v, vd_1_0.v], Length(mats));
+
+            Add(mats, [vd_0_0.v, vd_0_1.v, pb_hori]);
+            AddDictionary(mats_dict, [vd_0_0.v, vd_0_1.v], Length(mats));
+        od;
+    od;
+
+
+    Display(mats);
+    V := CommGridRepn(A,dimv, mats);
+    return V;
+end;
+
+
+
+# InstallMethod(RandomCommGridRepn,
+#               "for dim_vec, A",
+#               ReturnTrue,
+#               [IsList, IsCommGridPathAlgebra],
+#               __RandomCommGridRepn);
+
+InstallMethod(RandomCommGridRepn,
+              "for dim_vec, A",
+              ReturnTrue,
+              [IsList],
+              function(foo)
+                  return __RandomCommGridRepn([1,2,3,4,5,6,1,2,3,4,5,6],CommGridPathAlgebra(Rationals,3,4));
+              end);

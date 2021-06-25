@@ -79,30 +79,7 @@ __Source_Target_To_String_Code := function(s, t)
     return JoinStringsWithSeparator(List([s[1], s[2], t[1], t[2]],x->String(x)),"_");
 end;
 
-__StackVertical := function(A, B)
-    local shapeA, shapeB;
-    shapeA := DimensionsMat(A);
-    shapeB := DimensionsMat(B);
-    if shapeA = fail or shapeB = fail or shapeA[2] <> shapeB[2] then
-        return fail;
-    fi;
-    return Concatenation(A,B);
-end;
 
-__StackHorizontal := function(A, B)
-    local AB, i,
-          shapeA, shapeB;
-    shapeA := DimensionsMat(A);
-    shapeB := DimensionsMat(B);
-    if shapeA = fail or shapeB = fail or shapeA[1] <> shapeB[1] then
-        return fail;
-    fi;
-    AB := [];
-    for i in [1..shapeA[1]] do
-        Add(AB, Concatenation(A[i],B[i]));
-    od;
-    return AB;
-end;
 
 __CompressedMultiplicity2N := function(V)
     local A, n_rows, n_cols, dv, F,
@@ -163,13 +140,13 @@ __CompressedMultiplicity2N := function(V)
             elif (Length(sources) = 1) and (Length(sinks) = 2) then
                 mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
                 mat2 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[2]));
-                mat3 := __StackHorizontal(mat1, mat2);
+                mat3 := StackMatricesHorizontalConcat(mat1, mat2);
                 mult := RankMat(mat1) + RankMat(mat2) - RankMat(mat3);
 
             elif (Length(sources) = 2) and (Length(sinks) = 1) then
                 mat1 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[1],sinks[1]));
                 mat2 := LookupDictionary(mats_dict, __Source_Target_To_String_Code(sources[2],sinks[1]));
-                mat3 := __StackVertical(mat1, mat2);
+                mat3 := StackMatricesVerticalConcat(mat1, mat2);
                 mult := RankMat(mat1) + RankMat(mat2) - RankMat(mat3);
 
             elif (Length(sources) = 2) and (Length(sinks) = 2) then
@@ -179,9 +156,9 @@ __CompressedMultiplicity2N := function(V)
 
                 r := DimensionsMat(mat3)[1];
                 c := DimensionsMat(mat2)[2];
-                mat4 := __StackVertical(__StackHorizontal(mat2, mat1),
-                                        __StackHorizontal(NullMat(r,c, F), mat3));
-                mult := RankMat(mat1) - RankMat(__StackHorizontal(mat1,mat2)) - RankMat(__StackVertical(mat3, mat1)) + RankMat(mat4);
+                mat4 := StackMatricesVerticalConcat(StackMatricesHorizontalConcat(mat2, mat1),
+                                        StackMatricesHorizontalConcat(NullMat(r,c, F), mat3));
+                mult := RankMat(mat1) - RankMat(StackMatricesHorizontalConcat(mat1,mat2)) - RankMat(StackMatricesVerticalConcat(mat3, mat1)) + RankMat(mat4);
             fi;
 
             if mult <> 0 then
