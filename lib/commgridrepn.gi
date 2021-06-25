@@ -317,9 +317,10 @@ __RandomCommGridRepn := function(dimv, A)
     local n_rows, n_cols, dv, F,
           mats, mats_dict,
           i, j,
-          __LookupVertexDimension,
+          __LookupVertexDimension, __UpdateMatsAndDict,
           vd_0_0,vd_1_0,vd_0_1,vd_1_1,
-          A_vert, A_hori, pb, dim_pb, pb_vert, pb_hori, V;
+          mat_vert, mat_hori, K, premult,
+          A_vert, A_hori, pb, dim_pb,  V;
 
     n_rows := NumCommGridRows(A);
     n_cols := NumCommGridColumns(A);
@@ -335,14 +336,19 @@ __RandomCommGridRepn := function(dimv, A)
         return rec(v := vert, d := dim);
     end;
 
+    __UpdateMatsAndDict := function(v1,v2,mat)
+        Add(mats, [v1, v2, mat]);
+        AddDictionary(mats_dict, [v1, v2], Length(mats));
+        return true;
+    end;
+
     # generate last line of matrices
     for j in [1..n_cols-1] do
         vd_0_0 := __LookupVertexDimension(n_rows, j);
         vd_0_1 := __LookupVertexDimension(n_rows, j+1);
 
         if vd_0_0.d <> 0 and vd_0_1.d <> 0 then
-            Add(mats, [vd_0_0.v, vd_0_1.v, RandomMat(vd_0_0.d, vd_0_1.d, F)]);
-            AddDictionary(mats_dict, [vd_0_0.v, vd_0_1.v], Length(mats));
+            __UpdateMatsAndDict(vd_0_0.v, vd_0_1.v, RandomMat(vd_0_0.d, vd_0_1.d, F));
         fi;
     od;
     for i in [(n_rows-1),(n_rows-2)..1] do
@@ -351,8 +357,7 @@ __RandomCommGridRepn := function(dimv, A)
         vd_1_0 := __LookupVertexDimension(i+1, n_cols);
 
         if vd_0_0.d <> 0 and vd_1_0.d <> 0 then
-            Add(mats, [vd_0_0.v, vd_1_0.v, RandomMat(vd_0_0.d, vd_1_0.d, F)]);
-            AddDictionary(mats_dict, [vd_0_0.v, vd_1_0.v], Length(mats));
+            __UpdateMatsAndDict(vd_0_0.v, vd_1_0.v, RandomMat(vd_0_0.d, vd_1_0.d, F));
         fi;
 
         for j in [(n_cols-1),(n_cols-2)..1] do
@@ -364,45 +369,78 @@ __RandomCommGridRepn := function(dimv, A)
             if vd_0_0.d = 0 then
                 continue;
             fi;
+            if vd_1_1.d = 0 then
+                # anything will do
+                if vd_1_0.d <> 0 then
+                    mat_vert := RandomMat(vd_0_0.d, vd_1_0.d, F);
+                    __UpdateMatsAndDict(vd_0_0.v, vd_1_0.v, mat_vert);
+                fi;
+                if vd_0_1.d <> 0 then
+                    mat_hori := RandomMat(vd_0_0.d, vd_0_1.d, F);
+                    __UpdateMatsAndDict(vd_0_0.v, vd_0_1.v, mat_hori);
+                fi;
+                continue;
+            fi;
+
+            if vd_1_0.d <> 0 and vd_0_1.d = 0 then
+                A_hori := mats[LookupDictionary(mats_dict, [vd_1_0.v, vd_1_1.v])][3];
+                K := NullspaceMat(A_hori);
+                if Length(K) = 0 then
+                    mat_vert := NullMat(vd_0_0.d, vd_1_0.d, F);
+                else
+                    mat_vert := RandomMat(vd_0_0.d, DimensionsMat(K)[1], F) * K;
+                fi;
+                __UpdateMatsAndDict(vd_0_0.v, vd_1_0.v, mat_vert);
+                continue;
+            fi;
+
+            if vd_0_1.d <> 0 and vd_1_0.d = 0 then
+                A_vert := mats[LookupDictionary(mats_dict, [vd_0_1.v, vd_1_1.v])][3];
+                K := NullspaceMat(A_vert);
+                if Length(K) = 0 then
+                    mat_hori := NullMat(vd_0_0.d, vd_0_1.d, F);
+                else
+                    mat_hori := RandomMat(vd_0_0.d, DimensionsMat(K)[1], F) * K;
+                fi;
+                __UpdateMatsAndDict(vd_0_0.v, vd_0_1.v, mat_hori);
+                continue;
+            fi;
 
             A_hori := mats[LookupDictionary(mats_dict, [vd_1_0.v, vd_1_1.v])][3];
             A_vert := mats[LookupDictionary(mats_dict, [vd_0_1.v, vd_1_1.v])][3];
 
             pb := PullbackMatrices(A_hori, A_vert);
-            if IsEmptyMatrix(pb[1]) then
-                pb_vert := NullMat(vd_0_0.d, dim_pb[2], F) * pb[1];
-                pb_hori := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[2];
+
+            if pb = fail then
+                # zero pullback
+                mat_vert := NullMat(vd_0_0.d, vd_1_0.d, F);
+                __UpdateMatsAndDict(vd_0_0.v, vd_1_0.v, mat_vert);
+                mat_hori := NullMat(vd_0_0.d, vd_0_1.d, F);
+                __UpdateMatsAndDict(vd_0_0.v, vd_0_1.v, mat_hori);
+                continue;
+            fi;
 
             dim_pb := DimensionsMat(pb[1]);
-            pb_vert := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[1];
-            pb_hori := RandomMat(vd_0_0.d, dim_pb[2], F) * pb[2];
+            premult := RandomMat(vd_0_0.d, dim_pb[2], F);
+            mat_vert := premult * pb[1];
+            mat_hori := premult * pb[2];
 
-            Add(mats, [vd_0_0.v, vd_1_0.v, pb_vert]);
+            Add(mats, [vd_0_0.v, vd_1_0.v, mat_vert]);
             AddDictionary(mats_dict, [vd_0_0.v, vd_1_0.v], Length(mats));
 
-            Add(mats, [vd_0_0.v, vd_0_1.v, pb_hori]);
+            Add(mats, [vd_0_0.v, vd_0_1.v, mat_hori]);
             AddDictionary(mats_dict, [vd_0_0.v, vd_0_1.v], Length(mats));
         od;
     od;
 
-
-    Display(mats);
     V := CommGridRepn(A,dimv, mats);
     return V;
 end;
 
 
 
-# InstallMethod(RandomCommGridRepn,
-#               "for dim_vec, A",
-#               ReturnTrue,
-#               [IsList, IsCommGridPathAlgebra],
-#               __RandomCommGridRepn);
-
 InstallMethod(RandomCommGridRepn,
               "for dim_vec, A",
               ReturnTrue,
-              [IsList],
-              function(foo)
-                  return __RandomCommGridRepn([1,2,3,4,5,6,1,2,3,4,5,6],CommGridPathAlgebra(Rationals,3,4));
-              end);
+              [IsList, IsCommGridPathAlgebra],
+              __RandomCommGridRepn);

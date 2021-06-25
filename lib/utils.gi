@@ -72,21 +72,13 @@ __PullbackMatrices := function(Af, Ag)
     n2 := DimensionsMat(Ag)[1];
 
     K := NullspaceMat(StackMatricesVerticalConcat(Af, -Ag));
-    Display(K);
 
-    if IsEmptyMatrix(K) then
-        return [[],[]];
+    if Length(K) = 0 then
+        return fail;
     fi;
 
     k := DimensionsMat(K)[1];
     return [K{[1..k]}{[1..n1]}, K{[1..k]}{[n1+1..n1+n2]}];
-
-    # if k <> 1 then
-    #     return [K{[1..k]}{[1..n1]}, K{[1..k]}{[n1+1..n1+n2]}];
-    # else
-    #     return [[K[1]{[1..n1]}], [K[1]{[n1+1..n1+n2]}]];
-    # fi;
-
 end;
 
 
