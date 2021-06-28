@@ -323,7 +323,7 @@ __RandomCommGridRepn := function(dimv, A, random_mat_func...)
           A_vert, A_hori, pb, dim_pb,  V;
 
     if 0 = Length(random_mat_func) then
-        RandomMatFunc := RandomMat;
+        RandomMatFunc := RandomMatRandomRank;
     else
         RandomMatFunc := random_mat_func[1];
     fi;
