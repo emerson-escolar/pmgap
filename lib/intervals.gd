@@ -26,9 +26,10 @@
 #! There are additional requirements for being an interval.
 #! See Proposition 4.1 and the definition of "staircases" in <Cite Key="asashiba2018interval"/> for more details.
 
-
-# These are checked by the functions
-# <Ref Oper="CheckRowWiseBD"/>, <Ref Oper="CheckCommGridIntervalDimVec"/>, <Ref Oper="CheckAnIntervalDimVec"/>.
+#! These are checked by the functions
+#! <Ref Oper="CheckRowWiseBD" Label="for IsList, IsInt, IsInt"/>,
+#! <Ref Oper="CheckCommGridIntervalDimVec" Label="for IsList, IsInt, IsInt"/>,
+#! <Ref Oper="CheckAnIntervalDimVec" Label="for IsList, IsInt"/>.
 
 # --------------------------------------------------
 #! @Arguments rwbd, n_rows, n_cols

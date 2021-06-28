@@ -1,6 +1,6 @@
 #! @Chapter utils
 
-#! @Section Vector spaces and linear maps
+#! @Section Matrices
 
 #! @Description pullback
 #! @Arguments Af, Ag
@@ -8,11 +8,40 @@
 DeclareOperation("PullbackMatrices", [IsMatrix, IsMatrix]);
 
 
-DeclareOperation("StackMatricesHorizontalConcat", [IsMatrix, IsMatrix]);
+#! @Arguments M1, M2
+#! @Description
+#! Stack the two matrices <A>M1</A> and <A>M2</A> horizontally to obtain the matrix
+#! @LatexOnly $\left[\begin{array}{cc} M1 &  M2 \end{array}\right]$.
+#! @Returns matrix
+DeclareOperation("StackMatricesHorizontalCopy", [IsMatrix, IsMatrix]);
+
+#! @Arguments M1, M2
+#! @Description
+#! Stack the two matrices <A>M1</A> and <A>M2</A> vertically to obtain the matrix
+#! $\left[\begin{array}{c} M1 \\ M2 \end{array}\right]$.
+#! @Returns matrix
+DeclareOperation("StackMatricesVerticalCopy", [IsMatrix, IsMatrix]);
+
+
+#! @Arguments M1, M2
+#! @Description
+#! Stack the two matrices <A>M1</A> and <A>M2</A> vertically to obtain the matrix
+#! $\left[\begin{array}{c} M1 \\ M2 \end{array}\right]$
+#! by simple concatentation (data is not copied).
+#! For that, see <Ref Oper="StackMatricesVerticalCopy" Label="for IsMatrix, IsMatrix"/>.
+#! @Returns matrix
 DeclareOperation("StackMatricesVerticalConcat", [IsMatrix, IsMatrix]);
 
-DeclareOperation("StackMatricesHorizontalCopy", [IsMatrix, IsMatrix]);
-DeclareOperation("StackMatricesVerticalCopy", [IsMatrix, IsMatrix]);
+
+#! @Arguments M1, M2
+#! @Description
+#! Stack the two matrices <A>M1</A> and <A>M2</A> horizontally to obtain the matrix
+#! @LatexOnly $\left[\begin{array}{cc} M1 &  M2 \end{array}\right]$
+#! by simple concatentation (data is not copied).
+#! For that, see <Ref Oper="StackMatricesHorizontalCopy" Label="for IsMatrix, IsMatrix"/>.
+#! @Returns matrix
+DeclareOperation("StackMatricesHorizontalConcat", [IsMatrix, IsMatrix]);
+
 
 
 #! @Arguments [rs ,] m, n, k [, R]
