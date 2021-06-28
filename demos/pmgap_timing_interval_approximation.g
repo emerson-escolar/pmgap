@@ -42,7 +42,7 @@ for nn in [2..8] do
     A := CommGridPathAlgebra(GF(2),2, nn);
     for dd in [25,50,100,200,400] do
         result := avetime_interval_approx(A, dd, 5);
-        Add(ans, [nn, dd, us2times(1000 * result[1]/ result[2]), result]);
+        Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
         Display(ans[Length(ans)]);
     od;
 od;
