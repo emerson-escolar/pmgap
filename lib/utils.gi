@@ -87,3 +87,80 @@ InstallMethod(PullbackMatrices,
               ReturnTrue,
               [IsMatrix, IsMatrix],
               __PullbackMatrices);
+
+
+InstallGlobalFunction(RandomMatFixedRank, function (arg)
+    local rs, m, n, k, R, mat, i;
+
+    if Length(arg) >= 1 and IsRandomSource(arg[1]) then
+        rs := Remove(arg, 1);
+    else
+        rs := GlobalMersenneTwister;
+    fi;
+
+    # check the arguments and get the list of elements
+    if Length(arg) = 3  then
+        m := arg[1];
+        n := arg[2];
+        k := arg[3];
+        R := Integers;
+    elif Length(arg) = 4  then
+        m := arg[1];
+        n := arg[2];
+        k := arg[3];
+        R := arg[4];
+    else
+        Error("usage: RandomMatFixedRank( [rs ,] <m>, <n>, <k> [, <R>] )");
+    fi;
+    if k < 0 or k > Minimum(m,n) then
+        Error("Impossible rank k requested in RandomMat( [rs ,] <m>, <n>, <k> [, <R>] )");
+    fi;
+
+    mat := NullMat(m,n, R);
+    for i in [1..k] do
+        mat[i][i] := Identity(R);
+    od;
+
+    mat := RandomInvertibleMat(rs, m, R) * mat * RandomInvertibleMat(rs, n, R);
+    return mat;
+                     end);
+
+
+InstallGlobalFunction(RandomMatRandomRank, function (arg)
+    local rs, m, n, rank_rs, R, k, mat;
+
+    if Length(arg) >= 1 and IsRandomSource(arg[1]) then
+        rs := Remove(arg, 1);
+    else
+        rs := GlobalMersenneTwister;
+    fi;
+
+    # check the arguments and get the list of elements
+    if Length(arg) = 2  then
+        m := arg[1];
+        n := arg[2];
+        rank_rs := GlobalMersenneTwister;
+        R := Integers;
+    elif Length(arg) = 3  then
+        m := arg[1];
+        n := arg[2];
+        if IsRandomSource(arg[3]) then
+            rank_rs := arg[3];
+            R := Integers;
+        else
+            rank_rs := GlobalMersenneTwister;
+            R := arg[3];
+        fi;
+    elif Length(arg) = 4  then
+        m := arg[1];
+        n := arg[2];
+        rank_rs := arg[3];
+        R := arg[4];
+    else
+        Error("usage: RandomMatRandomRank( [rs ,] <m>, <n>, [, rank_rs, <R>] )");
+    fi;
+
+    k := RandomList(rank_rs, [0..Minimum(m,n)]);
+    mat := RandomMatFixedRank(rs, m, n, k, R);
+    return mat;
+                     end);
