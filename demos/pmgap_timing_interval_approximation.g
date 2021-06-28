@@ -10,10 +10,10 @@ Read("timer.g");
 
 
 
-avetime_interval_approx := function(A, d, reps)
+avetime_interval_approx := function(A, d, min_reps)
     local rows, cols,
-          i,V,t,
-          __func;
+          i,V,t, reps,
+          __func, one_res;
     rows := NumCommGridRows(A);
     cols := NumCommGridColumns(A);
 
@@ -25,21 +25,25 @@ avetime_interval_approx := function(A, d, reps)
     end;
 
     t := 0;
-    for i in [1..reps] do
+    reps := 0;
+    while reps < min_reps do
         V := RandomCommGridRepn(ListWithIdenticalEntries(rows*cols, d), A);
-        t := t + timer( __func);
+        one_res := timer( __func);
+        t := t + one_res[1];
+        reps := reps + one_res[2];
     od;
 
-    return t/reps;
+    return [t, reps];
 end;
 
 ans := [];
 
-for nn in [2..3] do
+for nn in [2..8] do
     A := CommGridPathAlgebra(GF(2),2, nn);
-    for dd in [1..2] do
-        ddd := 50 * dd;
-        Add(ans, [nn, ddd, avetime_interval_approx(A, 200,10)]);
+    for dd in [25,50,100,200,400] do
+        result := avetime_interval_approx(A, dd, 5);
+        Add(ans, [nn, dd, us2times(1000000 * result[1]/ result[2]), result]);
+        Display(ans[Length(ans)]);
     od;
 od;
 Display(ans);

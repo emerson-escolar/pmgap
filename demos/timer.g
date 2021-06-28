@@ -8,8 +8,8 @@ TIMER_MIN_RUNTIME_MS := 100;
 # This function accepts as argument one function f, which must accept
 # an integer n and do n repetitions of the operation to be timed.
 # timer will rerun f with larger and larger n until it takes at least
-# TIMER_MIN_RUNTIME_MS milliseconds and then return the average time per
-# iteration in nanoseconds.
+# TIMER_MIN_RUNTIME_MS milliseconds and then return the total time in milliseconds
+# and number of iterations taken.
 
 timer := function(f)
     local t,n;
@@ -27,5 +27,27 @@ timer := function(f)
             n := n * 5;
         fi;
     od;
-    return Int(1000000*t/n);
+    return [t, n];
+end;
+
+#
+# ns2times turns a number of microseconds into a tidy
+#  human-readable string form
+
+us2times := function(n)
+    local s;
+    s := "";
+    if n >= 10^6 then
+        Append(s, ShallowCopy(String(Int(n/10^6))));
+        Append(s, "s ");
+        n := n mod 10^6;
+    fi;
+    if n >= 10^3 then
+        Append(s, ShallowCopy(String(Int(n/10^3))));
+        Append(s, "ms ");
+        n := n mod 10^3;
+    fi;
+    Append(s, ShallowCopy(String(n)));
+    Append(s, "us");
+    return s;
 end;
