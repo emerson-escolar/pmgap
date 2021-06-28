@@ -1,10 +1,11 @@
-LoadPackage("pmgap");;
-
 # force gap to quit with error state on error.
 OnBreak := function()
     Where();
     QUIT_GAP(1);
 end;;
+
+LoadPackage("pmgap");;
+
 
 Print("********************************************************************************\n");
 Print("Demo program for computations described in\n\"On Approximation of 2D Persistence Modules by Interval-decomposables\".\n");
