@@ -21,3 +21,17 @@ gap> K := (pb[1] * A - pb[2] * B);;
 gap> K = NullMat(DimensionsMat(K)[1], 11);
 true
 
+gap> C := RandomMatRandomRank(5,11);;
+gap> AC := StackMatricesVerticalCopy(A,C);;
+gap> AC{[1..10]}{[1..11]} = A;
+true
+gap> AC{[11..15]}{[1..11]} = C;
+true
+
+gap> D := RandomMatRandomRank(9,4);;
+gap> BD := StackMatricesHorizontalCopy(B,D);;
+gap> BD{[1..9]}{[1..11]} = B;
+true
+gap> BD{[1..9]}{[12..15]} = D;
+true
+

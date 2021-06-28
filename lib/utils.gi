@@ -12,18 +12,18 @@ __StackMatricesVertical := function(A, B)
 end;
 
 
-InstallMethod(StackMatricesVerticalConcat,
-              "for matrix and a matrix",
-              ReturnTrue,
-              [IsMatrix, IsMatrix],
-              __StackMatricesVertical);
+# InstallMethod(StackMatricesVerticalConcat,
+#               "for matrix and a matrix",
+#               ReturnTrue,
+#               [IsMatrix, IsMatrix],
+#               __StackMatricesVertical);
 
 InstallMethod(StackMatricesVerticalCopy,
               "for matrix and a matrix",
               ReturnTrue,
               [IsMatrix, IsMatrix],
               function(A,B)
-                  return StructuralCopy(StackMatricesVerticalConcat(A,B));
+                  return StructuralCopy(__StackMatricesVertical(A,B));
               end);
 
 
@@ -42,18 +42,18 @@ __StackMatricesHorizontal := function(A, B)
     return AB;
 end;
 
-InstallMethod(StackMatricesHorizontalConcat,
-              "for matrix and a matrix",
-              ReturnTrue,
-              [IsMatrix, IsMatrix],
-              __StackMatricesHorizontal);
+# InstallMethod(StackMatricesHorizontalConcat,
+#               "for matrix and a matrix",
+#               ReturnTrue,
+#               [IsMatrix, IsMatrix],
+#               __StackMatricesHorizontal);
 
 InstallMethod(StackMatricesHorizontalCopy,
               "for matrix and a matrix",
               ReturnTrue,
               [IsMatrix, IsMatrix],
               function(A,B)
-                  return StructuralCopy(StackMatricesHorizontalConcat(A,B));
+                  return StructuralCopy(__StackMatricesHorizontal(A,B));
               end);
 
 
@@ -71,7 +71,7 @@ __PullbackMatrices := function(Af, Ag)
     n1 := DimensionsMat(Af)[1];
     n2 := DimensionsMat(Ag)[1];
 
-    K := NullspaceMat(StackMatricesVerticalConcat(Af, -Ag));
+    K := NullspaceMatDestructive(StackMatricesVerticalCopy(Af, -Ag));
 
     if Length(K) = 0 then
         return fail;
