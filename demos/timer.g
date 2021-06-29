@@ -21,7 +21,7 @@ timer := function(f)
         f(n);
         t := t+Runtime();
 
-        if t > TIMER_MIN_RUNTIME_MS then
+        if t >= TIMER_MIN_RUNTIME_MS then
             break;
         else
             n := n * 5;

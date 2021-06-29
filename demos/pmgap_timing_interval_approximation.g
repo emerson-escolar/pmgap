@@ -38,14 +38,77 @@ end;
 
 ans := [];
 
-for nn in [2..8] do
-    A := CommGridPathAlgebra(GF(2),2, nn);
-    for dd in [25,50,100,200,400] do
-        result := avetime_interval_approx(A, dd, 5);
-        Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
-        Display(ans[Length(ans)]);
+# MAIN TABLE
+MAIN := true;
+if MAIN = true then
+    TIMER_MIN_RUNTIME_MS := 100;
+    Display("****************************************\n");
+    for nn in [4,8,16] do
+        A := CommGridPathAlgebra(GF(2),2, nn);
+        IntervalRepns(A);
+        for dd in [100,200,400,800] do
+            result := avetime_interval_approx(A, dd, 5);
+            Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
+            Display(ans[Length(ans)]);
+        od;
     od;
-od;
-Display(ans);
+    Display("****************************************\n\n");
+fi;
+
+
+# ONEREP
+ONEREP := false;
+if ONEREP = true then
+    Display("****************************************\n");
+    TIMER_MIN_RUNTIME_MS := 0;
+    for nn in [4,8,16,32] do
+        A := CommGridPathAlgebra(GF(2),2, nn);
+        IntervalRepns(A);
+        for dd in [100,200,400,800,1600] do
+            result := avetime_interval_approx(A, dd, 1);
+            Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
+            Display(ans[Length(ans)]);
+        od;
+    od;
+    Display("****************************************\n\n");
+fi;
+
+
+
+
+# FIXD
+FIXD := false;
+if FIXD = true then
+    TIMER_MIN_RUNTIME_MS := 100;
+    Display("****************************************\n");
+    for nn in [8,10,12,32] do
+        A := CommGridPathAlgebra(GF(2),2, nn);
+        IntervalRepns(A);
+        for dd in [100] do
+            result := avetime_interval_approx(A, dd, 5);
+            Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
+            Display(ans[Length(ans)]);
+        od;
+    od;
+    Display("****************************************\n\n");
+fi;
+
+FIXN := false;
+if FIXN = true then
+    TIMER_MIN_RUNTIME_MS := 100;
+    Display("****************************************\n");
+    for nn in [4] do
+        A := CommGridPathAlgebra(GF(2),2, nn);
+        IntervalRepns(A);
+        for dd in [100,200,400,800,1600,3200] do
+            result := avetime_interval_approx(A, dd, 5);
+            Add(ans, [nn, dd, 1. * result[1]/ result[2], us2times(1000 * result[1]/ result[2]), result]);
+            Display(ans[Length(ans)]);
+        od;
+    od;
+    Display("****************************************\n\n");
+fi;
+
+
 
 QUIT_GAP(0);
