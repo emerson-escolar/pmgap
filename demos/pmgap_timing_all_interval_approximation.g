@@ -60,7 +60,7 @@ end;
 ONEREP := true;
 if ONEREP = true then
     TIMER_MIN_RUNTIME_MS := 0;
-    time_all([32],[100,200,400,800,1600]);
+    time_all([4,8,16],[100,200,400,800]);
 fi;
 
 
