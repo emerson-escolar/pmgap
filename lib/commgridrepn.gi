@@ -445,8 +445,17 @@ end;
 
 
 
-InstallMethod(RandomCommGridRepn,
+InstallMethod(RandomCommGridRepnRandomRanks,
               "for dim_vec, A",
               ReturnTrue,
               [IsList, IsCommGridPathAlgebra],
               __RandomCommGridRepn);
+
+
+InstallMethod(RandomCommGridRepn,
+              "for dim_vec, A",
+              ReturnTrue,
+              [IsList, IsCommGridPathAlgebra],
+              function(dim_vec, A)
+                  return __RandomCommGridRepn(dim_vec, A, RandomMat);
+              end);

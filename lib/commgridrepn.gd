@@ -206,7 +206,7 @@ DeclareOperation("CommGridRepnToJsonFile", [IsCommGridRepn, IsString]);
 
 #! @Arguments dim_vec, A
 DeclareOperation("RandomCommGridRepn", [IsList, IsCommGridPathAlgebra]);
-
-
-
 #! @EndGroup
+
+
+DeclareOperation("RandomCommGridRepnRandomRanks", [IsList, IsCommGridPathAlgebra]);
