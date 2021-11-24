@@ -364,6 +364,8 @@ __IntervalRepresentations := function(A)
 end;
 
 
+
+
 InstallMethod(IntervalRepns,
               "for a commutative grid path algebra",
               ReturnTrue,
@@ -375,6 +377,31 @@ InstallOtherMethod(IntervalRepns,
                    ReturnTrue,
                    [IsEquiorientedAnPathAlgebra],
                    __IntervalRepresentations);
+
+__IntervalRepresentationsList := function(A)
+    local I, ans, height, foo;
+    I := IntervalRepns(A);
+    ans := [];
+    for height in RecNames(I) do
+        for foo in I.(height) do
+            Add(ans, foo);
+        od;
+    od;
+    return ans;
+end;
+
+
+InstallMethod(IntervalRepnsList,
+              "for commutative grid",
+              ReturnTrue,
+              [IsCommGridPathAlgebra],
+              __IntervalRepresentationsList);
+
+InstallOtherMethod(IntervalRepnsList,
+                   "for a equioriented An path algebra",
+                   ReturnTrue,
+                   [IsEquiorientedAnPathAlgebra],
+                   __IntervalRepresentationsList);
 
 
 

@@ -161,6 +161,27 @@ DeclareAttribute("IntervalRepns", IsEquiorientedAnPathAlgebra);
 #! @EndGroup
 # --------------------------------------------------
 
+# --------------------------------------------------
+#! @BeginGroup IntervalRepnsList
+#! @GroupTitle Interval representations
+
+#! @Description
+#! Gives a list of interval representations
+#! of the interval representations of the given
+#! <A>commutative_grid_path_algebra</A> or <A>equioriented_an_path_algebra</A>.
+
+#! @Returns List of interval representations
+
+#! @Arguments commutative_grid_path_algebra
+DeclareOperation("IntervalRepnsList", [IsCommGridPathAlgebra]);
+
+#! @Arguments equioriented_an_path_algebra
+DeclareOperation("IntervalRepnsList", [IsEquiorientedAnPathAlgebra]);
+#! @EndGroup
+# --------------------------------------------------
+
+
+
 
 #! @Arguments V
 #! @Returns true or false
