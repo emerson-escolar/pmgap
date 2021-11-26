@@ -210,3 +210,13 @@ DeclareOperation("RandomCommGridRepn", [IsList, IsCommGridPathAlgebra]);
 
 
 DeclareOperation("RandomCommGridRepnRandomRanks", [IsList, IsCommGridPathAlgebra]);
+
+
+
+#! @Section Specific Constructions
+
+#! @Description
+#! Generates the indecomposable representation $M(d,\lambda)$ of the $2 \times 5$ commutative grid given in <Cite Key="buchet2018realizations"/>.
+#! @Arguments field, d, lambda
+#! @Returns the indecomposable representation
+DeclareGlobalFunction("JordanCellLadder");
