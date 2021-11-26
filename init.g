@@ -7,4 +7,6 @@ ReadPackage("pmgap", "lib/multiplicity.gd");
 ReadPackage("pmgap", "lib/intervals.gd");
 ReadPackage("pmgap", "lib/intervalsapproximation.gd");
 
+ReadPackage("pmgap", "lib/homalg.gd");
+
 ReadPackage("pmgap", "lib/utils.gd");

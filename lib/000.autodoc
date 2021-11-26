@@ -6,9 +6,11 @@
 @Chapter representations
 @ChapterTitle Persistence Modules
 
-
 @Chapter intervals
 @ChapterTitle Interval Representations
+
+@Chapter homalg
+@ChapterTitle Homological Algebra
 
 @Chapter utils
 @ChapterTitle Utilities

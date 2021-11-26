@@ -13,6 +13,8 @@ ReadPackage("pmgap", "lib/intervals.gi");
 ReadPackage("pmgap", "lib/intervalsapproximation.gd");
 ReadPackage("pmgap", "lib/intervalsapproximation.gi");
 
+ReadPackage("pmgap", "lib/homalg.gd");
+ReadPackage("pmgap", "lib/homalg.gi");
 
 ReadPackage("pmgap", "lib/utils.gd");
 ReadPackage("pmgap", "lib/utils.gi");
