@@ -3,6 +3,9 @@ Computations for Persistence Modules using GAP
 
 This package is still in alpha development. 
 Features are incomplete, and the API is subject to changes as deemed necessary.
+pmgap relies heavily on [QPA](https://www.gap-system.org/Packages/qpa.html) for basic objects and computations involving quiver representations.
+That is, pmgap specializes the general quiver representations in [QPA](https://www.gap-system.org/Packages/qpa.html) 
+to commutative grid representations (2D persistence modules) and adds several new functions that are of interest for such representations.
 
 # What can it do?
 
