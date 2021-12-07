@@ -130,12 +130,18 @@ gap> Length(IntervalRepns(A).1);
 12
 gap> Length(IntervalRepns(A).2);
 15
+gap> Length(IntervalRepnsList(A));
+27
 
 gap> I := IntervalRepn(A, (IntervalDimVecs(A).2)[1]);;
 gap> IsIndecomposableModule(I);
 true
 gap> IsCommGridInterval(I);
 true
+
+# Number of intervals for 2x5 grid
+gap> Length(IntervalRepnsList(CommGridPathAlgebra(GF(2), 2, 5)));
+100
 
 # Generate intervals for 4x3 grid
 gap> A := CommGridPathAlgebra(GF(2), 4, 3);;
