@@ -11,3 +11,15 @@
 #!
 #! This is modified from the QPA function HaveFiniteResolutionInAddM to work with list input.
 DeclareOperation("HaveFiniteResolutionInAddMList", [IsPathAlgebraMatModule, IsList, IsInt]);
+
+
+#! @Arguments L, C
+#! @Description
+#! Given a list of module L over a finite dimensional quotient A of
+#! a path algebra and a module C over  A, this function computes
+#! a right approximation of C in the additive closure of the modules
+#! in the list L.
+#!
+#! This is modified from the QPA function RightApproximationByAddM,
+
+DeclareOperation("RightApproximationByAddMCustom", [ IsList, IsPathAlgebraMatModule ] );
