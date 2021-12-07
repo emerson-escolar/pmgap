@@ -467,9 +467,9 @@ InstallGlobalFunction(JordanCellLadder,
                          local A, mats, J, II, IJ, i;
                          A := CommGridPathAlgebra(F, 2, 5);
 
-                         J := IdentityMat(d,F);
+                         J := IdentityMat(d,F) * lambda;
                          for i in [1..d-1] do
-                             J[i+1][i] := Identity(F)* lambda;
+                             J[i+1][i] := Identity(F);
                          od;
 
                          II := StackMatricesHorizontalCopy(IdentityMat(d,F), IdentityMat(d,F));
