@@ -60,3 +60,21 @@ gap> for i in [1..10] do
 [5,6,7,5,0,5,7,6,5]
 
 
+
+
+
+
+# Test JordanCellLadder
+gap> J := JordanCellLadder(GF(2),2,0);
+<[ 0, 2, 4, 4, 2, 2, 4, 4, 2, 0 ]>
+gap> IsIndecomposableModule(J);
+true
+gap> J := JordanCellLadder(GF(2),2,1);
+<[ 0, 2, 4, 4, 2, 2, 4, 4, 2, 0 ]>
+gap> IsIndecomposableModule(J);
+true
+
+gap> for i in [0..7] do
+>     Print(IsIndecomposableModule(JordanCellLadder(GF(8), 2, Z(8)^i)));
+> od;
+truetruetruetruetruetruetruetrue
