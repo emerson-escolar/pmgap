@@ -78,3 +78,14 @@ gap> for i in [0..7] do
 >     Print(IsIndecomposableModule(JordanCellLadder(GF(8), 2, Z(8)^i)));
 > od;
 truetruetruetruetruetruetruetrue
+
+
+# Test JordanCellThreeByThree
+gap> J := JordanCellThreeByThree(GF(2),2,0);
+<[ 0, 2, 2, 2, 4, 2, 2, 2, 0 ]>
+gap> IsIndecomposableModule(J);
+true
+gap> J := JordanCellThreeByThree(GF(2),2,1);
+<[ 0, 2, 2, 2, 4, 2, 2, 2, 0 ]>
+gap> IsIndecomposableModule(J);
+true
