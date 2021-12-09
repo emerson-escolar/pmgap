@@ -521,8 +521,6 @@ __CheckIntervalList := function(listV)
 end;
 
 
-
-
 __SeparateAndShift := function(listV)
     local ans, used_deaths, find_next_unused_greater_than, pair, dprime, ell;
 
@@ -563,13 +561,181 @@ InstallGlobalFunction(SeparateAndShift,
                       __SeparateAndShift);
 
 
+__Verticalize := function(listV)
+    local twomu;
 
-__IndecomposableContainingLineRestriction := function(F, listV)
-    return 0;
+    twomu := Maximum(List(listV, pair->(pair[1]+pair[2])));
+    return List(listV, pair->[twomu - pair[2], pair[2]]);
+end;
+
+__hasonedimvs := function(pair, idx)
+    return pair[1] <= idx and idx <= pair[2];
+end;
+
+__GenerateMatricesAlongRow := function(F, listV, rownum)
+    local mats, n, mincol, maxcol,
+          curcol, idx, jdx, mat;
+
+    mats := [];
+    n := Length(listV);
+
+    mincol := Minimum(List(listV, pair->pair[1]));
+    maxcol := Maximum(List(listV, pair->pair[2]));
+
+    if mincol < 1 then
+        mincol := 1;
+    fi;
+
+    for curcol in [mincol..maxcol-1] do
+        mat := [1..n];
+        for idx in [1..n] do
+            if __hasonedimvs(listV[idx], curcol) then
+                mat[idx] := [1..n];
+                for jdx in [1..n] do
+                    if __hasonedimvs(listV[jdx], curcol+1) then
+                        if idx = jdx then
+                            mat[idx][jdx] := 1;
+                        else
+                            mat[idx][jdx] := 0;
+                        fi;
+                    else
+                        Unbind\[\](mat[idx], jdx);
+                    fi;
+                od;
+            else
+                Unbind\[\](mat, idx);
+            fi;
+        od;
+
+        mat := Identity(F)*Compacted(List(mat, row->Compacted(row)));
+        if IsMatrix(mat) then
+            Add(mats, [Concatenation(String(rownum), "_", String(curcol)),
+                       Concatenation(String(rownum), "_", String(curcol+1)),
+                       mat]);
+        fi;
+    od;
+    Print(mats);
+    Print("\n");
+    return mats;
+end;
+
+
+__GenerateMatricesBetweenRows := function(F, sourceV, targetV, sourcerow)
+    local mats, n, mincol, maxcol,
+          curcol, idx, jdx, mat;
+
+    mats := [];
+    n := Length(sourceV);
+
+    mincol := Minimum(Minimum(List(sourceV, pair->pair[1])), Minimum(List(targetV, pair->pair[1])));
+    maxcol := Maximum(Maximum(List(sourceV, pair->pair[2])), Maximum(List(targetV, pair->pair[2])));
+
+    if mincol < 1 then
+        mincol := 1;
+    fi;
+
+    for curcol in [mincol..maxcol] do
+        mat := [1..n];
+        for idx in [1..n] do
+            if __hasonedimvs(sourceV[idx], curcol) then
+                mat[idx] := [1..n];
+                for jdx in [1..n] do
+                    if __hasonedimvs(targetV[jdx], curcol) then
+                        if idx = jdx then
+                            mat[idx][jdx] := 1;
+                        else
+                            mat[idx][jdx] := 0;
+                        fi;
+                    else
+                        Unbind\[\](mat[idx], jdx);
+                    fi;
+                od;
+            else
+                Unbind\[\](mat, idx);
+            fi;
+        od;
+        mat := Identity(F)*Compacted(List(mat, row->Compacted(row)));
+        if IsMatrix(mat) then
+            Add(mats, [Concatenation(String(sourcerow), "_", String(curcol)),
+                       Concatenation(String(sourcerow+1), "_", String(curcol)),
+                       mat]);
+        fi;
+    od;
+    Print(mats);
+    Print("\n");
+    return mats;
+end;
+
+__GenerateDiagonalMatrixFromConeTip := function(F, coneTip, targetV, sourcerow)
+    local mats, n,
+          curcol, jdx, mat;
+
+    mats := [];
+    n := Length(targetV);
+
+    for curcol in [coneTip[1]..coneTip[2]] do
+        mat := [[1..n]];
+        for jdx in [1..n] do
+            if __hasonedimvs(targetV[jdx], curcol) then
+                    mat[1][jdx] := 1;
+            else
+                Unbind\[\](mat[1], jdx);
+            fi;
+        od;
+
+        mat := Identity(F)*Compacted(List(mat, row->Compacted(row)));
+        if IsMatrix(mat) then
+            Add(mats, [Concatenation(String(sourcerow), "_", String(curcol)),
+                       Concatenation(String(sourcerow+1), "_", String(curcol)),
+                       mat]);
+        fi;
+    od;
+    Print(mats);
+    Print("\n");
+    return mats;
+end;
+
+
+__IndecWithLineRestriction := function(F, listV)
+    local SepShift, Vert, ConeTip, Cone, n, i, j,
+          w, A,
+          mats, dimvec;
+
+    n := Length(listV);
+    SepShift := SeparateAndShift(listV);
+    Vert := __Verticalize(SepShift);
+    ConeTip := [Maximum(List(Vert, pair->pair[1])), Maximum(List(Vert, pair->pair[2]))];
+    Cone := [ConeTip];
+    for i in [1..n-1] do
+        Add(Cone,[0,0]);
+    od;
+
+    w := Maximum(List(SepShift, pair->pair[2]));
+    A := CommGridPathAlgebra(F, 4, w);
+
+    mats := [];
+    Append(mats, __GenerateMatricesAlongRow(F, listV, 4));
+    Append(mats, __GenerateMatricesAlongRow(F, SepShift, 3));
+    Append(mats, __GenerateMatricesAlongRow(F, Vert, 2));
+    Append(mats, __GenerateMatricesAlongRow(F, Cone, 1));
+    Append(mats, __GenerateMatricesBetweenRows(F, SepShift, listV, 3));
+    Append(mats, __GenerateMatricesBetweenRows(F, Vert, SepShift, 2));
+    Append(mats, __GenerateDiagonalMatrixFromConeTip(F, ConeTip, Vert, 1));
+    # Print(mats);
+
+    dimvec := Concatenation(List([1..w], h->Number(Cone, pair->__hasonedimvs(pair, h))),
+                            List([1..w], h->Number(Vert, pair->__hasonedimvs(pair, h))),
+                            List([1..w], h->Number(SepShift, pair->__hasonedimvs(pair, h))),
+                            List([1..w], h->Number(listV, pair->__hasonedimvs(pair, h))));
+    Print("\nInferredDimvec: ");
+    Print(dimvec);
+    Print("\n");
+
+    return CommGridRepn(A, dimvec, mats);
 end;
 
 
                                           
 
-InstallGlobalFunction(IndecomposableContainingLineRestriction,
-                      __IndecomposableContainingLineRestriction);
+InstallGlobalFunction(IndecWithLineRestriction,
+                      __IndecWithLineRestriction);

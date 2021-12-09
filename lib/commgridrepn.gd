@@ -236,6 +236,6 @@ DeclareGlobalFunction("JordanCellThreeByThree");
 #!
 #! @Arguments F, listV
 #! @Returns the indecomposable representation
-DeclareGlobalFunction("IndecomposableContainingLineRestriction");
+DeclareGlobalFunction("IndecWithLineRestriction");
 
 DeclareGlobalFunction("SeparateAndShift");
