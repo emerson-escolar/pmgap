@@ -17,7 +17,7 @@ SetPackageInfo(rec(PackageName := "pmgap",
                                      LongTitle := "Persistence Modules in GAP",
                                      ArchiveURLSubset := ["doc"]),
                    Dependencies := rec(GAP := "4.11",
-                                       NeededOtherPackages := [["QPA", "1.30"], ["json", "2.0.1"]],
+                                       NeededOtherPackages := [["QPA", "1.31"], ["json", "2.0.1"]],
                                        SuggestedOtherPackages := []),
 
                    AvailabilityTest := ReturnTrue,
