@@ -220,3 +220,9 @@ DeclareOperation("RandomCommGridRepnRandomRanks", [IsList, IsCommGridPathAlgebra
 #! @Arguments field, d, lambda
 #! @Returns the indecomposable representation
 DeclareGlobalFunction("JordanCellLadder");
+
+#! @Description
+#! Generates the indecomposable representation, with parameter $d$ and $\lambda$, of the $3 \times 3$ commutative grid given in Section 5 of <Cite Key="buchet2018realizationsarxiv"/>.
+#! @Arguments field, d, lambda
+#! @Returns the indecomposable representation
+DeclareGlobalFunction("JordanCellThreeByThree");
