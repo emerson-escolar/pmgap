@@ -525,15 +525,13 @@ __SeparateAndShift := function(listV)
     local ans, used_deaths, find_next_unused_greater_than, pair, dprime, ell;
 
     find_next_unused_greater_than := function(x)
-        local temp_idx;
+        local xf;
+        xf := x;
         repeat
-            temp_idx := PositionProperty(used_deaths, i->(i>x));
-        until not (used_deaths[temp_idx] - 1 in used_deaths) or (temp_idx = fail);
-        if temp_idx = fail then
-            return used_deaths(Length(used_deaths)) + 1;
-        else
-            return used_deaths[temp_idx] - 1;
-        fi;
+            xf := xf + 1;
+        until not (xf in used_deaths);
+
+        return xf;
     end;
 
     ans := [];
