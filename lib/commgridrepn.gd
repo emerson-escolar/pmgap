@@ -226,3 +226,16 @@ DeclareGlobalFunction("JordanCellLadder");
 #! @Arguments field, d, lambda
 #! @Returns the indecomposable representation
 DeclareGlobalFunction("JordanCellThreeByThree");
+
+
+#! @Description
+#! Generates an indecomposable representation containing a 1D persistence module $V$ as a line restriction
+#! following the construction given in <Cite Key="buchet2020every"/>. The first argument is the underlying field to use, while the second argument represents the persistence module $V$ as a list of pairs of endpoints
+#! [[b_1, d_1], [b_2, d_2], ..., [b_n, d_n]]
+#! giving the interval decomposition of the input 1D persistence module.
+#!
+#! @Arguments F, listV
+#! @Returns the indecomposable representation
+DeclareGlobalFunction("IndecomposableContainingLineRestriction");
+
+DeclareGlobalFunction("SeparateAndShift");

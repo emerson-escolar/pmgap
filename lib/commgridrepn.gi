@@ -513,3 +513,63 @@ InstallGlobalFunction(JordanCellThreeByThree,
 
                          return CommGridRepn(A, [0,d,d, d,2*d,d, d,d,0], mats);
                      end);
+
+
+
+__CheckIntervalList := function(listV)
+    return true;
+end;
+
+
+
+
+__SeparateAndShift := function(listV)
+    local ans, used_deaths, find_next_unused_greater_than, pair, dprime, ell;
+
+    find_next_unused_greater_than := function(x)
+        local temp_idx;
+        repeat
+            temp_idx := PositionProperty(used_deaths, i->(i>x));
+        until not (used_deaths[temp_idx] - 1 in used_deaths) or (temp_idx = fail);
+        if temp_idx = fail then
+            return used_deaths(Length(used_deaths)) + 1;
+        else
+            return used_deaths[temp_idx] - 1;
+        fi;
+    end;
+
+    ans := [];
+
+    # separate
+    used_deaths := Set([]);
+    for pair in listV do
+        if not (pair[2] in used_deaths) then
+            Add(ans, pair);
+            AddSet(used_deaths, pair[2]);
+        else
+            dprime := find_next_unused_greater_than(pair[2]);
+            Add(ans, [pair[1], dprime]);
+            AddSet(used_deaths, dprime);
+        fi;
+    od;
+
+    # shift, improved shift parameter ell
+    ell := Maximum(List(ans, pair->pair[1]+pair[2])) - 2 * used_deaths[1];
+
+    return List(ans, pair->[pair[1], pair[2]+ell]);
+end;
+
+InstallGlobalFunction(SeparateAndShift,
+                      __SeparateAndShift);
+
+
+
+__IndecomposableContainingLineRestriction := function(F, listV)
+    return 0;
+end;
+
+
+                                          
+
+InstallGlobalFunction(IndecomposableContainingLineRestriction,
+                      __IndecomposableContainingLineRestriction);
