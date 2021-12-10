@@ -516,6 +516,8 @@ InstallGlobalFunction(JordanCellThreeByThree,
 
 
 
+# ****************************** Functions below are for IndecWithLineRestriction ******************************
+
 __CheckIntervalList := function(listV)
     return true;
 end;
@@ -612,8 +614,8 @@ __GenerateMatricesAlongRow := function(F, listV, rownum)
                        mat]);
         fi;
     od;
-    Print(mats);
-    Print("\n");
+    # Print(mats);
+    # Print("\n");
     return mats;
 end;
 
@@ -659,8 +661,8 @@ __GenerateMatricesBetweenRows := function(F, sourceV, targetV, sourcerow)
                        mat]);
         fi;
     od;
-    Print(mats);
-    Print("\n");
+    # Print(mats);
+    # Print("\n");
     return mats;
 end;
 
@@ -688,8 +690,8 @@ __GenerateDiagonalMatrixFromConeTip := function(F, coneTip, targetV, sourcerow)
                        mat]);
         fi;
     od;
-    Print(mats);
-    Print("\n");
+    # Print(mats);
+    # Print("\n");
     return mats;
 end;
 
@@ -725,15 +727,16 @@ __IndecWithLineRestriction := function(F, listV)
                             List([1..w], h->Number(Vert, pair->__hasonedimvs(pair, h))),
                             List([1..w], h->Number(SepShift, pair->__hasonedimvs(pair, h))),
                             List([1..w], h->Number(listV, pair->__hasonedimvs(pair, h))));
-    Print("\nInferredDimvec: ");
-    Print(dimvec);
-    Print("\n");
+    # Print("\nInferredDimvec: ");
+    # Print(dimvec);
+    # Print("\n");
 
     return CommGridRepn(A, dimvec, mats);
 end;
 
 
-                                          
-
 InstallGlobalFunction(IndecWithLineRestriction,
                       __IndecWithLineRestriction);
+
+
+# ****************************** Functions above are for IndecWithLineRestriction ******************************
