@@ -589,6 +589,69 @@ InstallMethod(SinkVertices,
              end);
 
 
+InstallMethod(UpsetPresentation,
+              "for comm grid interval",
+              ReturnTrue,
+              [IsCommGridInterval],
+              function(V)
+                  local A, n_rows, n_cols,
+                        rwbd,
+                        nonempty_row_indices, i,
+                        cur_b, cur_d,
+                        U_rwbd, U,
+                        C_rwbd, C;
+                  A := RightActingAlgebra(V);
+                  n_rows := NumCommGridRows(A);
+                  n_cols := NumCommGridColumns(A);
+
+                  rwbd := IntervalDimVecToRowWiseBD(DimensionVector(V), n_rows, n_cols);
+                  nonempty_row_indices := PositionsProperty(rwbd, x->(x<>false));
+
+                  # compute the upset and co-upset of V
+                  i := 1;
+                  U_rwbd := [];
+                  C_rwbd := [];
+                  while i < nonempty_row_indices[1] do
+                      Add(U_rwbd, false);
+                      Add(C_rwbd, false);
+                      i := i+1;
+                  od;
+                  
+                  for i in nonempty_row_indices{[1..Length(nonempty_row_indices)]} do
+                      cur_b := rwbd[i][1];
+                      Add(U_rwbd, [cur_b, n_cols]);
+
+                      cur_d := rwbd[i][2];
+                      if cur_d + 1 > n_cols then
+                          Add(C_rwbd, false);
+                      else
+                          Add(C_rwbd, [cur_d + 1, n_cols]);
+                      fi;
+                  od;
+                  i := i+1;
+                  while i <= n_rows do
+                      Add(U_rwbd, [cur_b, n_cols]);
+                      Add(C_rwbd, [cur_b, n_cols]);
+                      i := i+1;
+                  od;
+
+                  # Print(U_rwbd);
+                  # Print("\n");
+                  # Print(C_rwbd);
+                  # Print("\n");
+
+                  U := IntervalRepn(A, RowWiseBDToIntervalDimVec(U_rwbd, n_rows, n_cols));
+
+                  if U_rwbd <> rwbd then
+                      C := IntervalRepn(A, RowWiseBDToIntervalDimVec(C_rwbd, n_rows, n_cols));
+                  else
+                      C := fail;
+                  fi;
+
+
+
+                  return [U,C];
+             end);
 
 
 __CoverModsOfRowWiseBD := function(rwbd, r, c)

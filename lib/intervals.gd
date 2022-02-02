@@ -261,6 +261,15 @@ DeclareOperation("SourceVertices", [IsCommGridInterval]);
 #! corresponding to the indices of the sink vertices of V.
 DeclareOperation("SinkVertices", [IsCommGridInterval]);
 
+#! @Arguments V
+#! @Returns list of upset representations
+#! @Description
+#! Computes the upset representation of an interval representation V
+#! of a commutative grid path algebra.
+#! The output is a list [U, U']
+#! with V isomorphic to U/U' and U,U' are upset representations
+DeclareOperation("UpsetPresentation", [IsCommGridInterval]);
+
 
 
 #! @Section Interval local lattice computations

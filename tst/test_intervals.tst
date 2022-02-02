@@ -198,3 +198,17 @@ gap> SourceVertices(I);
 [[2,2]]
 gap> SinkVertices(I);
 [[3,2]]
+
+# ****** Upset presentations ******
+gap> II := IntervalRepnsList(A);;
+gap> result := true;;
+gap> for I in II do
+>        up := UpsetPresentation(I);
+>        if up[2] = fail then
+>           result := result and (DimensionVector(up[1]) = DimensionVector(I));;
+>        else     
+>           result := result and ((DimensionVector(up[1]) - DimensionVector(up[2])) = DimensionVector(I));;
+>        fi;
+>    od;
+gap> Print(result);
+true
