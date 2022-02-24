@@ -41,3 +41,6 @@ DeclareOperation("CompressedMultiplicity", [IsCommGridRepn]);
 #!
 #! @Returns multiplicities of interval approximation
 DeclareOperation("IntervalApproximation", [IsCommGridRepn]);
+
+
+DeclareOperation("IntervalMobiusInversion", [IsCommGridRepn, IsList]);

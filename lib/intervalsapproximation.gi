@@ -180,15 +180,13 @@ InstallMethod(CompressedMultiplicity,
 
 
 
-__IntervalApproximation2N := function(V)
-    local ans, cM,
+__IntervalMobiusInversion2N := function(V, cM)
+    local ans,
           cM_dict, entry,
           A, n_rows, n_cols,
           intervals, height, I,
           rwbd, coeff, join_card, join_dim_vec, sign, cM_entry;
 
-    cM := CompressedMultiplicity(V);
-    # convert CM to usable dictionary format
     cM_dict := NewDictionary("", true);
     for entry in cM do
         AddDictionary(cM_dict,
@@ -228,6 +226,21 @@ __IntervalApproximation2N := function(V)
     return ans;
 end;
 
+InstallMethod(IntervalMobiusInversion,
+              "for CommGridRepn and a compressed multiplicity",
+              ReturnTrue,
+              [IsCommGridRepn, IsList],
+              __IntervalMobiusInversion2N);
+
+
+__IntervalApproximation2N := function(V)
+    local ans, cM;
+
+    cM := CompressedMultiplicity(V);
+    ans := IntervalMobiusInversion(V, cM);
+
+    return ans;
+end;
 
 
 InstallMethod(IntervalApproximation,
