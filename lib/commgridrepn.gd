@@ -222,6 +222,12 @@ DeclareOperation("RandomCommGridRepnRandomRanks", [IsList, IsCommGridPathAlgebra
 DeclareGlobalFunction("JordanCellLadder");
 
 #! @Description
+#! Generates opposite of the indecomposable representation $M(d,\lambda)$ of the $2 \times 5$ commutative grid given in <Cite Key="buchet2018realizations"/>.
+#! @Arguments field, d, lambda
+#! @Returns the indecomposable representation
+DeclareGlobalFunction("JordanCellLadderOpposite");
+
+#! @Description
 #! Generates the indecomposable representation, with parameter $d$ and $\lambda$, of the $3 \times 3$ commutative grid given in Section 5 of <Cite Key="buchet2018realizationsarxiv"/>.
 #! @Arguments field, d, lambda
 #! @Returns the indecomposable representation

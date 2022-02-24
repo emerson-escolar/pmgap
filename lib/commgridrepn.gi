@@ -489,6 +489,34 @@ InstallGlobalFunction(JordanCellLadder,
                      end);
 
 
+InstallGlobalFunction(JordanCellLadderOpposite,
+                     function(F, d, lambda)
+                         local A, mats, J, II, IJ, i;
+                         A := CommGridPathAlgebra(F, 2, 5);
+
+                         J := IdentityMat(d,F) * lambda;
+                         for i in [1..d-1] do
+                             J[i+1][i] := Identity(F);
+                         od;
+
+                         II := StackMatricesVerticalCopy(IdentityMat(d,F), IdentityMat(d,F));
+                         IJ := StackMatricesVerticalCopy(IdentityMat(d,F), TransposedMat(J));
+                         # IJ := StackMatricesVerticalCopy(IdentityMat(d,F), J);
+
+                         mats := [["1_2", "1_3", StackMatricesHorizontalCopy(IdentityMat(d,F), NullMat(d,d,F))],
+                                  ["1_3", "1_4", IdentityMat(2*d,F)],
+                                  ["1_4", "1_5", StackMatricesVerticalCopy(IdentityMat(d,F), NullMat(d,d,F))],
+                                  ["2_1", "2_2", StackMatricesHorizontalCopy(NullMat(d,d,F), IdentityMat(d,F))],
+                                  ["2_2", "2_3", IdentityMat(2*d,F)],
+                                  ["2_3", "2_4", StackMatricesVerticalCopy(NullMat(d,d,F), IdentityMat(d,F))],
+                                  ["1_2", "2_2", TransposedMat(II)],
+                                  ["1_3", "2_3", StackMatricesHorizontalCopy(II, IJ)],
+                                  ["1_4", "2_4", IJ]];
+
+                         return CommGridRepn(A, [0,d,2*d,2*d,d,d,2*d,2*d,d,0], mats);
+                     end);
+
+
 InstallGlobalFunction(JordanCellThreeByThree,
                      function(F, d, lambda)
                          local A, mats, J, II, IJ, i;
