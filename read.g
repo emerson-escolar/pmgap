@@ -10,3 +10,6 @@ ReadPackage("pmgap", "lib/intervalsapproximation.gi");
 ReadPackage("pmgap", "lib/homalg.gi");
 
 ReadPackage("pmgap", "lib/utils.gi");
+
+ReadPackage("pmgap", "lib/compressedmultiplicityver2.gi");
+ReadPackage("pmgap", "lib/compressedmultiplicityver2list.gi");
