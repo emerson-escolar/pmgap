@@ -26,33 +26,33 @@ size:= Length(DimensionVector(CLrep))/2;
 
 
 if Length(listSo) = 2 then
-y_k:=[2,listSo[2][2]];
+   y_k:=[2,listSo[2][2]];
 else
-y_k:=[2, listSo[1][2]];
+   y_k:=[2, listSo[1][2]];
 fi;
 
 if Length(listSo) = 2 then
-y_i:=[2,listSo[1][2] ];
+   y_i:=[2,listSo[1][2] ];
 else
-y_i:=[2 ,listSo[1][2]];
+   y_i:=[2 ,listSo[1][2]];
 fi;
 
 if Length(listSink) = 2 then
-y_l:=[2,listSink[2][2]];
+   y_l:=[2,listSink[2][2]];
 else
-y_l:=[2,listSink[1][2]];
+   y_l:=[2,listSink[1][2]];
 fi;
 
 if Length(listSo) = 2 then
-x_i:=[1,listSo[1][2]]; 
+   x_i:=[1,listSo[1][2]]; 
 else
-x_i:=[1,listSo[1][2]];
+   x_i:=[1,listSo[1][2]];
 fi;
 
 if Length(listSink) = 2 then
-x_j:=[1,listSink[1][2]]; 
+   x_j:=[1,listSink[1][2]]; 
 else
-x_j:=[1,listSink[1][2]];
+   x_j:=[1,listSink[1][2]];
 fi;
 
 a:=y_k[2];
@@ -111,19 +111,19 @@ fi;
 #__
 lst:=[];
 if dim_yk<>0 and dim_yl<>0 then
-Append(lst, [["a",Mat_1 ]]);
+   Append(lst, [["a",Mat_1 ]]);
 fi;
 
 if dim_yk<>0 and dim_yi<>0 then
-Append(lst, [["b",Mat_2 ]]);
+   Append(lst, [["b",Mat_2 ]]);
 fi;
 
 if dim_yi<>0 and dim_xi<>0 then
-Append(lst, [["c",Mat_3 ]]);
+   Append(lst, [["c",Mat_3 ]]);
 fi;
 
 if dim_xj<>0 and dim_xi<>0 then
-Append(lst, [["d",Mat_4 ]]);
+   Append(lst, [["d",Mat_4 ]]);
 fi;
 
 Zigzagmodule:=RightModuleOverPathAlgebra( ZigzagPathAlgebra, [dim_yl,dim_yk,dim_yi,dim_xi,dim_xj],lst );
@@ -165,13 +165,13 @@ End_xi:=IdentityMat(dim_xi,field);
 
 lst:=[];
 if dim_xj<>0 and dim_xi<>0 then
-Append(lst, [["a",Mat_4 ]]);
-Append(lst, [["d",Mat_4 ]]);
+   Append(lst, [["a",Mat_4 ]]);
+   Append(lst, [["d",Mat_4 ]]);
 fi;
 
 if dim_xi<>0 then
-Append(lst, [["b",End_xi ]]);
-Append(lst, [["c",End_xi ]]);
+   Append(lst, [["b",End_xi ]]);
+   Append(lst, [["c",End_xi ]]);
 fi;
 
 Zigzagmodule:=RightModuleOverPathAlgebra( ZigzagPathAlgebra, 
@@ -193,22 +193,14 @@ dim_yk,dim_yl,Mat_1,End_yk;;
 listSo:=SourceVertices(CLIntervalrep); 
 listSink:=SinkVertices(CLIntervalrep);
 size:= Length(DimensionVector(CLrep))/2;
-
-
 y_k:=[2, listSo[1][2]];
 y_l:=[2,listSink[1][2]];
-
-
 a:=y_k[2];
 dim_yk:=DimensionVector(CLrep)[size+a];
 a:=y_l[2];
 dim_yl:=DimensionVector(CLrep)[size+a];
-
-
 a:=y_k[2];
 b:=y_l[2];
-
-
 Mat_1:=IdentityMat(dim_yk,field);  ##IdentityMat(3,field);
 if a<b then
   for i in [1.. Length(Reco.(b-a))] do
@@ -224,13 +216,13 @@ End_yk:=IdentityMat(dim_yk,field);
 
 lst:=[];
 if dim_yl<>0 and dim_yk<>0 then
-Append(lst, [["a",Mat_1 ]]);
-Append(lst, [["d",Mat_1 ]]);
+   Append(lst, [["a",Mat_1 ]]);
+   Append(lst, [["d",Mat_1 ]]);
 fi;
 
 if dim_yk<>0 then
-Append(lst, [["b",End_yk ]]);
-Append(lst, [["c",End_yk ]]);
+   Append(lst, [["b",End_yk ]]);
+   Append(lst, [["c",End_yk ]]);
 fi;
 
 
@@ -267,11 +259,11 @@ end;
 
 __ChangeCLtoTypeA:=function(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco)#Reco:=__MatricesOnPaths(CLrep)
 if  CheckKindOfCLInterval(CLIntervalrep)= "2Rows" then
-return __ChangeCLtoTypeAForTwoRows(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
+   return __ChangeCLtoTypeAForTwoRows(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
 elif CheckKindOfCLInterval(CLIntervalrep)= "1RowDown" then
-return __ChangeCLtoTypeAForDownRow(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
+   return __ChangeCLtoTypeAForDownRow(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
 elif CheckKindOfCLInterval(CLIntervalrep)= "1RowUp" then
-return __ChangeCLtoTypeAForUpRow(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
+   return __ChangeCLtoTypeAForUpRow(CLrep,CLIntervalrep,ZigzagPathAlgebra,field,Reco);
 fi;
 end;
 
@@ -295,7 +287,6 @@ test1:=RightModuleOverPathAlgebra( kQ, [dim_1,dim_2], [["x", Mat_1]] );
 dim_1:=Length(Mat_2);
 dim_2:=Length(TransposedMat(Mat_2));
 test2:=RightModuleOverPathAlgebra( kQ, [dim_1,dim_2], [["x", Mat_2]] );
-
 return MatricesOfPathAlgebraModule(DirectSumOfQPAModules([test1,test2]))[1];
 end;
 #________
@@ -319,44 +310,39 @@ local mat,mat1,mat2,field;;
 
 field:=LeftActingDomain(M);
 if DimensionVector(M)[2]=0 and DimensionVector(M)[4]=0 then
-return 0;
+   return 0;
 fi;
 
 if DimensionVector(M)[2]=0 and DimensionVector(M)[4]<>0 then
-return  DimensionVector(M)[4] - 
-RankMat(StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[3],
-MatricesOfPathAlgebraModule(M)[4] ) );
+   return  DimensionVector(M)[4] - 
+   RankMat(StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[3],
+   MatricesOfPathAlgebraModule(M)[4] ) );
 fi;
 
 if DimensionVector(M)[2]<>0 and DimensionVector(M)[4]=0 then
-return  DimensionVector(M)[2] - 
-RankMat(StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[1],
-MatricesOfPathAlgebraModule(M)[2] ) );
+   return  DimensionVector(M)[2] -    RankMat(StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[2] ) );
 fi;
 
 if DimensionVector(M)[2]<>0 and DimensionVector(M)[4]<>0  and DimensionVector(M)[3]=0 then
-  if DimensionVector(M)[1]<>0 and DimensionVector(M)[5]<>0 then
-  return DimensionVector(M)[4]+DimensionVector(M)[2]
-  -RankMat
-  (Directsum(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[1],field));
+   if DimensionVector(M)[1]<>0 and DimensionVector(M)[5]<>0 then
+      return DimensionVector(M)[4]+DimensionVector(M)[2]
+      -RankMat(Directsum(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[1],field));
    elif DimensionVector(M)[1]=0 and DimensionVector(M)[5]<>0 then
-   return DimensionVector(M)[4]+DimensionVector(M)[2]
-  -RankMat(MatricesOfPathAlgebraModule(M)[4]);
+      return DimensionVector(M)[4]+DimensionVector(M)[2]
+      -RankMat(MatricesOfPathAlgebraModule(M)[4]);
    elif DimensionVector(M)[1]<>0 and DimensionVector(M)[5]=0 then
-   return DimensionVector(M)[4]+DimensionVector(M)[2]
-  -RankMat(MatricesOfPathAlgebraModule(M)[1]);
+      return DimensionVector(M)[4]+DimensionVector(M)[2]
+      -RankMat(MatricesOfPathAlgebraModule(M)[1]);
    elif DimensionVector(M)[1]=0 and DimensionVector(M)[5]=0 then
-   return DimensionVector(M)[4]+DimensionVector(M)[2];
+      return DimensionVector(M)[4]+DimensionVector(M)[2];
    fi;
 elif DimensionVector(M)[2]<>0 and DimensionVector(M)[4]<>0  and DimensionVector(M)[3]<>0 then
    mat1:=StackMatricesVerticalCopy(MatricesOfPathAlgebraModule(M)[2],MatricesOfPathAlgebraModule(M)[3]);
    mat2:= Directsum(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[4],field);
    mat:=StackMatricesHorizontalCopy(mat1,mat2);
-   return DimensionVector(M)[4]+DimensionVector(M)[2]
-    - RankMat(mat);
-  fi;
-      
- end;
+   return DimensionVector(M)[4]+DimensionVector(M)[2]- RankMat(mat);
+fi;
+end;
 #_______
 
 
@@ -366,8 +352,7 @@ local mat,field;;
 field := LeftActingDomain(M);
 mat:=StackMatricesVerticalCopy(MatricesOfPathAlgebraModule(M)[2],
 MatricesOfPathAlgebraModule(M)[3]);
-return DimensionVector(M)[4]+DimensionVector(M)[2] 
--RankMat(mat);
+return DimensionVector(M)[4]+DimensionVector(M)[2] -RankMat(mat);
 end;
 
 #______
@@ -404,8 +389,8 @@ DimHomB:= function(M)
 local mat,mat1,mat2,zeromat,field;;
 field := LeftActingDomain(M);
 if DimensionVector(M)[4]=0 then
-mat:=StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[2]); 
-return DimensionVector(M)[2]- RankMat(mat);
+   mat:=StackMatricesHorizontalCopy(MatricesOfPathAlgebraModule(M)[1],MatricesOfPathAlgebraModule(M)[2]); 
+   return DimensionVector(M)[2]- RankMat(mat);
 fi;
 
 if  DimensionVector(M)[4]<>0 then
@@ -429,7 +414,7 @@ final:= function(M)
 return DimHomI(M)+ DimHomX(M)-DimHomA(M)-DimHomB(M);
 end;
 #_____________
-CompressedMultiplicityVer2List:=function(CLrep)
+__CompressedMultiplicityVer2List:=function(CLrep)
 local A,B,RCLrep,RCLIntervalrep,Q,ZigzagPathAlgebra,field,Reco,ListOfIntervalReps,ListOfCompressMultiplicity2;;
 field := LeftActingDomain(CLrep);
 A:=RightActingAlgebra(CLrep);
@@ -445,10 +430,19 @@ for B in ListOfIntervalReps do
     if IsZero(RCLrep) then
        ##do nothing;
     else
-	Add(ListOfCompressMultiplicity2,[B,final(RCLrep)]);
-       
+	   Add(ListOfCompressMultiplicity2,[B,final(RCLrep)]);
     fi;
 od;	
 return  ListOfCompressMultiplicity2 ;
 end;
+
+
+InstallMethod(CompressedMultiplicityVer2List,
+                     "for a list of CommGridRepn",
+					 [IsList],
+                     function(CLrep)
+						 return __CompressedMultiplicityVer2List(CLrep);
+                       end);
+					   
+
 #___________________

@@ -18,3 +18,7 @@ ReadPackage("pmgap", "lib/homalg.gi");
 
 ReadPackage("pmgap", "lib/utils.gd");
 ReadPackage("pmgap", "lib/utils.gi");
+
+
+ReadPackage("pmgap", "lib/compressedmultiplicityver2list.gd");
+ReadPackage("pmgap", "lib/compressedmultiplicityver2list.gi");
