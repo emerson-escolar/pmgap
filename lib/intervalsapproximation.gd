@@ -54,6 +54,19 @@ DeclareOperation("IntervalApproximation", [IsCommGridRepn]);
 #! @Returns compressed multiplicities
 DeclareOperation("CompressedMultiplicityVer2", [IsCommGridRepn]);
 
+#! @Arguments V
+#! @Description Given a commutative grid representation <A>V</A>,
+#! computes its interval-decomposable approximation as defined
+#! in <Cite Key="asashiba2023approximation"/>. The output is
+#! encoded as a list of lists
+#! [$I$, $\delta^{\xi}_V(I)$]
+#! where $I$ is an interval and $\delta^{\xi}_V(I)$ is the multiplicity of $I$
+#! in the interval-decomposable approximation <Cite Key="asashiba2023approximation"/> of $V$.
+#! Intervals $I$ with $\delta_V(I) = 0$ are excluded from the output
+#!
+#! @Returns multiplicities of interval approximation
+DeclareOperation("IntervalApproximationVer2", [IsCommGridRepn]);
+
 
 
 

@@ -447,3 +447,20 @@ InstallMethod(CompressedMultiplicityVer2,
 						      return __CompressedMultiplicityVer2(CLrep);
               end);
 #___________________
+
+
+__IntervalApproximation2NVer2 := function(V)
+    local ans, cM;
+
+    cM := CompressedMultiplicityVer2(V);
+    ans := IntervalMobiusInversion(V, cM);
+
+    return ans;
+end;
+
+
+InstallMethod(IntervalApproximationVer2,
+              "for CommGridRepn",
+              ReturnTrue,
+              [IsCommGridRepn],
+              __IntervalApproximation2NVer2);
