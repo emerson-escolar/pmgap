@@ -10,3 +10,5 @@ ReadPackage("pmgap", "lib/intervalsapproximation.gd");
 ReadPackage("pmgap", "lib/homalg.gd");
 
 ReadPackage("pmgap", "lib/utils.gd");
+
+ReadPackage("pmgap", "lib/compressedmultiplicityver2list.gd");

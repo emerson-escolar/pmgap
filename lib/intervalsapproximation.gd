@@ -42,5 +42,19 @@ DeclareOperation("CompressedMultiplicity", [IsCommGridRepn]);
 #! @Returns multiplicities of interval approximation
 DeclareOperation("IntervalApproximation", [IsCommGridRepn]);
 
+#! @Arguments V
+#! @Description Given a commutative grid representation <A>V</A> and an interval representation <A>I</A>,
+#! computes its compressed multiplicity as defined
+#! in <Cite Key="asashiba2022approximation"/>. The output is
+#! a non negative integer.
+#! ${c_V}^{\xi}(I)$
+#! where ${c_V}^{\xi}(I)$ is the compressed multiplicity of $V$ at $I$.
+#! 
+#!
+#! @Returns compressed multiplicities
+DeclareOperation("CompressedMultiplicityVer2List", [IsList]);
+
+
+
 
 DeclareOperation("IntervalMobiusInversion", [IsCommGridRepn, IsList]);

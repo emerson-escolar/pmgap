@@ -248,3 +248,6 @@ InstallMethod(IntervalApproximation,
               ReturnTrue,
               [IsCommGridRepn],
               __IntervalApproximation2N);
+			  
+			  
+			  
