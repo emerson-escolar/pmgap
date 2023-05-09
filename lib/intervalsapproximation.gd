@@ -52,7 +52,7 @@ DeclareOperation("IntervalApproximation", [IsCommGridRepn]);
 #! 
 #!
 #! @Returns compressed multiplicities
-DeclareOperation("CompressedMultiplicityVer2List", [IsList]);
+DeclareOperation("CompressedMultiplicityVer2List", [IsCommGridRepn]);
 
 
 
