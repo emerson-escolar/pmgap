@@ -417,7 +417,7 @@ end;
 
 
 #_____________
-__CompressedMultiplicityVer2List:=function(CLrep)
+__CompressedMultiplicityVer2:=function(CLrep)
     local A,B,RCLrep,RCLIntervalrep,Q,ZigzagPathAlgebra,field,Reco,ListOfIntervalReps,ListOfCompressMultiplicity2;;
     field := LeftActingDomain(CLrep);
     A:=RightActingAlgebra(CLrep);
@@ -440,10 +440,10 @@ __CompressedMultiplicityVer2List:=function(CLrep)
 end;
 
 
-InstallMethod(CompressedMultiplicityVer2List,
+InstallMethod(CompressedMultiplicityVer2,
               "for a CommGridRepn",
 					    [IsCommGridRepn],
               function(CLrep)
-						      return __CompressedMultiplicityVer2List(CLrep);
+						      return __CompressedMultiplicityVer2(CLrep);
               end);
 #___________________
