@@ -165,3 +165,7 @@ Currently, the following main features are implemented.
 
 # Usage
 Refer to the documentation in the folder doc/ (after compiling the documentation).
+
+# Contribtors:
+[Emerson G. Escolar](https://emerson-escolar.github.io/) (main developer)
+[Shunsuke Tada](https://shunsuketada1357.github.io/)
